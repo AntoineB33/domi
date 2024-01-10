@@ -1,0 +1,31 @@
+#include <iostream>
+#include "Carte.h"
+#include "Or.h"
+#include "Tresor.h"
+#include "Domaine.h"
+
+int main() {
+
+    std::cout<<"1\n";
+    Or* gold1 = Or::makeOr();
+
+    std::cout<<"2\n";
+    Or* gold2 = Or::makeOr();
+
+    std::cout<<"3\n";
+    //Domaine* d = Domaine::makeDomaine();
+
+    std::cout<<"4\n";
+    std::cout<<*gold1<<std::endl;
+    std::cout<<*gold2<<std::endl;
+    //std::cout<<*d<<std::endl;
+
+    /*
+    delete gold1;
+
+    std::cout<<"6\n";
+    delete gold2;
+    delete d;
+    return 0;
+     */
+}

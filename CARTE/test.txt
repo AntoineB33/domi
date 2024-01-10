@@ -1,0 +1,21 @@
+#include <iostream>
+#include "Carte.h"
+#include "Or.h"
+#include "Tresor.h"
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    Carte c("a",3);
+    
+    Tresor t = Tresor("b",3,4);
+    
+    Or gold1 = Or::makeOr();
+    
+    gold1.print();
+    
+    Or gold2 = Or::makeOr();
+    
+    gold2.print();
+    
+    return 0;
+}

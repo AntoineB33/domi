@@ -1,0 +1,25 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+int main() {
+    std::ifstream fichier("monfichier.csv");
+
+    if (fichier.is_open()) {
+        std::string ligne;
+        while (std::getline(fichier, ligne)) {
+            std::istringstream ligneStream(ligne);
+            std::string champ;
+            while (std::getline(ligneStream, champ, ',')) {
+                // Traitement de chaque champ
+                std::cout << "Champ : " << champ << std::endl;
+            }
+        }
+        fichier.close();
+    } else {
+        std::cerr << "Impossible d'ouvrir le fichier." << std::endl;
+    }
+
+    return 0;
+}
