@@ -40,6 +40,8 @@ public:
     void addNbAchatPhase(int nbAchatPhase);
     void addNbActionPhase(int nbActionPhase);
     void ajouterRetirerValeurSupp(int nbValeurSup);
+    void recevoirCarte(Jeu &jeu, int nbValeurSupp);
+    void defausserInfin(Jeu &jeu, int nbValeurSup);
 
     //futures metohdes private , pour l'instant en public pour les tests
     void piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher

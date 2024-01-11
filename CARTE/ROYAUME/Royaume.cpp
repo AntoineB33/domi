@@ -34,6 +34,12 @@ void Royaume::piocherCarteDeck(Joueur &joueur, int quantite) {
 void Royaume::ajouterValeurSupp(Joueur &joueur, int nbValeurSupp) {
     joueur.ajouterRetirerValeurSupp(nbValeurSupp);
 }
+void Royaume::recevoirCarte(Joueur &joueur, Jeu &jeu, int nbValeurSupp) {
+    joueur.recevoirCarte(jeu, nbValeurSupp);
+}
+void Royaume::defausserInfin(Joueur &joueur, Jeu &jeu) {
+    joueur.defausserInfin(jeu, nbValeurSupp);
+}
 
 
 

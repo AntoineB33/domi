@@ -133,6 +133,16 @@ void Joueur::addNbActionPhase(int nbActionPossible) {
 void Joueur::ajouterRetirerValeurSupp(int nbValeurSup) {
     m_valeurSupp += nbValeurSup;
 }
+void Joueur::recevoirCarte(Jeu &jeu, int nbValeurSup) {
+    std::cout<<"Recevez une carte coutant jusqu'à " << nbValeurSup << ".\n";
+    int carteNum = 0;
+    std::cin >> carteNum;
+    prendreCartePlateau(jeu.getCarte(carteNum), jeu, 1, true);
+}
+void Joueur::defausserInfin(Jeu &jeu, int nbValeurSup) {
+}
+
+
 
 
 

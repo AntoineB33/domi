@@ -20,7 +20,6 @@ Jeu::Jeu(int nbJoueur) : m_nbJoueur(nbJoueur){
     }
     initCartesPlateau();
     m_phaseActuelle = Phase::getPhaseCourante();
-
 }
 
 Jeu::~Jeu() {
@@ -37,6 +36,10 @@ Jeu::~Jeu() {
 }
 
 void Jeu::nop(){}
+
+Carte* Jeu::getCarte(int numCarte) {
+    return v_cartesPlateau.at(numCarte);
+}
 
 int Jeu::getNbJoueur(){
     return m_nbJoueur;

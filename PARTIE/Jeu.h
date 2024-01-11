@@ -23,6 +23,8 @@ public:
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
     bool retirerCarteDisponible(Carte* carte, int quantite = 1);
 
+    Carte* getCarte(int numCarte);
+
 
 private:
     int m_nbJoueur;
@@ -31,6 +33,7 @@ private:
     Phase* m_phaseActuelle;
 
     std::map<Carte*, int> m_cartesPlateau;//cartes pas encore achetée
+    std::vector<Carte*> v_cartesPlateau; // pour la gestion des cartes par numero
 
     ///Methode initialisation en debut de partie
     void initCartesPlateau();
