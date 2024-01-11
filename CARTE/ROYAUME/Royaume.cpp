@@ -25,9 +25,6 @@ void Royaume::ajoutAction(Joueur & joueur, int nb){
 void Royaume::ajoutAchat(Joueur & joueur, int nb) {
     joueur.addNbActionPhase(nb);
 }
-void Royaume::supprimerCarte(Joueur & joueur, Carte* c, int quantite){
-    joueur.supprimerCarteMain(c,quantite);
-}
 void Royaume::piocherCarteDeck(Joueur &joueur, int quantite) {
     joueur.piocherCarteDeck(quantite);
 }
@@ -39,6 +36,9 @@ void Royaume::recevoirCarte(Joueur &joueur, Jeu &jeu, int coutMax) {
 }
 void Royaume::ecarter(Joueur &joueur, Jeu &jeu, int quantite) {
     joueur.ecarter(jeu,quantite);
+}
+void Royaume::defausserInfin(Joueur &joueur, Jeu &jeu) {
+    joueur.defausserInfin(jeu);
 }
 
 

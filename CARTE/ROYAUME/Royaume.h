@@ -20,11 +20,11 @@ protected:
     //méthodes utiles pour les classes filles
     void ajoutAction(Joueur & joueur, int nb);
     void ajoutAchat(Joueur & joueur, int nb);
-    void supprimerCarte(Joueur & joueur, Carte* c, int quantite = 1);
     void piocherCarteDeck(Joueur & joueur, int quantite = 1);
     void ajouterValeurSupp(Joueur & joueur, int nbValeurSupp);
     void recevoirCarte(Joueur & joueur, Jeu & jeu, int coutMax);
     void ecarter(Joueur & joueur, Jeu & jeu, int quantite);
+    void defausserInfin(Joueur & joueur, Jeu & jeu);
 
 
 

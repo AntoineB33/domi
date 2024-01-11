@@ -174,6 +174,18 @@ void Joueur::ecarter(Jeu& jeu, int quantite){
         }
     }
 }
+void Joueur::defausserInfin(Jeu& jeu){
+    std::string commande = " ";
+    while(commande != "FIN"){
+        std::cout<<std::endl;
+        std::cout<<DIM_TEXT<<"possibilité de défausser : "<<RESET;
+        if(demandeChercherCarte(m_main, commande)) {
+            defausserCarte();
+            piocherCarteDeck(1);
+            break;
+        }
+    }
+}
 void Joueur::supprimerCarteMain(Carte* c, int quantite){
     Carte::ajoutSuppCarte(m_main, c,-quantite);
 }
@@ -184,6 +196,7 @@ void Joueur::addNbActionPhase(int nbActionPossible) {
     m_nbActionPossible += nbActionPossible;
 }
 void Joueur::ajouterRetirerValeurSupp(int nbValeurSup) {
+    std::cout<<"ajout valeur supp : "<<nbValeurSup<<std::endl;
     m_valeurSupp += nbValeurSup;
 }
 
@@ -317,6 +330,7 @@ void Joueur::piocherCarteDeck(int quantite){
         for (auto& entry : m_deck) {
             choixAleatoire -= entry.second;
             if (choixAleatoire <= 0) { // carte trouvee donc on rajoute à la main
+                std::cout<<DIM_TEXT<<GREEN<<"carte : "<<entry.first -> getNom()<<" piochée"<<RESET<<std::endl;
                 Carte::ajoutSuppCarte(m_deck,entry.first, -1);
                 Carte::ajoutSuppCarte(m_main,entry.first, 1);
                 quantite -= 1;

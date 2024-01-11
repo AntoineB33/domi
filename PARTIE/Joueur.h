@@ -44,6 +44,7 @@ public:
     ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
     void recevoirCarte(Jeu& jeu, int coutMax);
     void ecarter(Jeu& jeu, int quantite);
+    void defausserInfin(Jeu& jeu);
     void supprimerCarteMain(Carte*,int);
     void addNbAchatPhase(int);
     void addNbActionPhase(int);

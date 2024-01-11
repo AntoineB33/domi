@@ -1,7 +1,7 @@
 #include "Marche.h"
 #include "Jeu.h"
 
-Marche* Marche::instanceMarche = new Marche("Marché",5," +1 Achat,  +1 Action,  +1 Carte");
+Marche* Marche::instanceMarche = new Marche("Marché",5,"+1 Carte +1 +1 Action +1 Achat +1 Valeur");
 
 Marche* Marche::makeMarche(){
     return Marche::instanceMarche;

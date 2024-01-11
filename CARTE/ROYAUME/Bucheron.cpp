@@ -13,7 +13,7 @@ Bucheron::Bucheron(std::string nom, int cout,std::string description) : Royaume(
 
 
 void Bucheron::faireAction(Joueur &joueur, Jeu &jeu) {
-    jeu.nop();
     ajoutAchat(joueur, 1);
     ajouterValeurSupp(joueur, 2);
+    (void)jeu;
 }
