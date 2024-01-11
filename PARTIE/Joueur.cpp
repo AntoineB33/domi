@@ -20,6 +20,7 @@ Joueur::~Joueur() {
     m_defausse.clear();
     m_main.clear();
     m_carteEnCoursDutilisation.clear();
+    rebus.clear();
 
 }
 
@@ -130,6 +131,49 @@ bool Joueur::ajuster(){
     return true;
 }
 ///////////////////////////////////////ACTION DU JOUEUR VIA UNE CARTE ACTION
+void Joueur::recevoirCarte(Jeu& jeu, int coutMax){
+    std::cout<<"CARTE SUR LE PLATEAU : \n";
+    jeu.afficherCartesPlateau();
+    std::cout<<std::endl;
+    std::string commande = "";
+    Carte* c = nullptr;
+    while(commande != "FIN"){
+        c = demandeChercherCarte(jeu.getCartesPlateau(), commande);
+        if(c != nullptr){
+            if(c -> getCout() <= coutMax){
+                prendreCartePlateau(c,jeu,1,true);
+                defausserCarte(c);
+                std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" recue dans la défausse"<<RESET<<std::endl;
+                break;
+            }
+            else{
+                std::cout<<DIM_TEXT<<RED<<"carte : "<<c -> getNom()<<" trop chere"<<RESET<<std::endl;
+            }
+        }
+    }
+}
+void Joueur::ecarter(Jeu& jeu, int quantite){
+    std::cout<<"CARTE SUR LE PLATEAU : \n";
+    jeu.afficherCartesPlateau();
+    std::cout<<std::endl;
+    std::string commande = "";
+    Carte* c = nullptr;
+    while(commande != "FIN"){
+        c = demandeChercherCarte(jeu.getCartesPlateau(), commande);
+        if(c != nullptr){
+            if(defausserCarte(c)){
+                std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" defaussée"<<RESET<<std::endl;
+                quantite -= 1;
+                if(quantite == 0){
+                    break;
+                }
+            }
+            else{
+                std::cout<<DIM_TEXT<<RED<<"carte : "<<c -> getNom()<<" non defaussée"<<RESET<<std::endl;
+            }
+        }
+    }
+}
 void Joueur::supprimerCarteMain(Carte* c, int quantite){
     Carte::ajoutSuppCarte(m_main, c,-quantite);
 }
@@ -291,8 +335,14 @@ void Joueur::piocherCarteDeck(int quantite){
 
 }
 
+bool Joueur::dansRebus(Carte *carte) {
 
-
+    if(Carte::ajoutSuppCarte(m_main, carte, -1)){
+        Carte::ajoutSuppCarte(rebus, carte, 1);
+        return true;
+    }
+    return false;
+}
 bool Joueur::defausserCarte(Carte *carte) {
 
     if(Carte::ajoutSuppCarte(m_main, carte, -1)){

@@ -42,6 +42,8 @@ public:
     bool jouerCarteAction(Carte* c, Jeu& jeu);
     bool ajuster();
     ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
+    void recevoirCarte(Jeu& jeu, int coutMax);
+    void ecarter(Jeu& jeu, int quantite);
     void supprimerCarteMain(Carte*,int);
     void addNbAchatPhase(int);
     void addNbActionPhase(int);
@@ -52,6 +54,7 @@ public:
     void piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
     bool defausserCarte(Carte*carte);
     bool defausserCarte();
+    bool dansRebus(Carte *carte);
     bool mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
 
 private:
@@ -59,6 +62,7 @@ private:
     std::map<Carte*,int> m_carteEnCoursDutilisation;
     std::map<Carte*,int> m_deck;
     std::list<Carte*> m_defausse;
+    std::list<Carte*> rebus;
 
     const int m_numJoueur;
     int m_nbAchatPossible;

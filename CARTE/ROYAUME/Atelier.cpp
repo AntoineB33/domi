@@ -13,6 +13,5 @@ Atelier::Atelier(std::string nom, int cout,std::string description) : Royaume(no
 
 
 void Atelier::faireAction(Joueur &joueur, Jeu &jeu) {
-    jeu.nop();
     recevoirCarte(joueur, jeu, 4);
 }
