@@ -12,7 +12,7 @@ PhaseAction::~PhaseAction() {
     delete PhaseAction::instancePhaseAction;
 }
 
-PhaseAction::PhaseAction() : Phase(0, 1) {
+PhaseAction::PhaseAction() : Phase(0, 1, "PHASE ACTION") {
 
 }
 

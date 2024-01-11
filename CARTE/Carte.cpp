@@ -114,11 +114,17 @@ bool Carte::ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite){
     return true;
 }
 
-Carte* Carte::chercherCarte(std::string mot, std::map<Carte*, int>& m){
+Carte* Carte::chercherCarte(std::string mot, std::map<Carte*, int> m){
     for(auto entry : m){
         if(mot.compare(entry.first->getNom()) == 0){
             return entry.first;
         }
     }
     return nullptr;
+}
+
+void Carte::afficher(std::map<Carte *, int> m) {
+    for (const auto& entry : m) {
+        std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
+    }
 }

@@ -1,16 +1,19 @@
 #ifndef DOMI_PHASE_H
 #define DOMI_PHASE_H
 
-class Jeu;
+#include <string>
+
+class Joueur;
 
 class Phase {
 public:
-    Phase(int nbINITachat, int nbINITaction);
+    Phase(int nbINITachat, int nbINITaction, std::string nomPhase);
     virtual ~Phase();
     virtual Phase* phaseSuivante() = 0;
 
     static Phase* getPhaseCourante();
-    void initJeu(Jeu &jeu);
+    void initJoueur(Joueur &joueur);
+    const std::string* getNomPhase() const;
 
 protected:
     static Phase* phaseCourante;
@@ -19,6 +22,7 @@ protected:
 private:
     const int m_nbINITachat;
     const int m_nbINITaction;
+    const std::string m_nomPhase;
 };
 
 

@@ -11,7 +11,7 @@ PhaseAjustement::~PhaseAjustement() {
     delete PhaseAjustement::instancePhaseAjustement;
 }
 
-PhaseAjustement::PhaseAjustement() : Phase(0, 0) {
+PhaseAjustement::PhaseAjustement() : Phase(0, 0, "PHASE AJUSTEMENT") {
 
 }
 

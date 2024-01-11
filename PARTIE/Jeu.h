@@ -16,32 +16,46 @@ public:
 
     int getNbJoueur();
     Joueur* getJoueur(int i) ;
+    const std::string* getNomPhaseActu() const;
+    const std::map<Carte*, int> getCartesPlateau() const;
 
-    void initJoueurs(int nbAchatNEW, int nbActionNEW);
+    bool getFini() const;
+    void setFini(bool);
+
     void afficherCartesPlateau();
 
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
     bool retirerCarteDisponible(Carte* carte, int quantite = 1);
 
-    Carte* getCarte(int numCarte);
+
+    void changementDePhase();
+    bool estAPhaseAjustement();
+    void initJoueurPhase(Joueur& joueur);
+    //futur private
+
+    //LANCEMENT
+
+    void lancementJeu();
 
 
 private:
     int m_nbJoueur;
     std::vector<Joueur> m_joueurs;
-
+    bool m_fini; //bool pour savoir si la partie est fini, permet d'eviter de dupliquer les calculs
     Phase* m_phaseActuelle;
-
     std::map<Carte*, int> m_cartesPlateau;//cartes pas encore achetée
-    std::vector<Carte*> v_cartesPlateau; // pour la gestion des cartes par numero
+
+    void tour(int numJoueur = 0);//int numJoueur permet de reprendre la partie depuis l'enregistrement
 
     ///Methode initialisation en debut de partie
     void initCartesPlateau();
-    void initJoueur(Joueur& joueur);
+    void initJoueur(Joueur&);
+
+
 
 
     ///
-    void changementDePhase();
+
 
 };
 

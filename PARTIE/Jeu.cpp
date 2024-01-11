@@ -11,15 +11,20 @@
 #include "Malediction.h"
 
 #include "Marche.h"
+#include "PhaseAjustement.h"
 
 
-Jeu::Jeu(int nbJoueur) : m_nbJoueur(nbJoueur){
+//pour IHM
+#include "CouleurTerminal.h"
+
+Jeu::Jeu(int nbJoueur) : m_nbJoueur(nbJoueur), m_fini(false){
     for(int i = 0; i < nbJoueur; i++){
         m_joueurs.push_back(Joueur(i));
         initJoueur(m_joueurs.at(i));
     }
     initCartesPlateau();
     m_phaseActuelle = Phase::getPhaseCourante();
+
 }
 
 Jeu::~Jeu() {
@@ -37,28 +42,24 @@ Jeu::~Jeu() {
 
 void Jeu::nop(){}
 
-Carte* Jeu::getCarte(int numCarte) {
-    return v_cartesPlateau.at(numCarte);
-}
-
 int Jeu::getNbJoueur(){
     return m_nbJoueur;
+}
+const std::string* Jeu::getNomPhaseActu() const {
+    return m_phaseActuelle -> getNomPhase();
 }
 Joueur* Jeu::getJoueur(int i) {
     return &m_joueurs.at(i);
 }
-
-void Jeu::initJoueurs(int nbAchatNEW, int nbActionNEW){
-    for(Joueur j : m_joueurs){
-        j.initJoueur(nbAchatNEW, nbActionNEW);
-    }
+const std::map<Carte*, int> Jeu::getCartesPlateau() const {
+    return m_cartesPlateau;
 }
 
-void Jeu::changementDePhase(){
-    //m_phaseActuelle = m_phaseActuelle -> phaseSuivante();
-    m_phaseActuelle -> phaseSuivante();
-    m_phaseActuelle -> initJeu(*this);
+bool Jeu::getFini() const {return m_fini;}
+void Jeu::setFini(bool fini){
+    m_fini = fini;
 }
+
 void Jeu::afficherCartesPlateau() {
     for (const auto& entry : m_cartesPlateau) {
         std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
@@ -66,7 +67,6 @@ void Jeu::afficherCartesPlateau() {
 }
 
 bool Jeu::carteDisponible(Carte *carte) {
-    afficherCartesPlateau();
     return m_cartesPlateau.find(carte) -> second > 0;
 }
 bool Jeu::retirerCarteDisponible(Carte *carte, int quantite) {
@@ -108,4 +108,41 @@ void Jeu::initCartesPlateau() {
 void Jeu::initJoueur(Joueur& joueur){
     joueur.prendreCartePlateau(Cuivre::makeCuivre(), *this, 7, true);
     joueur.prendreCartePlateau(Domaine::makeDomaine(), *this, 3, true);
+}
+void Jeu::tour(int numJoueur){
+    for(int i = numJoueur; i < m_nbJoueur; i++){
+        m_joueurs.at(i).tourJoueur(*this);
+        if(m_fini){
+            break;
+        }
+    }
+}
+
+void Jeu::changementDePhase(){
+    m_phaseActuelle -> phaseSuivante();
+    m_phaseActuelle = Phase::getPhaseCourante();
+}
+bool Jeu::estAPhaseAjustement(){
+    return m_phaseActuelle == PhaseAjustement::getInstancePhaseAjustement();
+}
+void Jeu::initJoueurPhase(Joueur& joueur) {
+    m_phaseActuelle -> initJoueur(joueur);
+}
+
+/////////////////////////////////////// TOUR + IHM
+void Jeu::lancementJeu() {
+    std::cout<<BLINK_ON<<BOLD_ON<<"\n\n==============================================\n";
+    std::cout<<"=============== LANCEMENT JEU  ===============\n";
+    std::cout<<"==============================================\n\n"<<RESET<<std::endl;
+
+    // TODO : faire l'enregistrement la si on a le temp
+    afficherCartesPlateau();
+    tour(0);//pour l'instant pas d'enregistrement donc le jeu commence au joueur 0
+
+    //TODO : faire en registrement pour partie non gangé
+
+    std::cout<<BLINK_ON<<BOLD_ON<<"\n\n==============================================\n";
+    std::cout<<"=============== SORTIR DU JEU  ===============\n";
+    std::cout<<"==============================================\n\n"<<RESET<<std::endl;
+
 }

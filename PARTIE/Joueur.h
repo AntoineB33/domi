@@ -4,6 +4,7 @@
 
 #include <map>
 #include <list>
+#include <string>
 
 #include "Carte.h"
 
@@ -32,23 +33,26 @@ public:
 
     void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
 
+
+    ///////////////////////////////////////TOUR D UN JOUEUR
+    void tourJoueur(Jeu &jeu);
+
     ///////////////////////////////////////ACTION DU JOUEUR (durant une phase ou via une carte)
-    void acheterCarte(Carte* c, Jeu& jeu);
-    void jouerCarteAction(Carte* c, Jeu& jeu);
-    ///////////////////////////////////////ACTION DU JOUEUR VIA UNE CARTE ACTION (via carte uniquement)
-    void supprimerCarteMain(Carte* c, int quantite = 1);
-    void addNbAchatPhase(int nbAchatPhase);
-    void addNbActionPhase(int nbActionPhase);
-    void ajouterRetirerValeurSupp(int nbValeurSup);
-    void recevoirCarte(Jeu &jeu, int nbValeurSupp);
-    void defausserInfin(Jeu &jeu, int nbValeurSup);
+    bool acheterCarte(Carte* c, Jeu& jeu);
+    bool jouerCarteAction(Carte* c, Jeu& jeu);
+    bool ajuster();
+    ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
+    void supprimerCarteMain(Carte*,int);
+    void addNbAchatPhase(int);
+    void addNbActionPhase(int);
+    void ajouterRetirerValeurSupp(int);
+
 
     //futures metohdes private , pour l'instant en public pour les tests
     void piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
-    void defausserCarte(Carte* carte);
-    void defausserCarte();
-    void mettreDefausseDansDeck();
-    void mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
+    bool defausserCarte(Carte*carte);
+    bool defausserCarte();
+    bool mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
 
 private:
     std::map<Carte*,int> m_main;
@@ -61,10 +65,30 @@ private:
     int m_nbActionPossible;
     int m_valeurSupp; //donner par les cartes comme : marché
 
+    bool aGagner();
+    int nbPointVictoire();
 
     int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
     bool peutAcheterCarte(Carte* carte, Jeu jeu);
     void prendreArgent(int valeur);
+    bool mettreCarteDefausseDansDeck();
+
+
+    ///////////////////////////////////////IHM TERMINAL
+    std::string couleurJ;
+
+    void jouerPhase(Jeu &jeu);
+    void commandeHELP();
+    void commandeSHOWME();
+    Carte* demandeChercherCarte(std::map<Carte*,int> m, std::string &commande);
+    int demandeQuantiteCarte(std::map<Carte*,int> m, Carte* c, std::string &commande);
+    void commandeAchat(Jeu &jeu);
+    void commandeJoueur(Jeu &Jeu);
+    void commandeMettreCarteUtilisation();
+    void faireAjustement(Jeu& jeu);
+    void commandeDefausserCartes();
+
+
 
 
 
