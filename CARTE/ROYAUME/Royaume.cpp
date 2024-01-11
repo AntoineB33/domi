@@ -34,6 +34,18 @@ void Royaume::piocherCarteDeck(Joueur &joueur, int quantite) {
 void Royaume::ajouterValeurSupp(Joueur &joueur, int nbValeurSupp) {
     joueur.ajouterRetirerValeurSupp(nbValeurSupp);
 }
+void Royaume::recevoirCarte(Joueur &joueur, Jeu &jeu, int coutMax) {
+    (void)jeu;
+    (void)joueur;
+    (void)coutMax;
+    // joueur.recevoirCarte(jeu,coutMax);
+}
+void Royaume::ecarter(Joueur &joueur, Jeu &jeu, int quantite) {
+    (void)jeu;
+    (void)joueur;
+    (void)quantite;
+    // joueur.ecarter(jeu,quantite);
+}
 
 
 

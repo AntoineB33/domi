@@ -14,4 +14,5 @@ Renovation::Renovation(std::string nom, int cout,std::string description) : Roya
 
 void Renovation::faireAction(Joueur &joueur, Jeu &jeu) {
     jeu.nop();
+    (void)joueur;
 }
