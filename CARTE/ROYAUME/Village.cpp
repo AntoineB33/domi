@@ -1,7 +1,7 @@
 #include "Village.h"
 #include "Jeu.h"
 
-Village* Village::instanceVillage = new Village("Marché",5," +1 Achat,  +1 Action,  +1 Carte");
+Village* Village::instanceVillage = new Village("Marché", 3," +1 Carte,  +2 Actions");
 
 Village* Village::makeVillage(){
     return Village::instanceVillage;

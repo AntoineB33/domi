@@ -1,21 +1,21 @@
-#ifndef DOMI_BUCHERON_H
-#define DOMI_BUCHERON_H
+#ifndef DOMI_VILLAGE_H
+#define DOMI_VILLAGE_H
 
 #include "Royaume.h"
 #include <string>
 
-class Bucheron : public Royaume{
+class Village : public Royaume{
 public:
-    static Bucheron* makeBucheron();
-    virtual ~Bucheron();
+    static Village* makeVillage();
+    virtual ~Village();
 
 
 private :
-    Bucheron(std::string nom, int cout,std::string description);
-    static Bucheron* instanceBucheron;
+    Village(std::string nom, int cout,std::string description);
+    static Village* instanceVillage;
 
     void faireAction(Joueur& joueur, Jeu& jeu) override;
 };
 
 
-#endif //DOMI_Bucheron_H
+#endif //DOMI_Village_H
