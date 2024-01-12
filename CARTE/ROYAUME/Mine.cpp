@@ -13,6 +13,6 @@ Mine::Mine(std::string nom, int cout,std::string description) : Royaume(nom,cout
 
 
 void Mine::faireAction(Joueur &joueur, Jeu &jeu) {
-    jeu.nop();
-    (void)joueur;
+    augmenterTresor(jeu, joueur, 3);
+    (void)jeu;
 }

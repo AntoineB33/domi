@@ -63,6 +63,10 @@ Joueur* Jeu::getJoueur(int i) {
     return &m_joueurs.at(i);
 }
 
+std::list<Carte*> Jeu::getToutesLesCartes() const {
+    return toutesLesCartes;
+}
+
 const std::map<Carte*, int> Jeu::getCartesPlateau() const {
     return m_cartesPlateau;
 }
@@ -89,6 +93,12 @@ bool Jeu::retirerCarteDisponible(Carte *carte, int quantite) {
     }
 
     return false;
+}
+
+void Jeu::ajoutCartesDefausses(Carte &carte, int quantite) {
+    for(Joueur& j : m_joueurs){
+        j.prendreCartePlateau(&carte, *this, quantite, false);
+    }
 }
 
 void Jeu::mettreDansRebus(Carte *carte) {
@@ -128,6 +138,11 @@ void Jeu::initCartesPlateau() {
     Carte::ajoutSuppCarte(m_cartesPlateau, Renovation::makeRenovation(),10);
     Carte::ajoutSuppCarte(m_cartesPlateau, Sorciere::makeSorciere(),10);
     Carte::ajoutSuppCarte(m_cartesPlateau, Village::makeVillage(),10);
+
+    //Pour avoir une liste constante de pointeurs pour toutes les cartes
+    for(std::pair<Carte*, int> p : m_cartesPlateau){
+        toutesLesCartes.push_back(p.first);
+    }
 
 }
 void Jeu::initJoueur(Joueur& joueur){

@@ -17,6 +17,8 @@ public:
     const std::string* getNomPhaseActu() const;
     const std::map<Carte*, int> getCartesPlateau() const;
 
+    std::list<Carte*> getToutesLesCartes() const;
+
     bool getFini() const;
     void setFini(bool);
 
@@ -25,6 +27,7 @@ public:
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
     bool retirerCarteDisponible(Carte* carte, int quantite = 1);
     void mettreDansRebus(Carte *carte);
+    void ajoutCartesDefausses(Carte& carte, int quantite = 1);
 
 
     void changementDePhase();
@@ -44,6 +47,7 @@ private:
     Phase* m_phaseActuelle;
     std::map<Carte*, int> m_cartesPlateau;//cartes pas encore achetée
     std::list<Carte*> rebus;
+    std::list<Carte*> toutesLesCartes;
 
     void tour(int numJoueur = 0);//int numJoueur permet de reprendre la partie depuis l'enregistrement
 

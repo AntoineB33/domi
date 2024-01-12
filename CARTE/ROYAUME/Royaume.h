@@ -27,6 +27,7 @@ protected:
     bool recevoirCartePlateau(Joueur & joueur, Jeu & jeu, Carte* carte, int coutMax);
     void ecarter(Joueur & joueur, Jeu & jeu, Carte* carte, int quantite);
     void defaussPiocher(Joueur & joueur);
+    void augmenterTresor(Jeu& jeu, Joueur & joueur, int nbTresor);
 
 
     ///////////////IHM

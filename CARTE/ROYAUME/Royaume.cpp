@@ -46,6 +46,9 @@ void Royaume::ecarter(Joueur &joueur, Jeu &jeu, Carte* carte, int quantite) {
 void Royaume::defaussPiocher(Joueur &joueur) {
     joueur.defaussPiocher();
 }
+void Royaume::augmenterTresor(Jeu& jeu, Joueur &joueur, int quantite) {
+    joueur.augmenterTresor(jeu, quantite);
+}
 
 
 

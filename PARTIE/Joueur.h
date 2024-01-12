@@ -29,7 +29,7 @@ public:
 
     //GESTIONS DES CARTES
 
-    void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
+    void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false, bool depuisLaReserve = true); // le booleen permet la destribution en debut de parti
 
 
     ///////////////////////////////////////TOUR D UN JOUEUR
@@ -47,6 +47,7 @@ public:
     void addNbAchatPhase(int);
     void addNbActionPhase(int);
     void ajouterRetirerValeurSupp(int);
+    void augmenterTresor(Jeu&, int);
 
 
     //futures metohdes private , pour l'instant en public pour les tests

@@ -18,10 +18,12 @@ int main() {
 
 
     {
-        int nbJoueur;
-        std::cout<<"Combien de joueur ?\n";
-        std::cin>>nbJoueur;
-        Jeu j = Jeu();
+        int nbJoueur = 0;
+        while(nbJoueur < 2 || nbJoueur > 4) {
+            std::cout<<"Combien de joueur (2 - 4)?\n";
+            std::cin>>nbJoueur;
+        }
+        Jeu j = Jeu(nbJoueur);
         j.lancementJeu();
 
     }

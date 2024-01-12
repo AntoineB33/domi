@@ -13,6 +13,6 @@ Forgeron::Forgeron(std::string nom, int cout,std::string description) : Royaume(
 
 
 void Forgeron::faireAction(Joueur &joueur, Jeu &jeu) {
-    jeu.nop();
     piocherCarteDeck(joueur, 3);
+    (void)jeu;
 }

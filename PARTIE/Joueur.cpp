@@ -86,12 +86,14 @@ const std::list<Carte*>& Joueur::getDefausse() const {
 }
 
 //GESTIONS DES CARTES
-void Joueur::prendreCartePlateau(Carte* carte, Jeu& jeu,int quantite,bool gratuit) {
+void Joueur::prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite, bool gratuit, bool depuisLaReserve) {
     if(!gratuit){
         prendreArgent(carte -> getCout());
     }
     Carte::ajoutSuppCarte(m_deck, carte, quantite);
-    jeu.retirerCarteDisponible(carte, quantite);
+    if(depuisLaReserve) {
+        jeu.retirerCarteDisponible(carte, quantite);
+    }
 }
 
 
@@ -575,6 +577,28 @@ void Joueur::defaussPiocher(){
     }
 }
 
+void Joueur::augmenterTresor(Jeu& jeu, int quantite){
+    std::string commande = " ";
+    while(commande != "FIN"){
+        std::cout<<std::endl;
+        std::cout<<DIM_TEXT<<"augmentez une carte Trésor : "<<RESET;
+        Carte* c = demandeChercherCarte(m_main, commande);
+        if(c != nullptr && c -> getTypeCarte() == TypeTresor) {
+            defausserCarte(c);
+            while(commande != "FIN") {
+                std::cout<<std::endl;
+                std::cout<<DIM_TEXT<<"Prenez une carte Trésor de la réserve : "<<RESET;
+                c = demandeChercherCarte(jeu.getCartesPlateau(), commande);
+                if(c != nullptr && c -> getTypeCarte() == TypeTresor) {
+                    jeu.retirerCarteDisponible(c,1);
+                    break;
+                }
+            }
+            break;
+        }
+    }
+}
+
 void Joueur::commandeAchat(Jeu &jeu){
     std::cout<<"CARTE SUR LE PLATEAU : \n";
     jeu.afficherCartesPlateau();
@@ -637,19 +661,14 @@ void Joueur::commandeMettreCarteUtilisation() {
     }
 }
 void Joueur::commandeGODMODE(Jeu& jeu){
-    prendreCartePlateau(Atelier::makeAtelier(), jeu, 10, true);
-    prendreCartePlateau(Bucheron::makeBucheron(), jeu, 10, true);
-    prendreCartePlateau(Cave::makeCave(), jeu, 10, true);
-    prendreCartePlateau(Chapelle::makeChapelle(), jeu, 10, true);
-    prendreCartePlateau(Forgeron::makeForgeron(), jeu, 10, true);
-    prendreCartePlateau(Marche::makeMarche(), jeu, 10, true);
-    prendreCartePlateau(Mine::makeMine(), jeu, 10, true);
-    prendreCartePlateau(Renovation::makeRenovation(), jeu, 10, true);
-    prendreCartePlateau(Sorciere::makeSorciere(), jeu, 10, true);
-    prendreCartePlateau(Village::makeVillage(), jeu, 10, true);
-    piocherCarteDeck(99);
-    m_nbAchatPossible += 99;
-    m_nbActionPossible += 99;
+    int nbPioche = 0;
+    for(std::pair<Carte*, int> p : jeu.getCartesPlateau()){
+        prendreCartePlateau(p.first, jeu, 10, true, true);
+        nbPioche += 10;
+    }
+    piocherCarteDeck(nbPioche);
+    m_nbAchatPossible += nbPioche;
+    m_nbActionPossible += nbPioche;
     std::cout<<BOLD_ON<<DIM_TEXT<<"=== GOD MODE ===\n"<<RESET;
 }
 void Joueur::faireAjustement(Jeu& jeu) {
