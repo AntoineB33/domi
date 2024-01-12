@@ -175,6 +175,7 @@ void Joueur::ecarter(Jeu& jeu, int quantite){
     }
 }
 void Joueur::defausserInfin(Jeu& jeu){
+    (void)jeu;
     std::string commande = " ";
     while(commande != "FIN"){
         std::cout<<std::endl;
@@ -409,7 +410,11 @@ void Joueur::tourJoueur(Jeu& jeu){
     std::cout<<"=============== TOUR JOUEUR "<<m_numJoueur<<" ===============\n";
     std::cout<<"=============================================\n\n"<<RESET<<std::endl;
     while(!jeu.estAPhaseAjustement() && !jeu.getFini()){
+        std::cout<<"!"<<std::endl;
+        std::cout<<*jeu.getNomPhaseActu()<<std::endl;
+        std::cout<<"k"<<std::endl;
         std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
+        std::cout<<"?"<<std::endl;
         jeu.initJoueurPhase(*this);
         commandeSHOWME();
         // ACTION DU JOUEUR
