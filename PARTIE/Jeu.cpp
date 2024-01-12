@@ -110,16 +110,13 @@ void Jeu::mettreDansRebus(Carte *carte) {
 void Jeu::initCartesPlateau() {
 
     /////////////// CARTE VICTOIRE
-    if(m_nbJoueur == 2){
-        Carte::ajoutSuppCarte(m_cartesPlateau, Domaine::makeDomaine(),8);
-        Carte::ajoutSuppCarte(m_cartesPlateau, Duche::makeDuche(),8);
-        Carte::ajoutSuppCarte(m_cartesPlateau, Province::makeProvince(),8);
+    int quantite = 8;
+    if(m_nbJoueur != 2){
+        quantite = 12;
     }
-    else if(m_nbJoueur == 3 || m_nbJoueur == 4){
-        Carte::ajoutSuppCarte(m_cartesPlateau, Domaine::makeDomaine(),12);
-        Carte::ajoutSuppCarte(m_cartesPlateau, Duche::makeDuche(),12);
-        Carte::ajoutSuppCarte(m_cartesPlateau, Province::makeProvince(),12);
-    }
+    Carte::ajoutSuppCarte(m_cartesPlateau, Domaine::makeDomaine(),quantite);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Duche::makeDuche(),quantite);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Province::makeProvince(),quantite);
 
     /////////////// CARTE TRESOR
     Carte::ajoutSuppCarte(m_cartesPlateau, Malediction::makeMalediction(),30);
