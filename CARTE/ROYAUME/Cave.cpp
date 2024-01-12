@@ -14,6 +14,6 @@ Cave::Cave(std::string nom, int cout,std::string description) : Royaume(nom,cout
 
 void Cave::faireAction(Joueur &joueur, Jeu &jeu) {
     ajoutAchat(joueur, 1);
-    defaussPiocher(joueur);
+    joueur.defaussPiocher();
     (void)jeu;
 }

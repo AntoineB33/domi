@@ -37,18 +37,6 @@ void Royaume::piocherCarteDeck(Joueur &joueur, int quantite) {
 void Royaume::ajouterValeurSupp(Joueur &joueur, int nbValeurSupp) {
     joueur.ajouterRetirerValeurSupp(nbValeurSupp);
 }
-bool Royaume::recevoirCartePlateau(Joueur &joueur, Jeu &jeu, Carte* carte, int coutMax) {
-    return joueur.recevoirCartePlateau(jeu,carte,coutMax);
-}
-void Royaume::ecarter(Joueur &joueur, Jeu &jeu, Carte* carte, int quantite) {
-    joueur.ecarter(jeu,carte,quantite);
-}
-void Royaume::defaussPiocher(Joueur &joueur) {
-    joueur.defaussPiocher();
-}
-void Royaume::augmenterTresor(Jeu& jeu, Joueur &joueur, int quantite) {
-    joueur.augmenterTresor(jeu, quantite);
-}
 
 
 
@@ -64,7 +52,7 @@ void Royaume::commandeRecevoirCartePlateau(Joueur& joueur, Jeu& jeu, int coutMax
         c = joueur.demandeChercherCarte(jeu.getCartesPlateau(), commande);
         if(c != nullptr){
             if(c -> getCout() <= coutMax){
-                if(recevoirCartePlateau(joueur,jeu,c,coutMax)){
+                if(joueur.recevoirCartePlateau(jeu,c,coutMax)){
                     std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" recue dans la défausse"<<RESET<<std::endl;
                 }
                 break;

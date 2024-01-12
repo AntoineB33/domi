@@ -24,10 +24,6 @@ protected:
     void ajoutAchat(Joueur & joueur, int nb);
     void piocherCarteDeck(Joueur & joueur, int quantite = 1);
     void ajouterValeurSupp(Joueur & joueur, int nbValeurSupp);
-    bool recevoirCartePlateau(Joueur & joueur, Jeu & jeu, Carte* carte, int coutMax);
-    void ecarter(Joueur & joueur, Jeu & jeu, Carte* carte, int quantite);
-    void defaussPiocher(Joueur & joueur);
-    void augmenterTresor(Jeu& jeu, Joueur & joueur, int nbTresor);
 
 
     ///////////////IHM

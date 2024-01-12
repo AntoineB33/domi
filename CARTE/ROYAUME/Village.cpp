@@ -12,7 +12,7 @@ Village::~Village(){
 Village::Village(std::string nom, int cout,std::string description) : Royaume(nom,cout,description){}
 
 void Village::faireAction(Joueur &joueur, Jeu &jeu) {
-    jeu.nop();
     piocherCarteDeck(joueur);
     ajoutAction(joueur, 2);
+    (void)jeu;
 }

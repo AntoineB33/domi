@@ -60,7 +60,7 @@ public:
 
 
     ///////////////////////////////////////IHM TERMINAL
-    void commandeEcarter(Jeu& jeu);
+    int commandeEcarter(Jeu& jeu, int quantite);
     Carte* demandeChercherCarte(std::map<Carte*,int> m, std::string &commande);
 
 private:

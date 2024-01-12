@@ -548,19 +548,24 @@ int Joueur::demandeQuantiteCarte(std::map<Carte*,int> m,Carte* c ,std::string &c
     return 0;
 }
 
-void Joueur::commandeEcarter(Jeu& jeu){
-    std::cout<<DIM_TEXT<<"Seul les cartes dans la main sont défaussables\n"<<RESET;
-    std::string commande = "";
-    Carte* c = nullptr;
-    commandeSHOWME();
-    while(commande != "FIN"){
-        c = demandeChercherCarte(m_main, commande);
-        if(c != nullptr){
-            ecarter(jeu,c,1);
-            std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" écarté"<<RESET<<std::endl;
-
+int Joueur::commandeEcarter(Jeu& jeu, int quantite) {
+    int cout = 0;
+    for(int i = 0; i< quantite; i++) {
+        std::cout<<DIM_TEXT<<"Seuls les cartes dans la main sont défaussables\n"<<RESET;
+        std::string commande = "";
+        Carte* c = nullptr;
+        commandeSHOWME();
+        while(1){
+            c = demandeChercherCarte(m_main, commande);
+            if(c != nullptr){
+                ecarter(jeu,c,1);
+                std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" écarté"<<RESET<<std::endl;
+                cout = c -> getCout();
+                break;
+            }
         }
     }
+    return cout;
 }
 
 void Joueur::defaussPiocher(){
@@ -589,7 +594,7 @@ void Joueur::augmenterTresor(Jeu& jeu, int quantite){
                 std::cout<<std::endl;
                 std::cout<<DIM_TEXT<<"Prenez une carte Trésor de la réserve : "<<RESET;
                 c = demandeChercherCarte(jeu.getCartesPlateau(), commande);
-                if(c != nullptr && c -> getTypeCarte() == TypeTresor) {
+                if(c != nullptr && c -> getTypeCarte() == TypeTresor && c -> getCout() <= quantite) {
                     jeu.retirerCarteDisponible(c,1);
                     break;
                 }
