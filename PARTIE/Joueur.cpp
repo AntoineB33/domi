@@ -563,6 +563,9 @@ int Joueur::commandeEcarter(Jeu& jeu, int quantite) {
                 cout = c -> getCout();
                 break;
             }
+            if(commande == "FIN"){
+                break;
+            }
         }
     }
     return cout;

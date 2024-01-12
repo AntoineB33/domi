@@ -22,7 +22,6 @@ protected:
     //méthodes utiles pour les classes filles
     void ajoutAction(Joueur & joueur, int nb);
     void ajoutAchat(Joueur & joueur, int nb);
-    void piocherCarteDeck(Joueur & joueur, int quantite = 1);
     void ajouterValeurSupp(Joueur & joueur, int nbValeurSupp);
 
 

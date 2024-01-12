@@ -31,9 +31,6 @@ void Royaume::ajoutAction(Joueur & joueur, int nb){
 void Royaume::ajoutAchat(Joueur & joueur, int nb) {
     joueur.addNbAchatPhase(nb);
 }
-void Royaume::piocherCarteDeck(Joueur &joueur, int quantite) {
-    joueur.piocherCarteDeck(quantite);
-}
 void Royaume::ajouterValeurSupp(Joueur &joueur, int nbValeurSupp) {
     joueur.ajouterRetirerValeurSupp(nbValeurSupp);
 }

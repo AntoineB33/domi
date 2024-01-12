@@ -19,7 +19,7 @@ Marche::Marche(std::string nom, int cout,std::string description) : Royaume(nom,
 
 void Marche::faireAction(Joueur &joueur, Jeu &jeu) {
     (void)jeu;
-    piocherCarteDeck(joueur, 1);
+    joueur.piocherCarteDeck();
     ajoutAchat(joueur, 1);
     ajoutAction(joueur, 1);
     ajouterValeurSupp(joueur, 1);
