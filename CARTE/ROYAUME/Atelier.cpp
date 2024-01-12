@@ -13,5 +13,5 @@ Atelier::Atelier(std::string nom, int cout,std::string description) : Royaume(no
 
 
 void Atelier::faireAction(Joueur &joueur, Jeu &jeu) {
-    recevoirCarte(joueur, jeu, 4);
+    commandeRecevoirCartePlateau(joueur, jeu, 4);
 }

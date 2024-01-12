@@ -42,8 +42,8 @@ public:
     bool jouerCarteAction(Carte* c, Jeu& jeu);
     bool ajuster();
     ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
-    void recevoirCarte(Jeu& jeu, int coutMax);
-    void ecarter(Jeu& jeu, int quantite);
+    bool recevoirCartePlateau(Jeu& jeu, Carte* carte,int coutMax);
+    bool ecarter(Jeu& jeu, Carte*, int quantite);
     void defausserInfin(Jeu& jeu);
     void supprimerCarteMain(Carte*,int);
     void addNbAchatPhase(int);
@@ -57,6 +57,12 @@ public:
     bool defausserCarte();
     bool dansRebus(Carte *carte);
     bool mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
+
+
+
+    ///////////////////////////////////////IHM TERMINAL
+    void commandeEcarter(Jeu& jeu);
+    Carte* demandeChercherCarte(std::map<Carte*,int> m, std::string &commande);
 
 private:
     std::map<Carte*,int> m_main;
@@ -85,11 +91,12 @@ private:
     void jouerPhase(Jeu &jeu);
     void commandeHELP();
     void commandeSHOWME();
-    Carte* demandeChercherCarte(std::map<Carte*,int> m, std::string &commande);
     int demandeQuantiteCarte(std::map<Carte*,int> m, Carte* c, std::string &commande);
+
     void commandeAchat(Jeu &jeu);
     void commandeJoueur(Jeu &Jeu);
     void commandeMettreCarteUtilisation();
+    void commandeGODMODE(Jeu& jeu);
     void faireAjustement(Jeu& jeu);
     void commandeDefausserCartes();
 

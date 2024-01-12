@@ -11,6 +11,12 @@
 #include <map>
 
 int main() {
+    Marche* m = Marche::makeMarche();
+    std::cout<<*m<<"\n";
+    Carte* c =Marche::makeMarche();
+    std::cout<<*c<<"\n";
+
+
     {
         Jeu j = Jeu();
         j.lancementJeu();

@@ -10,7 +10,17 @@
 #include "Province.h"
 #include "Malediction.h"
 
+#include "Atelier.h"
+#include "Bucheron.h"
+#include "Cave.h"
+#include "Chapelle.h"
+#include "Forgeron.h"
 #include "Marche.h"
+#include "Mine.h"
+#include "Renovation.h"
+#include "Sorciere.h"
+#include "Village.h"
+
 #include "PhaseAjustement.h"
 
 
@@ -101,21 +111,39 @@ void Jeu::initCartesPlateau() {
     Carte::ajoutSuppCarte(m_cartesPlateau, Or::makeOr(),30);
 
     /////////////// CARTE ROYAUME
-
+    Carte::ajoutSuppCarte(m_cartesPlateau, Atelier::makeAtelier(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Bucheron::makeBucheron(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Cave::makeCave(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Chapelle::makeChapelle(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Forgeron::makeForgeron(),10);
     Carte::ajoutSuppCarte(m_cartesPlateau, Marche::makeMarche(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Mine::makeMine(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Renovation::makeRenovation(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Sorciere::makeSorciere(),10);
+    Carte::ajoutSuppCarte(m_cartesPlateau, Village::makeVillage(),10);
 
 }
 void Jeu::initJoueur(Joueur& joueur){
     joueur.prendreCartePlateau(Cuivre::makeCuivre(), *this, 7, true);
     joueur.prendreCartePlateau(Domaine::makeDomaine(), *this, 3, true);
+
+    joueur.piocherCarteDeck(5);
 }
 void Jeu::tour(int numJoueur){
-    for(int i = numJoueur; i < m_nbJoueur; i++){
-        m_joueurs.at(i).tourJoueur(*this);
+    while(1){
+        for(int i = numJoueur; i < m_nbJoueur; i++){
+            m_joueurs.at(i).tourJoueur(*this);
+            if(m_fini){
+                std::cout<<"SORTI DU JEU\n";
+                break;
+            }
+        }
         if(m_fini){
+            std::cout<<"SORTI DU JEU\n";
             break;
         }
     }
+
 }
 
 void Jeu::changementDePhase(){
@@ -134,6 +162,9 @@ void Jeu::lancementJeu() {
     std::cout<<BLINK_ON<<BOLD_ON<<"\n\n==============================================\n";
     std::cout<<"=============== LANCEMENT JEU  ===============\n";
     std::cout<<"==============================================\n\n"<<RESET<<std::endl;
+    //distribution
+
+
 
     // TODO : faire l'enregistrement la si on a le temp
     afficherCartesPlateau();
