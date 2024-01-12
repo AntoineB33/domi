@@ -26,7 +26,7 @@ protected:
     void ajouterValeurSupp(Joueur & joueur, int nbValeurSupp);
     bool recevoirCartePlateau(Joueur & joueur, Jeu & jeu, Carte* carte, int coutMax);
     void ecarter(Joueur & joueur, Jeu & jeu, Carte* carte, int quantite);
-    void defausserInfin(Joueur & joueur, Jeu & jeu);
+    void defaussPiocher(Joueur & joueur);
 
 
     ///////////////IHM

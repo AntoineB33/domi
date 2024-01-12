@@ -43,8 +43,8 @@ bool Royaume::recevoirCartePlateau(Joueur &joueur, Jeu &jeu, Carte* carte, int c
 void Royaume::ecarter(Joueur &joueur, Jeu &jeu, Carte* carte, int quantite) {
     joueur.ecarter(jeu,carte,quantite);
 }
-void Royaume::defausserInfin(Joueur &joueur, Jeu &jeu) {
-    joueur.defausserInfin(jeu);
+void Royaume::defaussPiocher(Joueur &joueur) {
+    joueur.defaussPiocher();
 }
 
 

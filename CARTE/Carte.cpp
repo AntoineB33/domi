@@ -58,8 +58,8 @@ int Carte::getValeur() const{
 
 
 void Carte::jouerAction(Joueur &joueur, Jeu &jeu) {
-    joueur.nop();
-    jeu.nop();
+    (void)joueur;
+    (void)jeu;
 }
 
 

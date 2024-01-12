@@ -12,8 +12,6 @@ public:
     Jeu(int nbJoueur = 2);
     virtual ~Jeu();
 
-    void nop();
-
     int getNbJoueur();
     Joueur* getJoueur(int i) ;
     const std::string* getNomPhaseActu() const;
@@ -26,6 +24,7 @@ public:
 
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
     bool retirerCarteDisponible(Carte* carte, int quantite = 1);
+    void mettreDansRebus(Carte *carte);
 
 
     void changementDePhase();
@@ -44,6 +43,7 @@ private:
     bool m_fini; //bool pour savoir si la partie est fini, permet d'eviter de dupliquer les calculs
     Phase* m_phaseActuelle;
     std::map<Carte*, int> m_cartesPlateau;//cartes pas encore achetée
+    std::list<Carte*> rebus;
 
     void tour(int numJoueur = 0);//int numJoueur permet de reprendre la partie depuis l'enregistrement
 

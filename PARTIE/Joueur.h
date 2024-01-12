@@ -15,8 +15,6 @@ public:
     Joueur (int numJouer);
     ~Joueur();
 
-    void nop();
-
     friend std::ostream& operator<<(std::ostream& os, const Joueur& joueur);
 
 
@@ -44,7 +42,7 @@ public:
     ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
     bool recevoirCartePlateau(Jeu& jeu, Carte* carte,int coutMax);
     bool ecarter(Jeu& jeu, Carte*, int quantite);
-    void defausserInfin(Jeu& jeu);
+    void defaussPiocher();
     void supprimerCarteMain(Carte*,int);
     void addNbAchatPhase(int);
     void addNbActionPhase(int);
@@ -55,7 +53,7 @@ public:
     void piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
     bool defausserCarte(Carte*carte);
     bool defausserCarte();
-    bool dansRebus(Carte *carte);
+    bool mettreDansRebus(Jeu& jeu, Carte *carte);
     bool mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
 
 
@@ -69,7 +67,6 @@ private:
     std::map<Carte*,int> m_carteEnCoursDutilisation;
     std::map<Carte*,int> m_deck;
     std::list<Carte*> m_defausse;
-    std::list<Carte*> rebus;
 
     const int m_numJoueur;
     int m_nbAchatPossible;

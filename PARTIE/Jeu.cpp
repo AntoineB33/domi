@@ -47,25 +47,28 @@ Jeu::~Jeu() {
         delete it.first;
     }*/
     m_cartesPlateau.clear();
+    rebus.clear();
 
 }
-
-void Jeu::nop(){}
 
 int Jeu::getNbJoueur(){
     return m_nbJoueur;
 }
+
 const std::string* Jeu::getNomPhaseActu() const {
     return m_phaseActuelle -> getNomPhase();
 }
+
 Joueur* Jeu::getJoueur(int i) {
     return &m_joueurs.at(i);
 }
+
 const std::map<Carte*, int> Jeu::getCartesPlateau() const {
     return m_cartesPlateau;
 }
 
 bool Jeu::getFini() const {return m_fini;}
+
 void Jeu::setFini(bool fini){
     m_fini = fini;
 }
@@ -86,6 +89,10 @@ bool Jeu::retirerCarteDisponible(Carte *carte, int quantite) {
     }
 
     return false;
+}
+
+void Jeu::mettreDansRebus(Carte *carte) {
+    rebus.push_back(carte);
 }
 
 

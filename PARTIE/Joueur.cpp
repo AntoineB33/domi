@@ -31,11 +31,8 @@ Joueur::~Joueur() {
     m_defausse.clear();
     m_main.clear();
     m_carteEnCoursDutilisation.clear();
-    rebus.clear();
 
 }
-
-void Joueur::nop(){}
 
 std::ostream& operator<<(std::ostream& os, const Joueur& joueur) {
     os << "====================> Joueur " << joueur.m_numJoueur << ":\n";
@@ -141,6 +138,7 @@ bool Joueur::ajuster(){
     }
     return true;
 }
+
 ///////////////////////////////////////ACTION DU JOUEUR VIA UNE CARTE ACTION
 bool Joueur::recevoirCartePlateau(Jeu& jeu, Carte* carte, int quantite) {
     if(jeu.retirerCarteDisponible(carte,quantite)) {
@@ -148,38 +146,28 @@ bool Joueur::recevoirCartePlateau(Jeu& jeu, Carte* carte, int quantite) {
     }
     return false;
 }
+
 bool Joueur::ecarter(Jeu& jeu, Carte* carte, int quantite){
-    jeu.nop();
     for(int i = 0; i < quantite; i++ ){
-        if(!dansRebus(carte)){
+        if(!mettreDansRebus(jeu, carte)){
             return false;
         }
     }
     return true;
 }
-void Joueur::defausserInfin(Jeu& jeu){
-    (void)jeu;
-    std::string commande = " ";
-    while(commande != "FIN"){
-        std::cout<<std::endl;
-        std::cout<<DIM_TEXT<<"possibilité de défausser : "<<RESET;
-        Carte* c = demandeChercherCarte(m_main, commande);
-        if(c == nullptr) {
-            defausserCarte(c);
-            piocherCarteDeck(1);
-            break;
-        }
-    }
-}
+
 void Joueur::supprimerCarteMain(Carte* c, int quantite){
     Carte::ajoutSuppCarte(m_main, c,-quantite);
 }
+
 void Joueur::addNbAchatPhase(int nbAchatPossible) {
     m_nbAchatPossible += nbAchatPossible;
 }
+
 void Joueur::addNbActionPhase(int nbActionPossible) {
     m_nbActionPossible += nbActionPossible;
 }
+
 void Joueur::ajouterRetirerValeurSupp(int nbValeurSup) {
     std::cout<<"ajout valeur supp : "<<nbValeurSup<<std::endl;
     m_valeurSupp += nbValeurSup;
@@ -334,14 +322,14 @@ void Joueur::piocherCarteDeck(int quantite){
 
 }
 
-bool Joueur::dansRebus(Carte *carte) {
-
+bool Joueur::mettreDansRebus(Jeu& jeu, Carte *carte) {
     if(Carte::ajoutSuppCarte(m_main, carte, -1)){
-        Carte::ajoutSuppCarte(rebus, carte, 1);
+        jeu.mettreDansRebus(carte);
         return true;
     }
     return false;
 }
+
 bool Joueur::defausserCarte(Carte *carte) {
 
     if(Carte::ajoutSuppCarte(m_main, carte, -1)){
@@ -350,6 +338,7 @@ bool Joueur::defausserCarte(Carte *carte) {
     }
     return false;
 }
+
 bool Joueur::defausserCarte() {//defausser tout
     for(auto entry : m_main){
         Carte::ajoutSuppCarte(m_defausse, entry.first, entry.second);
@@ -557,9 +546,8 @@ int Joueur::demandeQuantiteCarte(std::map<Carte*,int> m,Carte* c ,std::string &c
     return 0;
 }
 
-
 void Joueur::commandeEcarter(Jeu& jeu){
-    std::cout<<DIM_TEXT<<"Seul les cartes dans la mains sont defaussables\n"<<RESET;
+    std::cout<<DIM_TEXT<<"Seul les cartes dans la main sont défaussables\n"<<RESET;
     std::string commande = "";
     Carte* c = nullptr;
     commandeSHOWME();
@@ -569,6 +557,20 @@ void Joueur::commandeEcarter(Jeu& jeu){
             ecarter(jeu,c,1);
             std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" écarté"<<RESET<<std::endl;
 
+        }
+    }
+}
+
+void Joueur::defaussPiocher(){
+    std::string commande = " ";
+    while(commande != "FIN"){
+        std::cout<<std::endl;
+        std::cout<<DIM_TEXT<<"possibilité de défausser : "<<RESET;
+        Carte* c = demandeChercherCarte(m_main, commande);
+        if(c != nullptr) {
+            defausserCarte(c);
+            piocherCarteDeck(1);
+            break;
         }
     }
 }

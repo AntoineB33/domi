@@ -18,6 +18,9 @@ int main() {
 
 
     {
+        int nbJoueur;
+        std::cout<<"Combien de joueur ?\n";
+        std::cin>>nbJoueur;
         Jeu j = Jeu();
         j.lancementJeu();
 
