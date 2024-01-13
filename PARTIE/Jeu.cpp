@@ -71,6 +71,35 @@ const std::map<Carte*, int> Jeu::getCartesPlateau() const {
     return m_cartesPlateau;
 }
 
+bool Jeu::partieEstFinie() {
+    if(m_cartesPlateau.find(Province::makeProvince()) -> second == 0){
+        return true;
+    }
+    int nbPilesVides = 0;
+    for(std::pair<Carte*, int> p : m_cartesPlateau){
+        if(p.second == 0){
+            nbPilesVides++;
+            if(nbPilesVides == 3){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int Jeu::getGagnant() {
+    int pointMax = 0;
+    int gagnant = 0;
+    for(int joueurNum = 0; joueurNum < m_nbJoueur; joueurNum++){
+        int point = m_joueurs.at(joueurNum).getVictoireDansDeck();
+        if(point > pointMax){
+            gagnant = joueurNum;
+            pointMax = point;
+        }
+    }
+    return gagnant;
+}
+
 bool Jeu::getFini() const {return m_fini;}
 
 void Jeu::setFini(bool fini){
@@ -195,4 +224,14 @@ void Jeu::lancementJeu() {
     std::cout<<"=============== SORTIR DU JEU  ===============\n";
     std::cout<<"==============================================\n\n"<<RESET<<std::endl;
 
+}
+
+bool Jeu::commandePartieEstFinie() {
+    if(partieEstFinie()) {
+        int m_numJoueur = getGagnant();
+        std::cout<<BOLD_ON<<INVERSE_ON<<INVERSE_ON;
+        std::cout<<"JOUEUR "<<m_numJoueur<<" A GAGNER"<<RESET<<"\n";
+        setFini(true);
+    }
+    return false;
 }

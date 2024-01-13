@@ -132,13 +132,27 @@ bool Joueur::ajuster(){
     if(m_deck.size() < q){
         piocherCarteDeck(m_deck.size());
         q -= m_deck.size();
-        mettreCarteDefausseDansDeck();
+        if(m_deck.size() < 5) {
+            mettreCarteDefausseDansDeck();
+        }
         piocherCarteDeck(q);
     }
     else{
         piocherCarteDeck(q);
     }
     return true;
+}
+
+int Joueur::getVictoireDansDeck(){
+    defausserCarte();
+    mettreCarteDefausseDansDeck();
+    int nb = 0;
+    for(auto entry : m_deck){
+        if(entry.first -> getTypeCarte() == TypeVictoire){
+            nb += entry.first -> getPointDeVictoire();
+        }
+    }
+    return nb;
 }
 
 ///////////////////////////////////////ACTION DU JOUEUR VIA UNE CARTE ACTION
@@ -184,9 +198,6 @@ void Joueur::ajouterRetirerValeurSupp(int nbValeurSup) {
 
 ///////////////////////////////////////FONCTION PRIVATE
 
-bool Joueur::aGagner() {
-    return nbPointVictoire() == 10;
-}
 int Joueur::nbPointVictoire() {
     int nb = 0;
     for(auto entry : m_main){
@@ -363,7 +374,7 @@ bool Joueur::mettreEncoursDutilisationCartes(Carte* carte, int quantite) {
 
 
 bool Joueur::mettreCarteDefausseDansDeck(){
-    if(m_deck.size() == 0){
+    if(m_deck.size() < 5){
         for(Carte* c : m_defausse){
             Carte::ajoutSuppCarte(m_deck,c,1);
         }
@@ -392,16 +403,8 @@ void Joueur::tourJoueur(Jeu& jeu){
         jouerPhase(jeu);
         //
         jeu.changementDePhase();
-
-        //verifier si joueur a ganger
-        if(aGagner()){
-            std::cout<<BOLD_ON<<INVERSE_ON<<INVERSE_ON;
-            std::cout<<"JOUEUR "<<m_numJoueur<<" A GAGNER"<<RESET<<"\n";
-            jeu.setFini(true);
-            break;
-        }
     }
-    if(!jeu.getFini()){
+    if(!jeu.commandePartieEstFinie()){
         std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
         jeu.initJoueurPhase(*this);
         commandeSHOWME();

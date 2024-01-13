@@ -19,6 +19,7 @@ public:
 
     std::list<Carte*> getToutesLesCartes() const;
 
+    bool commandePartieEstFinie();
     bool getFini() const;
     void setFini(bool);
 
@@ -55,6 +56,8 @@ private:
     void initCartesPlateau();
     void initJoueur(Joueur&);
 
+    bool partieEstFinie();
+    int getGagnant();
 
 
 

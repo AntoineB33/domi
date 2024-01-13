@@ -30,6 +30,7 @@ public:
     //GESTIONS DES CARTES
 
     void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false, bool depuisLaReserve = true); // le booleen permet la destribution en debut de parti
+    int getVictoireDansDeck();
 
 
     ///////////////////////////////////////TOUR D UN JOUEUR
@@ -74,7 +75,6 @@ private:
     int m_nbActionPossible;
     int m_valeurSupp; //donner par les cartes comme : marché
 
-    bool aGagner();
     int nbPointVictoire();
 
     int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
