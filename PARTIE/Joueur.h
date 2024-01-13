@@ -44,7 +44,6 @@ public:
     bool recevoirCartePlateau(Jeu& jeu, Carte* carte,int coutMax);
     bool ecarter(Jeu& jeu, Carte*, int quantite);
     void defaussPiocher();
-    void supprimerCarteMain(Carte*,int);
     void addNbAchatPhase(int);
     void addNbActionPhase(int);
     void ajouterRetirerValeurSupp(int);

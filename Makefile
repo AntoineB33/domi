@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -Werror -fsanitize=address
+CXXFLAGS=-Wall -Wextra -Werror
 
 REP_CARTE=./CARTE
 REP_TRESOR=$(REP_CARTE)/TRESOR
@@ -20,7 +20,7 @@ OBJECTS=$(SOURCES:.cpp=.o)
 	$(CXX) $(CXXFLAGS) $(LISTE_REP) $< -c -o $@
 
 lancement: $(OBJECTS) lancement.o
-	$(CXX) $^ -o $@ -lasan
+	$(CXX) $^ -o $@
 
 .PHONY: run clean
 
