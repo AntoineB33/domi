@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-Phase* Phase::phaseCourante = PhaseAction::getInstancePhaseAction();
+Phase* Phase::phaseCourante = nullptr;
 
 Phase::Phase(int nbINITachat, int nbINITaction, std::string  nomPhase): m_nbINITachat(nbINITachat), m_nbINITaction(nbINITaction), m_nomPhase(nomPhase){
 }
@@ -13,14 +13,15 @@ Phase::Phase(int nbINITachat, int nbINITaction, std::string  nomPhase): m_nbINIT
 Phase::~Phase() {
 }
 
+void Phase::setPhaseCourante(Phase* p){
+    phaseCourante = p;
+}
+
 Phase* Phase::getPhaseCourante(){
     return Phase::phaseCourante;
 }
 
 void Phase::initJoueur(Joueur &j){
-    std::cout << "Phase::initJoueur" << std::endl;
-    std::cout << "m_nbINITachat: " << m_nbINITachat << std::endl;
-    std::cout << "m_nbINITaction: " << m_nbINITaction << std::endl;
     j.initJoueur(m_nbINITachat,m_nbINITaction);
 };
 

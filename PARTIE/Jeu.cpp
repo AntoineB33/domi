@@ -198,6 +198,11 @@ void Jeu::tour(int numJoueur){
 }
 
 void Jeu::changementDePhase(){
+    // std::cout<<"changement de phase\n";
+    // std::cout<<m_phaseActuelle->getNomPhase()<<"\n";
+    // std::cout<<"c\n";
+    // std::cout<<*(m_phaseActuelle->getNomPhase())<<"\n";
+    // std::cout<<m_phaseActuelle;
     m_phaseActuelle -> phaseSuivante();
     m_phaseActuelle = Phase::getPhaseCourante();
 }
@@ -221,6 +226,7 @@ void Jeu::lancementJeu() {
     afficherCartesPlateau();
     //si nouvelle partie, on remet s'assure d etre dans la bonne phase
     while(m_phaseActuelle != PhaseAction::getInstancePhaseAction()){
+        std::cout<<"b\n";
         changementDePhase();
         std::cout<<"a";
     }

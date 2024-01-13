@@ -14,6 +14,7 @@ public:
     static Phase* getPhaseCourante();
     void initJoueur(Joueur &joueur);
     const std::string* getNomPhase() const;
+    static void setPhaseCourante(Phase* phaseCourante);
 
 protected:
     static Phase* phaseCourante;
