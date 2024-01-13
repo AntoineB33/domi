@@ -396,7 +396,7 @@ void Joueur::tourJoueur(Jeu& jeu){
     std::cout<<"=============== TOUR JOUEUR "<<m_numJoueur<<" ===============\n";
     std::cout<<"=============================================\n\n"<<RESET<<std::endl;
     while(!jeu.estAPhaseAjustement() && !jeu.getFini()){
-        // std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
+        std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
         jeu.initJoueurPhase(*this);
         commandeSHOWME();
         // ACTION DU JOUEUR
@@ -405,7 +405,7 @@ void Joueur::tourJoueur(Jeu& jeu){
         jeu.changementDePhase();
     }
     if(!jeu.commandePartieEstFinie()){
-        // std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
+        std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
         jeu.initJoueurPhase(*this);
         commandeSHOWME();
         // AJUSTEMET DU JOUEUR
