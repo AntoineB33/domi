@@ -300,10 +300,12 @@ void Joueur::prendreArgent(int valeur) {
 
 void Joueur::piocherCarteDeck(int quantite){
     //calcul nombre de carte dans le deck
+    std::cout<<"pioche carte : "<<quantite<<std::endl;
     int nbCartes = 0;
     for (const auto& paire : m_deck) {
         nbCartes += paire.second;
     }
+    std::cout<<"pioche carte2 : "<<quantite<<std::endl;
     //pioche carte
     while(quantite > 0 && nbCartes > 0){
         //aleatoire
@@ -318,7 +320,9 @@ void Joueur::piocherCarteDeck(int quantite){
             if (choixAleatoire <= 0) { // carte trouvee donc on rajoute à la main
                 std::cout<<DIM_TEXT<<GREEN<<"carte : "<<entry.first -> getNom()<<" piochée"<<RESET<<std::endl;
                 Carte::ajoutSuppCarte(m_deck,entry.first, -1);
+                std::cout<<"pioche carte3 : "<<quantite<<std::endl;
                 Carte::ajoutSuppCarte(m_main,entry.first, 1);
+                std::cout<<"pioche carte4 : "<<quantite<<std::endl;
                 quantite -= 1;
                 void supprimerCarteMain(Carte* c, int quantite = 1);
                 void addNbAchatPhase(int nbAchatPhase);

@@ -102,6 +102,7 @@ bool Carte::ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite){
             }
             else if (q == 0) {
                 m.erase(it);
+                it = m.end();
             }
             else{
                 return false;//trop de carte à supprimer
