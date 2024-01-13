@@ -20,7 +20,7 @@ OBJECTS=$(SOURCES:.cpp=.o)
 	$(CXX) $(CXXFLAGS) $(LISTE_REP) $< -c -o $@
 
 lancement: $(OBJECTS) lancement.o
-	$(CXX) $^ -o $@
+	$(CXX) $^ -o $@ -lasan
 
 .PHONY: run clean
 

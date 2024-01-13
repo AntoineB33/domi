@@ -26,6 +26,7 @@
 
 //pour IHM
 #include "CouleurTerminal.h"
+#include "PhaseAction.h"
 
 Jeu::Jeu(int nbJoueur) : m_nbJoueur(nbJoueur), m_fini(false){
     for(int i = 0; i < nbJoueur; i++){
@@ -218,6 +219,12 @@ void Jeu::lancementJeu() {
 
     // TODO : faire l'enregistrement la si on a le temp
     afficherCartesPlateau();
+    //si nouvelle partie, on remet s'assure d etre dans la bonne phase
+    while(m_phaseActuelle != PhaseAction::getInstancePhaseAction()){
+        changementDePhase();
+        std::cout<<"a";
+    }
+
     tour(0);//pour l'instant pas d'enregistrement donc le jeu commence au joueur 0
 
     //TODO : faire en registrement pour partie non gangé
