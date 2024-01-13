@@ -404,13 +404,12 @@ void Joueur::tourJoueur(Jeu& jeu){
         //
         jeu.changementDePhase();
     }
+    std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
+    jeu.initJoueurPhase(*this);
+    commandeSHOWME();
+    // AJUSTEMET DU JOUEUR
+    faireAjustement(jeu);
     if(!jeu.commandePartieEstFinie()){
-        std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
-        jeu.initJoueurPhase(*this);
-        commandeSHOWME();
-        // AJUSTEMET DU JOUEUR
-        faireAjustement(jeu);
-        //
         jeu.changementDePhase();
     }
 
