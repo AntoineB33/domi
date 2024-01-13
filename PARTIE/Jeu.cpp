@@ -72,16 +72,18 @@ const std::map<Carte*, int> Jeu::getCartesPlateau() const {
 }
 
 bool Jeu::partieEstFinie() {
-    if(m_cartesPlateau.find(Province::makeProvince()) -> second == 0){
+    auto it = m_cartesPlateau.find(Province::makeProvince());
+    if(it == m_cartesPlateau.end() || it -> second == 0){
         return true;
     }
     int nbPilesVides = 0;
-    for(std::pair<Carte*, int> p : m_cartesPlateau){
-        if(p.second == 0){
+    for(Carte* c : toutesLesCartes){
+        auto it = m_cartesPlateau.find(c);
+        if(it == m_cartesPlateau.end() || it -> second == 0){
             nbPilesVides++;
-            if(nbPilesVides == 3){
-                return true;
-            }
+        }
+        if(nbPilesVides == 3){
+            return true;
         }
     }
     return false;
