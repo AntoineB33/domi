@@ -15,6 +15,8 @@ public:
     Joueur (int numJouer);
     ~Joueur();
 
+    bool m_godMode = false;
+
     friend std::ostream& operator<<(std::ostream& os, const Joueur& joueur);
 
 
@@ -26,6 +28,7 @@ public:
     const std::map<Carte*,int>& getCarteEnCoursDutilisation() const;
     const std::map<Carte*, int>& getDeck() const;
     const std::list<Carte*>& getDefausse() const;
+    bool isInGodMode();
 
     //GESTIONS DES CARTES
 

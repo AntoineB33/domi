@@ -22,7 +22,7 @@
 //POUR LES COULEURS DANS LE TERMINAL
 #include "CouleurTerminal.h"
 
-Joueur::Joueur(const int numJoueur) :m_numJoueur(numJoueur), m_nbAchatPossible(0), m_nbActionPossible(0) , m_valeurSupp(0){
+Joueur::Joueur(const int numJoueur) :m_numJoueur(numJoueur), m_nbAchatPossible(1), m_nbActionPossible(1) , m_valeurSupp(0){
     couleurJ =  "\033["+std::to_string(m_numJoueur+33)+"m";
 }
 
@@ -83,6 +83,10 @@ const std::map<Carte*,int>& Joueur::getDeck() const {
 
 const std::list<Carte*>& Joueur::getDefausse() const {
     return m_defausse;
+}
+
+bool Joueur::isInGodMode() {
+    return m_godMode;
 }
 
 //GESTIONS DES CARTES
@@ -179,7 +183,6 @@ void Joueur::addNbActionPhase(int nbActionPossible) {
 }
 
 void Joueur::ajouterRetirerValeurSupp(int nbValeurSup) {
-    std::cout<<"ajout valeur supp : "<<nbValeurSup<<std::endl;
     m_valeurSupp += nbValeurSup;
 }
 
@@ -228,19 +231,16 @@ bool Joueur::peutAcheterCarte(Carte* carte, Jeu jeu){
     // il faut que le carte soit encore disponible a l'achat
     bool b = jeu.carteDisponible(carte);
     if(!b){
-        //std::cout<<"PAS DISPO"<<std::endl;
         return false;
     }
     // que le joueur est l'argent necessaire
     b = b && nbValeurDisponible() >= carte -> getCout();
     if(!b){
-        //std::cout<<"PAS ASSEZ ARGENT"<<std::endl;
         return false;
     }
     // que le joueur est au moins un point d'achat
     b =b && m_nbAchatPossible > 0;
     if(!b){
-        //std::cout<<"PAS D ACHAT POSSIBLE"<<std::endl;
         return false;
     }
     return   b;
@@ -673,9 +673,10 @@ void Joueur::commandeMettreCarteUtilisation() {
 void Joueur::commandeGODMODE(Jeu& jeu){
     for(std::pair<Carte*, int> p : jeu.getCartesPlateau()){
         Carte::ajoutSuppCarte(m_main, p.first, 10);
-        m_nbAchatPossible += 10;
-        m_nbActionPossible += 10;
     }
+    m_nbAchatPossible = 100;
+    m_nbActionPossible = 100;
+    m_godMode = true;
     std::cout<<BOLD_ON<<DIM_TEXT<<"=== GOD MODE ===\n"<<RESET;
 }
 void Joueur::faireAjustement(Jeu& jeu) {

@@ -22,7 +22,11 @@ Phase* Phase::getPhaseCourante(){
 }
 
 void Phase::initJoueur(Joueur &j){
-    j.initJoueur(m_nbINITachat,m_nbINITaction);
+    if(j.isInGodMode()) {
+        j.initJoueur(100,100);
+    } else {
+        j.initJoueur(m_nbINITachat,m_nbINITaction);
+    }
 };
 
 const std::string* Phase::getNomPhase() const {

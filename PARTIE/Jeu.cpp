@@ -109,12 +109,6 @@ void Jeu::setFini(bool fini){
     m_fini = fini;
 }
 
-void Jeu::afficherCartesPlateau() {
-    for (const auto& entry : m_cartesPlateau) {
-        std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
-    }
-}
-
 bool Jeu::carteDisponible(Carte *carte) {
     return m_cartesPlateau.find(carte) -> second > 0;
 }
@@ -180,6 +174,19 @@ void Jeu::initJoueur(Joueur& joueur){
 
     joueur.piocherCarteDeck(5);
 }
+
+void Jeu::changementDePhase(){
+    m_phaseActuelle -> phaseSuivante();
+    m_phaseActuelle = Phase::getPhaseCourante();
+}
+bool Jeu::estAPhaseAjustement(){
+    return m_phaseActuelle == PhaseAjustement::getInstancePhaseAjustement();
+}
+void Jeu::initJoueurPhase(Joueur& joueur) {
+    m_phaseActuelle -> initJoueur(joueur);
+}
+
+/////////////////////////////////////// TOUR + IHM
 void Jeu::tour(int numJoueur){
     while(1){
         for(int i = numJoueur; i < m_nbJoueur; i++){
@@ -197,23 +204,6 @@ void Jeu::tour(int numJoueur){
 
 }
 
-void Jeu::changementDePhase(){
-    // std::cout<<"changement de phase\n";
-    // std::cout<<m_phaseActuelle->getNomPhase()<<"\n";
-    // std::cout<<"c\n";
-    // std::cout<<*(m_phaseActuelle->getNomPhase())<<"\n";
-    // std::cout<<m_phaseActuelle;
-    m_phaseActuelle -> phaseSuivante();
-    m_phaseActuelle = Phase::getPhaseCourante();
-}
-bool Jeu::estAPhaseAjustement(){
-    return m_phaseActuelle == PhaseAjustement::getInstancePhaseAjustement();
-}
-void Jeu::initJoueurPhase(Joueur& joueur) {
-    m_phaseActuelle -> initJoueur(joueur);
-}
-
-/////////////////////////////////////// TOUR + IHM
 void Jeu::lancementJeu() {
     std::cout<<BLINK_ON<<BOLD_ON<<"\n\n==============================================\n";
     std::cout<<"=============== LANCEMENT JEU  ===============\n";
@@ -249,4 +239,10 @@ bool Jeu::commandePartieEstFinie() {
         setFini(true);
     }
     return false;
+}
+
+void Jeu::afficherCartesPlateau() {
+    for (const auto& entry : m_cartesPlateau) {
+        std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
+    }
 }
