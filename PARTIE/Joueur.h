@@ -62,6 +62,7 @@ public:
     ///////////////////////////////////////IHM TERMINAL
     int commandeEcarter(Jeu& jeu, int quantite);
     Carte* demandeChercherCarte(std::map<Carte*,int> m, std::string &commande);
+    bool commandePiocherCarteDeck(int quantite = 1);
 
 private:
     std::map<Carte*,int> m_main;

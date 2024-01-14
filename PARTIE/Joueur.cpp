@@ -292,48 +292,6 @@ void Joueur::prendreArgent(int valeur) {
     }
 }
 
-// void Joueur::piocherCarteDeck(int quantite){
-//     //calcul nombre de carte dans le deck
-//     std::cout<<"pioche carte : "<<quantite<<std::endl;
-//     int nbCartes = 0;
-//     for (const auto& paire : m_deck) {
-//         nbCartes += paire.second;
-//     }
-//     std::cout<<"pioche carte2 : "<<quantite<<std::endl;
-//     //pioche carte
-//     while(quantite > 0 && nbCartes > 0){
-//         //aleatoire
-//         std::random_device rd;
-//         std::mt19937 gen(rd());
-//         std::uniform_int_distribution<> distrib(1, nbCartes);
-//         int choixAleatoire = distrib(gen) ;
-
-//         //recherche de la carte
-//         std::map<Carte*, int> m_deck2 = m_deck;
-//         for (auto& entry : m_deck2) {
-//             choixAleatoire -= entry.second;
-//             if (choixAleatoire <= 0) { // carte trouvee donc on rajoute à la main
-//                 std::cout<<DIM_TEXT<<GREEN<<"carte : "<<entry.first -> getNom()<<" piochée"<<RESET<<std::endl;
-//                 Carte::ajoutSuppCarte(m_deck,entry.first, -1);
-//                 std::cout<<"pioche carte3 : "<<quantite<<std::endl;
-//                 Carte::ajoutSuppCarte(m_main,entry.first, 1);
-//                 std::cout<<"pioche carte4 : "<<quantite<<std::endl;
-//                 quantite -= 1;
-//                 void supprimerCarteMain(Carte* c, int quantite = 1);
-//                 void addNbAchatPhase(int nbAchatPhase);
-//                 void addNbActionPhase(int nbActionPhase);
-
-//                 nbCartes -= 1;
-//                 break;
-//             }
-//         }
-//     }
-//     if(quantite !=0){
-//         //PB
-//     }
-
-// }
-
 std::list<Carte*> Joueur::piocherCarteDeck(int quantite){
     std::list<Carte*> cartes;
     //calcul nombre de carte dans le deck
@@ -361,9 +319,6 @@ std::list<Carte*> Joueur::piocherCarteDeck(int quantite){
                 break;
             }
         }
-    }
-    if(quantite !=0){
-        //PB
     }
     return cartes;
 }
@@ -605,6 +560,9 @@ int Joueur::commandeEcarter(Jeu& jeu, int quantite) {
                 break;
             }
         }
+        if(commande == "FIN"){
+            break;
+        }
     }
     return cout;
 }
@@ -623,12 +581,9 @@ void Joueur::defaussPiocher(){
             break;
         }
         defausserCarte(c);
-        std::list<Carte*> li = piocherCarteDeck(1);
-        if(li.empty()){
-            std::cout<<DIM_TEXT<<RED<<"PAS ASSEZ DE CARTE DANS LE DECK : fin de pioche\n"<<RESET;
-            break;
+        if(!commandePiocherCarteDeck(1)) {
+            break; // si le deck est vide
         }
-        std::cout<<DIM_TEXT<<GREEN<<"carte : "<<li.front() -> getNom()<<" piochée"<<RESET<<std::endl;
     }
 }
 
@@ -773,4 +728,16 @@ void Joueur::commandeDefausserCartes() {
             }
         }
     }
+}
+
+bool Joueur::commandePiocherCarteDeck(int quantite) {
+    std::list<Carte*> li = piocherCarteDeck(quantite);
+    if(li.empty()){
+        std::cout<<DIM_TEXT<<RED<<"PAS ASSEZ DE CARTE DANS LE DECK : fin de pioche\n"<<RESET;
+        return false;
+    }
+    for(Carte* c : li){
+        std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" piochée"<<RESET<<std::endl;
+    }
+    return true;
 }
