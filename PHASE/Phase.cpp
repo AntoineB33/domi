@@ -21,13 +21,13 @@ Phase* Phase::getPhaseCourante(){
     return Phase::phaseCourante;
 }
 
-void Phase::initJoueur(Joueur &j){
-    if(j.isInGodMode()) {
-        j.initJoueur(100,100);
-    } else {
-        j.initJoueur(m_nbINITachat,m_nbINITaction);
-    }
-};
+// void Phase::initJoueur(Joueur &j){
+//     if(j.isInGodMode()) {
+//         j.initJoueur(100,100);
+//     } else {
+//         j.initJoueur(m_nbINITachat,m_nbINITaction);
+//     }
+// };
 
 const std::string* Phase::getNomPhase() const {
     return &m_nomPhase;

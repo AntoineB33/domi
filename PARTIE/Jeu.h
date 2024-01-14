@@ -30,10 +30,13 @@ public:
     void mettreDansRebus(Carte *carte);
     void ajoutCartesDefausses(Carte& carte, int quantite = 1);
 
+    bool estAPhaseAction();
+    bool estAPhaseAchat();
+
 
     void changementDePhase();
     bool estAPhaseAjustement();
-    void initJoueurPhase(Joueur& joueur);
+    // void initJoueurPhase(Joueur& joueur);
     //futur private
 
     //LANCEMENT

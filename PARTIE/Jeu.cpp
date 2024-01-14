@@ -22,11 +22,12 @@
 #include "Village.h"
 
 #include "PhaseAjustement.h"
+#include "PhaseAction.h"
+#include "PhaseAchat.h"
 
 
 //pour IHM
 #include "CouleurTerminal.h"
-#include "PhaseAction.h"
 
 Jeu::Jeu(int nbJoueur) : m_nbJoueur(nbJoueur), m_fini(false){
     for(int i = 0; i < nbJoueur; i++){
@@ -123,7 +124,7 @@ bool Jeu::retirerCarteDisponible(Carte *carte, int quantite) {
 
 void Jeu::ajoutCartesDefausses(Carte &carte, int quantite) {
     for(Joueur& j : m_joueurs){
-        j.prendreCartePlateau(&carte, *this, quantite, false);
+        j.prendreCartePlateau(&carte, *this, quantite, true);
     }
 }
 
@@ -179,12 +180,22 @@ void Jeu::changementDePhase(){
     m_phaseActuelle -> phaseSuivante();
     m_phaseActuelle = Phase::getPhaseCourante();
 }
+
+bool Jeu::estAPhaseAction(){
+    return m_phaseActuelle == PhaseAction::getInstancePhaseAction();
+}
+
+bool Jeu::estAPhaseAchat(){
+    return m_phaseActuelle == PhaseAchat::getInstancePhaseAchat();
+}
+
 bool Jeu::estAPhaseAjustement(){
     return m_phaseActuelle == PhaseAjustement::getInstancePhaseAjustement();
 }
-void Jeu::initJoueurPhase(Joueur& joueur) {
-    m_phaseActuelle -> initJoueur(joueur);
-}
+
+// void Jeu::initJoueurPhase(Joueur& joueur) {
+//     m_phaseActuelle -> initJoueur(joueur);
+// }
 
 /////////////////////////////////////// TOUR + IHM
 void Jeu::tour(int numJoueur){
@@ -216,9 +227,7 @@ void Jeu::lancementJeu() {
     afficherCartesPlateau();
     //si nouvelle partie, on remet s'assure d etre dans la bonne phase
     while(m_phaseActuelle != PhaseAction::getInstancePhaseAction()){
-        std::cout<<"b\n";
         changementDePhase();
-        std::cout<<"a";
     }
 
     tour(0);//pour l'instant pas d'enregistrement donc le jeu commence au joueur 0

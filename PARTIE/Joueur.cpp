@@ -61,13 +61,6 @@ std::ostream& operator<<(std::ostream& os, const Joueur& joueur) {
     return os;
 }
 
-
-void Joueur::initJoueur(int nbAchatNEW, int nbActionNEW){
-    m_nbAchatPossible= nbAchatNEW;
-    m_nbActionPossible = nbActionNEW;
-    m_valeurSupp = 0;
-}
-
 //GETTERS
 const std::map<Carte*, int>& Joueur::getMain() const {
     return m_main;
@@ -83,10 +76,6 @@ const std::map<Carte*,int>& Joueur::getDeck() const {
 
 const std::list<Carte*>& Joueur::getDefausse() const {
     return m_defausse;
-}
-
-bool Joueur::isInGodMode() {
-    return m_godMode;
 }
 
 //GESTIONS DES CARTES
@@ -264,6 +253,7 @@ void Joueur::prendreArgent(int valeur) {
     std::vector<std::pair<Carte*, int>> cartes;
     for (auto entry : m_carteEnCoursDutilisation) {
         if(entry.first -> getTypeCarte() == TypeTresor){
+            valeur -= entry.second * (entry.first -> getValeur());
             cartes.push_back(std::make_pair(entry.first, entry.second));
         }
     }
@@ -383,9 +373,17 @@ void Joueur::tourJoueur(Jeu& jeu){
     std::cout<<BLINK_ON<<BOLD_ON<<couleurJ<<"\n\n=============================================\n";
     std::cout<<"=============== TOUR JOUEUR "<<m_numJoueur<<" ===============\n";
     std::cout<<"=============================================\n\n"<<RESET<<std::endl;
+    if(m_godMode) {
+        m_nbAchatPossible = 100;
+        m_nbActionPossible = 100;
+    } else {
+        m_nbAchatPossible = 1;
+        m_nbActionPossible = 1;
+    }
+    m_valeurSupp = 0;
     while(!jeu.estAPhaseAjustement() && !jeu.getFini()){
         std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
-        jeu.initJoueurPhase(*this);
+        // jeu.initJoueurPhase(*this);
         commandeSHOWME();
         // ACTION DU JOUEUR
         jouerPhase(jeu);
@@ -393,7 +391,7 @@ void Joueur::tourJoueur(Jeu& jeu){
         jeu.changementDePhase();
     }
     std::cout<<BOLD_ON<<INVERSE_ON<<couleurJ<<*jeu.getNomPhaseActu()<<RESET<<"\n";
-    jeu.initJoueurPhase(*this);
+    // jeu.initJoueurPhase(*this);
     commandeSHOWME();
     // AJUSTEMET DU JOUEUR
     faireAjustement(jeu);
@@ -421,11 +419,11 @@ void Joueur::jouerPhase(Jeu& jeu){
             std::cout<<DIM_TEXT<<GREEN<<"commande "<<commande<<" reconnue \n"<<RESET;
             commandeSHOWME();
         }
-        else if(commande =="ACHAT") {
+        else if(commande =="ACHAT" && jeu.estAPhaseAchat()) {
             std::cout<<DIM_TEXT<<GREEN<<"commande "<<commande<<" reconnue \n"<<RESET;
             commandeAchat(jeu);
         }
-        else if (commande == "ACTION"){
+        else if (commande == "ACTION" && jeu.estAPhaseAction()){
             std::cout<<DIM_TEXT<<GREEN<<"commande "<<commande<<" reconnue \n"<<RESET;
             commandeJoueur(jeu);
         }

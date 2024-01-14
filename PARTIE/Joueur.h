@@ -20,15 +20,12 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Joueur& joueur);
 
 
-
-    void initJoueur(int nbAchatNEW, int nbActionNEW);
-
     //GETTERS
     const std::map<Carte*,int>& getMain() const;
     const std::map<Carte*,int>& getCarteEnCoursDutilisation() const;
     const std::map<Carte*, int>& getDeck() const;
     const std::list<Carte*>& getDefausse() const;
-    bool isInGodMode();
+    // bool isInGodMode();
 
     //GESTIONS DES CARTES
 
