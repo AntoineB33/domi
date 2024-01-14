@@ -120,7 +120,7 @@ Carte* Carte::chercherCarte(std::string mot, std::map<Carte*, int> m){
     return nullptr;
 }
 
-void Carte::afficher(std::map<Carte *, int> m) {
+void Carte::afficher(std::map<Carte *, int> &m) {
     for (const auto& entry : m) {
         std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
     }

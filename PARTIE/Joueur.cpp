@@ -623,7 +623,6 @@ void Joueur::augmenterTresor(Jeu& jeu, int quantite){
 }
 
 void Joueur::commandeAchat(Jeu &jeu){
-    std::cout<<"CARTE SUR LE PLATEAU : \n";
     jeu.afficherCartesPlateau();
     std::cout<<std::endl;
     std::string commande = "";

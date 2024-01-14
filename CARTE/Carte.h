@@ -44,7 +44,7 @@ public:
     static bool ajoutSuppCarte(std::list<Carte*>& l, Carte* c, int  quantite = 1);//ne supprime qque les derniere carte
     static bool ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite = 1);
     static Carte* chercherCarte(std::string, std::map<Carte*, int> m);
-    static void afficher(std::map<Carte*, int> m);
+    static void afficher(std::map<Carte*, int> &m);
 
 
 private:
