@@ -79,12 +79,15 @@ const std::list<Carte*>& Joueur::getDefausse() const {
 }
 
 //GESTIONS DES CARTES
-void Joueur::prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite, bool gratuit) {
+bool Joueur::prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite, bool gratuit) {
     if(!gratuit){
-        prendreArgent(carte -> getCout());
+        if(!prendreArgent(carte -> getCout())) {
+            return false;
+        }
     }
     Carte::ajoutSuppCarte(m_deck, carte, quantite);
     jeu.retirerCarteDisponible(carte, quantite);
+    return true;
 }
 
 
@@ -92,8 +95,7 @@ void Joueur::prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite, bool grat
 
 ///////////////////////////////////////ACTION DU JOUEUR
 bool Joueur::acheterCarte(Carte* carte, Jeu& jeu){
-    if(peutAcheterCarte(carte, jeu)) {
-        prendreCartePlateau(carte, jeu);
+    if(prendreCartePlateau(carte, jeu)) {
         m_nbAchatPossible -= 1;
         return true;
     }
@@ -234,52 +236,65 @@ bool Joueur::peutAcheterCarte(Carte* carte, Jeu jeu){
     }
     return   b;
 }
-void Joueur::prendreArgent(int valeur) {
-    int nb = nbValeurDisponible();
+
+bool Joueur::prendreArgent(int valeur) {
+    int disponible = nbValeurDisponible();
     //fond suffisant ?
-    if(nb < valeur){
-        return;
+    if(disponible < valeur){
+        return false;
     }
 
     //valeur supp donné par carte action (ex: marché)
     if( valeur - m_valeurSupp <= 0 ){
         m_valeurSupp -= valeur;
-        return;
+        return true;
     }
     else{
         valeur -= m_valeurSupp;
     }
-
     std::vector<std::pair<Carte*, int>> cartes;
     for (auto entry : m_carteEnCoursDutilisation) {
         if(entry.first -> getTypeCarte() == TypeTresor){
-            valeur -= entry.second * (entry.first -> getValeur());
-            cartes.push_back(std::make_pair(entry.first, entry.second));
+            int quantite = 0;
+            for(int i = 0; i<entry.second; i++) {
+                if(valeur>0) {
+                    quantite++;
+                    valeur -= entry.first -> getValeur();
+                }
+            }
+            valeur -= (entry.first -> getValeur()) * quantite;
+            cartes.push_back(std::make_pair(entry.first, quantite));
         }
     }
-    //cas specifique
-    if(nb == valeur){
-        for (auto entry : cartes ){
-            Carte::ajoutSuppCarte(m_carteEnCoursDutilisation, entry.first, - entry.second);
-            Carte::ajoutSuppCarte(m_defausse, entry.first, entry.second);
-        }
-        return;
+    for (auto entry : cartes ){
+        Carte::ajoutSuppCarte(m_carteEnCoursDutilisation, entry.first, - entry.second);
+        Carte::ajoutSuppCarte(m_defausse, entry.first, entry.second);
     }
-    std::sort(cartes.begin(), cartes.end(), [](const auto& a, const auto& b) {
-        return a.first->getValeur() > b.first->getValeur();
-    });
-    // Parcours les cartes triees et retire la quantite necessaire pour atteindre la valeur voulue
-    for (const auto& carte : cartes) {
-        int quantiteRetiree = std::min(carte.first->getValeur(), carte.second);
-        valeur -= quantiteRetiree * carte.first->getValeur();
-        m_carteEnCoursDutilisation[carte.first] -= quantiteRetiree;
+    return true;
 
-        Carte::ajoutSuppCarte(m_carteEnCoursDutilisation, carte.first, -1);
-        Carte::ajoutSuppCarte(m_defausse, carte.first, 1);
-        if (valeur == 0) {
-            break;// on sort
-        }
-    }
+    // //cas specifique
+    // if(disponible == valeur){
+    //     for (auto entry : cartes ){
+    //         Carte::ajoutSuppCarte(m_carteEnCoursDutilisation, entry.first, - entry.second);
+    //         Carte::ajoutSuppCarte(m_defausse, entry.first, entry.second);
+    //     }
+    //     return true;
+    // }
+    // std::sort(cartes.begin(), cartes.end(), [](const auto& a, const auto& b) {
+    //     return a.first->getValeur() > b.first->getValeur();
+    // });
+    // // Parcours les cartes triees et retire la quantite necessaire pour atteindre la valeur voulue
+    // for (const auto& carte : cartes) {
+    //     int quantiteRetiree = std::min(carte.first->getValeur(), carte.second);
+    //     valeur -= quantiteRetiree * carte.first->getValeur();
+    //     m_carteEnCoursDutilisation[carte.first] -= quantiteRetiree;
+
+    //     Carte::ajoutSuppCarte(m_carteEnCoursDutilisation, carte.first, -1);
+    //     Carte::ajoutSuppCarte(m_defausse, carte.first, 1);
+    //     if (valeur == 0) {
+    //         break;// on sort
+    //     }
+    // }
 }
 
 std::list<Carte*> Joueur::piocherCarteDeck(int quantite){
@@ -403,7 +418,7 @@ void Joueur::tourJoueur(Jeu& jeu){
 
 void Joueur::jouerPhase(Jeu& jeu){
     std::string commande = " ";
-    while(commande != "FIN"){
+    while((jeu.estAPhaseAction() && m_nbActionPossible>0) || (jeu.estAPhaseAchat() && m_nbAchatPossible>0)){
         std::cout<<std::endl;
         std::cout<<BOLD_ON<<couleurJ<<"\n==> ECRIRE COMMANDE\n"<<RESET;
         std::cout<<DIM_TEXT<<"possibilité d'écrire la commande : "<<UNDERLINE_ON<<"HELP\n"<<RESET;
@@ -425,7 +440,7 @@ void Joueur::jouerPhase(Jeu& jeu){
         }
         else if (commande == "ACTION" && jeu.estAPhaseAction()){
             std::cout<<DIM_TEXT<<GREEN<<"commande "<<commande<<" reconnue \n"<<RESET;
-            commandeJoueur(jeu);
+            commandeAction(jeu);
         }
         else if(commande == "UTILISER"){
             std::cout<<DIM_TEXT<<GREEN<<"commande "<<commande<<" reconnue \n"<<RESET;
@@ -442,7 +457,7 @@ void Joueur::jouerPhase(Jeu& jeu){
             break;
         }
         else {
-            std::cout<<DIM_TEXT<<RED<<"commande "<<commande<<UNDERLINE_ON<<" non reconnue \n"<<RESET;
+            std::cout<<DIM_TEXT<<RED<<"commande "<<commande<<UNDERLINE_ON<<" non disponible \n"<<RESET;
         }
     }
 
@@ -629,7 +644,7 @@ void Joueur::commandeAchat(Jeu &jeu){
         }
     }
 }
-void Joueur::commandeJoueur(Jeu &jeu){
+void Joueur::commandeAction(Jeu &jeu){
     std::cout<<"CARTE EN COURS D UTILISATION : \n";
     Carte::afficher(m_carteEnCoursDutilisation);
     std::cout<<std::endl;

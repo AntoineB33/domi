@@ -29,7 +29,7 @@ public:
 
     //GESTIONS DES CARTES
 
-    void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
+    bool prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
     int getVictoireDansDeck();
 
 
@@ -79,7 +79,7 @@ private:
 
     int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
     bool peutAcheterCarte(Carte* carte, Jeu jeu);
-    void prendreArgent(int valeur);
+    bool prendreArgent(int valeur);
     bool mettreCarteDefausseDansDeck();
 
 
@@ -92,7 +92,7 @@ private:
     int demandeQuantiteCarte(std::map<Carte*,int> m, Carte* c, std::string &commande);
 
     void commandeAchat(Jeu &jeu);
-    void commandeJoueur(Jeu &Jeu);
+    void commandeAction(Jeu &Jeu);
     void commandeMettreCarteUtilisation();
     void commandeGODMODE(Jeu& jeu);
     void faireAjustement(Jeu& jeu);

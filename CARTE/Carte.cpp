@@ -95,10 +95,10 @@ bool Carte::ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite){
         m.insert(std::pair<Carte*, int>(c, quantite));
         return true;
     }
-    int q = quantite + (it -> second);
     if(it == m.end()){
         return false;
     }
+    int q = quantite + (it -> second);
     if(q > 0) {
         it->second = q;
     }
