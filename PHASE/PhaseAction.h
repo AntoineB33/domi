@@ -12,6 +12,7 @@ public:
     PhaseAction& operator=(const PhaseAction&) = delete;
 
     virtual Phase* phaseSuivante() override;
+    bool estAPhaseAction() override;
 
 
 private:

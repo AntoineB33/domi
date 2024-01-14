@@ -15,6 +15,9 @@ public:
     void initJoueur(Joueur &joueur);
     const std::string* getNomPhase() const;
     static void setPhaseCourante(Phase* phaseCourante);
+    virtual bool estAPhaseAchat();
+    virtual bool estAPhaseAction();
+    virtual bool estAPhaseAjustement();
 
 protected:
     static Phase* phaseCourante;

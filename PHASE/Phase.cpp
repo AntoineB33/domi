@@ -32,3 +32,15 @@ Phase* Phase::getPhaseCourante(){
 const std::string* Phase::getNomPhase() const {
     return &m_nomPhase;
 }
+
+bool Phase::estAPhaseAchat() {
+    return false;
+}
+
+bool Phase::estAPhaseAction() {
+    return false;
+}
+
+bool Phase::estAPhaseAjustement() {
+    return false;
+}

@@ -12,6 +12,7 @@ public:
     PhaseAjustement& operator=(const PhaseAjustement&) = delete;
 
     virtual Phase* phaseSuivante() override;
+    bool estAPhaseAjustement() override;
 
 private:
     PhaseAjustement();

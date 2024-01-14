@@ -18,3 +18,7 @@ Phase* PhaseAchat::phaseSuivante(){
     Phase::phaseCourante = PhaseAjustement::getInstancePhaseAjustement();
     return Phase::phaseCourante;
 }
+
+bool PhaseAchat::estAPhaseAchat() {
+    return true;
+}

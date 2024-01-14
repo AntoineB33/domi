@@ -19,3 +19,7 @@ Phase* PhaseAjustement::phaseSuivante(){
     Phase::phaseCourante = PhaseAction::getInstancePhaseAction();
     return Phase::phaseCourante;
 }
+
+bool PhaseAjustement::estAPhaseAjustement() {
+    return true;
+}

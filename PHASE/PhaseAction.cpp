@@ -22,3 +22,7 @@ Phase* PhaseAction::phaseSuivante(){
     Phase::phaseCourante = PhaseAchat::getInstancePhaseAchat();
     return Phase::phaseCourante;
 }
+
+bool PhaseAction::estAPhaseAction() {
+    return true;
+}

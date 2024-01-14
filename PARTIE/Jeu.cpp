@@ -178,15 +178,15 @@ void Jeu::changementDePhase(){
 }
 
 bool Jeu::estAPhaseAction(){
-    return m_phaseActuelle == PhaseAction::getInstancePhaseAction();
+    return m_phaseActuelle->estAPhaseAction();
 }
 
 bool Jeu::estAPhaseAchat(){
-    return m_phaseActuelle == PhaseAchat::getInstancePhaseAchat();
+    return m_phaseActuelle->estAPhaseAchat();
 }
 
 bool Jeu::estAPhaseAjustement(){
-    return m_phaseActuelle == PhaseAjustement::getInstancePhaseAjustement();
+    return m_phaseActuelle -> estAPhaseAjustement();
 }
 
 void Jeu::commandeGODMODE(std::map<Carte*, int>& m) {
