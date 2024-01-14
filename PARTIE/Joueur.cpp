@@ -86,14 +86,12 @@ const std::list<Carte*>& Joueur::getDefausse() const {
 }
 
 //GESTIONS DES CARTES
-void Joueur::prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite, bool gratuit, bool depuisLaReserve) {
+void Joueur::prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite, bool gratuit) {
     if(!gratuit){
         prendreArgent(carte -> getCout());
     }
     Carte::ajoutSuppCarte(m_deck, carte, quantite);
-    if(depuisLaReserve) {
-        jeu.retirerCarteDisponible(carte, quantite);
-    }
+    jeu.retirerCarteDisponible(carte, quantite);
 }
 
 
@@ -336,7 +334,8 @@ void Joueur::prendreArgent(int valeur) {
 
 // }
 
-void Joueur::piocherCarteDeck(int quantite){
+std::list<Carte*> Joueur::piocherCarteDeck(int quantite){
+    std::list<Carte*> cartes;
     //calcul nombre de carte dans le deck
     int nbCartes = 0;
     for (const auto& paire : m_deck) {
@@ -356,6 +355,7 @@ void Joueur::piocherCarteDeck(int quantite){
             if (choixAleatoire <= 0) { // carte trouvee donc on rajoute à la main
                 Carte::ajoutSuppCarte(m_deck,entry.first, -1);
                 Carte::ajoutSuppCarte(m_main,entry.first, 1);
+                cartes.push_back(entry.first);
                 quantite -= 1;
                 nbCartes -= 1;
                 break;
@@ -365,7 +365,7 @@ void Joueur::piocherCarteDeck(int quantite){
     if(quantite !=0){
         //PB
     }
-
+    return cartes;
 }
 
 bool Joueur::mettreDansRebus(Jeu& jeu, Carte *carte) {
@@ -515,6 +515,7 @@ void Joueur::commandeHELP(){
     std::cout<<RED<<"\tARRETJEU\tpour sortir du jeu" <<std::endl;
     std::cout<<RESET<<std::endl;
 }
+
 void Joueur::commandeSHOWME(){
     std::cout<<BOLD_ON<<couleurJ<<"NB ACHAT POSSIBLE : "<<m_nbAchatPossible;
     std::cout<<"\tNB ACTION POSSIBLE : "<<m_nbActionPossible<<"\n"<<RESET;
@@ -529,6 +530,7 @@ void Joueur::commandeSHOWME(){
     }
     std::cout<<RESET<<std::endl;
 }
+
 Carte* Joueur::demandeChercherCarte(std::map<Carte*,int> m, std::string &commande) {
     Carte* c = nullptr;
     std::cout<<"ECRIRE NOM CARTE\n";
@@ -542,6 +544,7 @@ Carte* Joueur::demandeChercherCarte(std::map<Carte*,int> m, std::string &command
     }
     return c;
 }
+
 int Joueur::demandeQuantiteCarte(std::map<Carte*,int> m,Carte* c ,std::string &commande){
     auto it = m.find(c);
     if(it== m.end()){
@@ -608,15 +611,24 @@ int Joueur::commandeEcarter(Jeu& jeu, int quantite) {
 
 void Joueur::defaussPiocher(){
     std::string commande = " ";
-    while(commande != "FIN"){
+    while(1){
         std::cout<<std::endl;
+        commandeSHOWME();
         std::cout<<DIM_TEXT<<"possibilité de défausser : "<<RESET;
-        Carte* c = demandeChercherCarte(m_main, commande);
-        if(c != nullptr) {
-            defausserCarte(c);
-            piocherCarteDeck(1);
+        Carte* c = nullptr;
+        while(c == nullptr) {
+            c = demandeChercherCarte(m_main, commande);
+        }
+        if(commande == "FIN"){
             break;
         }
+        defausserCarte(c);
+        std::list<Carte*> li = piocherCarteDeck(1);
+        if(li.empty()){
+            std::cout<<DIM_TEXT<<RED<<"PAS ASSEZ DE CARTE DANS LE DECK : fin de pioche\n"<<RESET;
+            break;
+        }
+        std::cout<<DIM_TEXT<<GREEN<<"carte : "<<li.front() -> getNom()<<" piochée"<<RESET<<std::endl;
     }
 }
 
@@ -704,14 +716,11 @@ void Joueur::commandeMettreCarteUtilisation() {
     }
 }
 void Joueur::commandeGODMODE(Jeu& jeu){
-    int nbPioche = 0;
     for(std::pair<Carte*, int> p : jeu.getCartesPlateau()){
-        prendreCartePlateau(p.first, jeu, 10, true, true);
-        nbPioche += 10;
+        Carte::ajoutSuppCarte(m_main, p.first, 10);
+        m_nbAchatPossible += 10;
+        m_nbActionPossible += 10;
     }
-    piocherCarteDeck(nbPioche);
-    m_nbAchatPossible += nbPioche;
-    m_nbActionPossible += nbPioche;
     std::cout<<BOLD_ON<<DIM_TEXT<<"=== GOD MODE ===\n"<<RESET;
 }
 void Joueur::faireAjustement(Jeu& jeu) {

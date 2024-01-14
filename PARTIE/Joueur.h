@@ -29,7 +29,7 @@ public:
 
     //GESTIONS DES CARTES
 
-    void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false, bool depuisLaReserve = true); // le booleen permet la destribution en debut de parti
+    void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
     int getVictoireDansDeck();
 
 
@@ -51,7 +51,7 @@ public:
 
 
     //futures metohdes private , pour l'instant en public pour les tests
-    void piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
+    std::list<Carte*> piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
     bool defausserCarte(Carte*carte);
     bool defausserCarte();
     bool mettreDansRebus(Jeu& jeu, Carte *carte);

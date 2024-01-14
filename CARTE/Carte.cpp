@@ -93,24 +93,20 @@ bool Carte::ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite){
             return true;
         }
         m.insert(std::pair<Carte*, int>(c, quantite));
+        return true;
+    }
+    int q = quantite + (it -> second);
+    if(it == m.end()){
+        return false;
+    }
+    if(q > 0) {
+        it->second = q;
+    }
+    else if (q == 0) {
+        m.erase(it);
     }
     else{
-        int q = quantite + (it -> second);
-        if(it != m.end()){
-            if(q > 0) {
-                it->second += quantite;
-            }
-            else if (q == 0) {
-                m.erase(it);
-                it = m.end();
-            }
-            else{
-                return false;//trop de carte à supprimer
-            }
-        }
-        else{
-            return false;//impossible de supprimer cette carte
-        }
+        return false;//trop de carte à supprimer
     }
     return true;
 }
