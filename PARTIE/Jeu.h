@@ -12,57 +12,33 @@ public:
     Jeu(int nbJoueur = 2);
     virtual ~Jeu();
 
+    void nop();
+
     int getNbJoueur();
     Joueur* getJoueur(int i) ;
-    const std::string* getNomPhaseActu() const;
-    const std::map<Carte*, int> getCartesPlateau() const;
 
-    std::list<Carte*> getToutesLesCartes() const;
-
-    bool commandePartieEstFinie();
-    bool getFini() const;
-    void setFini(bool);
-
+    void initJoueurs(int nbAchatNEW, int nbActionNEW);
     void afficherCartesPlateau();
 
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
     bool retirerCarteDisponible(Carte* carte, int quantite = 1);
-    void mettreDansRebus(Carte *carte);
-    void ajoutCartesDefausses(Carte& carte, int quantite = 1);
-
-
-    void changementDePhase();
-    bool estAPhaseAjustement();
-    void initJoueurPhase(Joueur& joueur);
-    //futur private
-
-    //LANCEMENT
-
-    void lancementJeu();
 
 
 private:
     int m_nbJoueur;
     std::vector<Joueur> m_joueurs;
-    bool m_fini; //bool pour savoir si la partie est fini, permet d'eviter de dupliquer les calculs
-    Phase* m_phaseActuelle;
-    std::map<Carte*, int> m_cartesPlateau;//cartes pas encore achetée
-    std::list<Carte*> rebus;
-    std::list<Carte*> toutesLesCartes;
 
-    void tour(int numJoueur = 0);//int numJoueur permet de reprendre la partie depuis l'enregistrement
+    Phase* m_phaseActuelle;
+
+    std::map<Carte*, int> m_cartesPlateau;//cartes pas encore achetée
 
     ///Methode initialisation en debut de partie
     void initCartesPlateau();
-    void initJoueur(Joueur&);
-
-    bool partieEstFinie();
-    int getGagnant();
-
+    void initJoueur(Joueur& joueur);
 
 
     ///
-
+    void changementDePhase();
 
 };
 

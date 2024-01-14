@@ -4,7 +4,6 @@
 
 #include <map>
 #include <list>
-#include <string>
 
 #include "Carte.h"
 
@@ -14,6 +13,8 @@ class Joueur {
 public:
     Joueur (int numJouer);
     ~Joueur();
+
+    void nop();
 
     friend std::ostream& operator<<(std::ostream& os, const Joueur& joueur);
 
@@ -30,38 +31,22 @@ public:
     //GESTIONS DES CARTES
 
     void prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
-    int getVictoireDansDeck();
-
-
-    ///////////////////////////////////////TOUR D UN JOUEUR
-    void tourJoueur(Jeu &jeu);
 
     ///////////////////////////////////////ACTION DU JOUEUR (durant une phase ou via une carte)
-    bool acheterCarte(Carte* c, Jeu& jeu);
-    bool jouerCarteAction(Carte* c, Jeu& jeu);
-    bool ajuster();
-    ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
-    bool recevoirCartePlateau(Jeu& jeu, Carte* carte,int coutMax);
-    bool ecarter(Jeu& jeu, Carte*, int quantite);
-    void defaussPiocher();
-    void addNbAchatPhase(int);
-    void addNbActionPhase(int);
-    void ajouterRetirerValeurSupp(int);
-    void augmenterTresor(Jeu&, int);
-
+    void acheterCarte(Carte* c, Jeu& jeu);
+    void jouerCarteAction(Carte* c, Jeu& jeu);
+    ///////////////////////////////////////ACTION DU JOUEUR VIA UNE CARTE ACTION (via carte uniquement)
+    void supprimerCarteMain(Carte* c, int quantite = 1);
+    void addNbAchatPhase(int nbAchatPhase);
+    void addNbActionPhase(int nbActionPhase);
+    void ajouterRetirerValeurSupp(int nbValeurSup);
 
     //futures metohdes private , pour l'instant en public pour les tests
-    std::list<Carte*> piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
-    bool defausserCarte(Carte*carte);
-    bool defausserCarte();
-    bool mettreDansRebus(Jeu& jeu, Carte *carte);
-    bool mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
-
-
-
-    ///////////////////////////////////////IHM TERMINAL
-    int commandeEcarter(Jeu& jeu, int quantite);
-    Carte* demandeChercherCarte(std::map<Carte*,int> m, std::string &commande);
+    void piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
+    void defausserCarte(Carte* carte);
+    void defausserCarte();
+    void mettreDefausseDansDeck();
+    void mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
 
 private:
     std::map<Carte*,int> m_main;
@@ -74,30 +59,10 @@ private:
     int m_nbActionPossible;
     int m_valeurSupp; //donner par les cartes comme : marché
 
-    int nbPointVictoire();
 
     int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
     bool peutAcheterCarte(Carte* carte, Jeu jeu);
     void prendreArgent(int valeur);
-    bool mettreCarteDefausseDansDeck();
-
-
-    ///////////////////////////////////////IHM TERMINAL
-    std::string couleurJ;
-
-    void jouerPhase(Jeu &jeu);
-    void commandeHELP();
-    void commandeSHOWME();
-    int demandeQuantiteCarte(std::map<Carte*,int> m, Carte* c, std::string &commande);
-
-    void commandeAchat(Jeu &jeu);
-    void commandeJoueur(Jeu &Jeu);
-    void commandeMettreCarteUtilisation();
-    void commandeGODMODE(Jeu& jeu);
-    void faireAjustement(Jeu& jeu);
-    void commandeDefausserCartes();
-
-
 
 
 

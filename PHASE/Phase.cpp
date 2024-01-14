@@ -1,30 +1,20 @@
 #include "Phase.h"
 
-#include "Joueur.h"
+#include "Jeu.h"
 #include "PhaseAction.h"
 
-#include <iostream>
+Phase* Phase::phaseCourante = PhaseAction::getInstancePhaseAction();
 
-Phase* Phase::phaseCourante = nullptr;
-
-Phase::Phase(int nbINITachat, int nbINITaction, std::string  nomPhase): m_nbINITachat(nbINITachat), m_nbINITaction(nbINITaction), m_nomPhase(nomPhase){
+Phase::Phase(int nbINITachat, int nbINITaction): m_nbINITachat(nbINITachat), m_nbINITaction(nbINITaction){
 }
 
 Phase::~Phase() {
-}
-
-void Phase::setPhaseCourante(Phase* p){
-    phaseCourante = p;
 }
 
 Phase* Phase::getPhaseCourante(){
     return Phase::phaseCourante;
 }
 
-void Phase::initJoueur(Joueur &j){
-    j.initJoueur(m_nbINITachat,m_nbINITaction);
+void Phase::initJeu(Jeu &jeu){
+    jeu.initJoueurs(m_nbINITachat,m_nbINITaction);
 };
-
-const std::string* Phase::getNomPhase() const {
-    return &m_nomPhase;
-}

@@ -11,7 +11,7 @@ PhaseAchat::~PhaseAchat() {
     delete PhaseAchat::instancePhaseAchat;
 }
 
-PhaseAchat::PhaseAchat() : Phase(1, 0, "PHASE ACHAT") {
+PhaseAchat::PhaseAchat() : Phase(1, 0) {
 }
 
 Phase* PhaseAchat::phaseSuivante(){

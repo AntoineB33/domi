@@ -58,8 +58,8 @@ int Carte::getValeur() const{
 
 
 void Carte::jouerAction(Joueur &joueur, Jeu &jeu) {
-    (void)joueur;
-    (void)jeu;
+    joueur.nop();
+    jeu.nop();
 }
 
 
@@ -93,35 +93,32 @@ bool Carte::ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite){
             return true;
         }
         m.insert(std::pair<Carte*, int>(c, quantite));
-        return true;
-    }
-    int q = quantite + (it -> second);
-    if(it == m.end()){
-        return false;
-    }
-    if(q > 0) {
-        it->second = q;
-    }
-    else if (q == 0) {
-        m.erase(it);
     }
     else{
-        return false;//trop de carte à supprimer
+        int q = quantite + (it -> second);
+        if(it != m.end()){
+            if(q > 0) {
+                it->second += quantite;
+            }
+            else if (q == 0) {
+                m.erase(it);
+            }
+            else{
+                return false;//trop de carte à supprimer
+            }
+        }
+        else{
+            return false;//impossible de supprimer cette carte
+        }
     }
     return true;
 }
 
-Carte* Carte::chercherCarte(std::string mot, std::map<Carte*, int> m){
+Carte* Carte::chercherCarte(std::string mot, std::map<Carte*, int>& m){
     for(auto entry : m){
         if(mot.compare(entry.first->getNom()) == 0){
             return entry.first;
         }
     }
     return nullptr;
-}
-
-void Carte::afficher(std::map<Carte *, int> m) {
-    for (const auto& entry : m) {
-        std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
-    }
 }

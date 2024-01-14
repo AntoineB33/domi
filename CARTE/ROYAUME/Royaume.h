@@ -3,7 +3,6 @@
 
 #include "Carte.h"
 #include "Joueur.h"
-#include "Jeu.h"
 #include <string>
 
 class Royaume : public Carte{
@@ -17,25 +16,20 @@ public:
     void jouerAction(Joueur& joueur, Jeu& jeu) override;
 
 
-
 protected:
     //méthodes utiles pour les classes filles
     void ajoutAction(Joueur & joueur, int nb);
     void ajoutAchat(Joueur & joueur, int nb);
+    void supprimerCarte(Joueur & joueur, Carte* c, int quantite = 1);
+    void piocherCarteDeck(Joueur & joueur, int quantite = 1);
     void ajouterValeurSupp(Joueur & joueur, int nbValeurSupp);
 
 
-    ///////////////IHM
-
-    void commandeRecevoirCartePlateau(Joueur& joueur, Jeu& jeu, int coutMax);
 
 
 private:
     std::string m_description;
     virtual void faireAction(Joueur& joueur, Jeu& jeu) = 0;
-
-
-
 };
 
 

@@ -1,62 +1,47 @@
 #include <iostream>
-
+#include "Carte.h"
+#include "Or.h"
+#include "Tresor.h"
+#include "Cuivre.h"
+#include "Domaine.h"
+#include "Joueur.h"
 #include "Jeu.h"
-#include "CouleurTerminal.h"
+#include "Marche.h"
 
-
-int demandeNBJoueur(){
-    int  q = 1;
-    std::string commande;
-    while(1){
-        std::cout<<"NOMBRE DE JOUEUR : \n";
-        std::cout<<DIM_TEXT<<ITALIC_ON<<"(de 2 à 4 joueurs)\n"<<RESET;
-        std::cin>> commande;
-        try {
-            q = std::stoi(commande);
-            if(2<=q && q <=4){
-                std::cout << DIM_TEXT<<GREEN<<"nombre de joueurs demandé :"<<q<<RESET<< std::endl;
-                return q;
-            }
-            else{
-                std::cout <<DIM_TEXT<<RED<< "ERROR : nombre non compris entre 2 et 4" << RESET<<std::endl;
-            }
-        }
-        catch (std::invalid_argument const &e) {
-            std::cout <<DIM_TEXT<<RED<< "ERROR : entree invalide" << RESET<<std::endl;
-        }
-        catch (std::out_of_range const &e) {
-            std::cout << DIM_TEXT<<RED<<"ERROR : nombre trop grand"<<RESET<< std::endl;
-        }
-    }
-}
-bool demandeSiNouvellePartie(){
-    std::string commande;
-    while(1){
-        std::cout<<"VOULEZ VOUS LANCER UNE PARTIE ? \n";
-        std::cout<<DIM_TEXT<<ITALIC_ON<<"(repondre O pour OUI, N pour NON)\n"<<RESET;
-        std::cin>> commande;
-        if(commande == "OUI" || commande == "O"){
-            return true;
-        }
-        else if(commande == "NON" || commande == "N"){
-            return false;
-        }
-        else{
-            std::cout << DIM_TEXT<<RED<<"ERROR : demande non reconnue"<<RESET<< std::endl;
-        }
-
-    }
-}
+#include <map>
 
 int main() {
-    int nbJoueur;
-    //bool nouvellePartie = true;
-    do{
-        nbJoueur = demandeNBJoueur();
-        Jeu j = Jeu(nbJoueur);
-        j.lancementJeu();
+    {
+        Jeu j = Jeu();
+        for(int i = 0; i < j.getNbJoueur(); i++){
+            std::cout<<*j.getJoueur(i)<<std::endl;
 
-    }while(demandeSiNouvellePartie());
+            //std::cout<<"nb valeur disponible : "<<j.getJoueur(i) -> nbValeurDisponible()<<"\n";
+            j.getJoueur(i) -> piocherCarteDeck(12);
+            std::cout<<*j.getJoueur(i)<<std::endl;
+            std::cout<<"==== mettre carte en court d'utilisation ===="<<std::endl;
+            std::map<Carte*,int> m;
+            for(auto entry : j.getJoueur(i) -> getMain()){
+                Carte::ajoutSuppCarte(m,entry.first,entry.second);
+            }
+            for(auto entry : m){
+                j.getJoueur(i) -> mettreEncoursDutilisationCartes(entry.first, entry.second);
+            }
+            j.getJoueur(i) -> prendreCartePlateau(Marche::makeMarche(),j);
+            std::cout<<*j.getJoueur(i)<<std::endl;
+            j.getJoueur(i) -> defausserCarte();
+            j.getJoueur(i) -> mettreDefausseDansDeck();
+            std::cout<<*j.getJoueur(i)<<std::endl;
+        }
+
+        //j.getJoueur(0) -> nbValeurDisponible();
+
+        //j.afficherCartesPlateau();
+
+
+    }
+
+
     std::cout<<"\n\n\n\n====== FIN ======\n\n\n\n";
     return 0;
 }
