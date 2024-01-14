@@ -14,5 +14,5 @@ Sorciere::Sorciere(std::string nom, int cout,std::string description) : Royaume(
 
 void Sorciere::faireAction(Joueur &joueur, Jeu &jeu) {
     joueur.commandePiocherCarteDeck(2);
-    jeu.ajoutCartesDefausses(*this, 2);
+    jeu.ajoutCartesDefausses(this, 2);
 }

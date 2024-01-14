@@ -218,7 +218,7 @@ int Joueur::nbValeurDisponible() const {
     }
     return val;
 }
-bool Joueur::peutAcheterCarte(Carte* carte, Jeu jeu){
+bool Joueur::peutAcheterCarte(Carte* carte, Jeu& jeu){
     // il faut que le carte soit encore disponible a l'achat
     bool b = jeu.carteDisponible(carte);
     if(!b){
@@ -499,7 +499,7 @@ void Joueur::commandeSHOWME(){
     std::cout<<RESET<<std::endl;
 }
 
-Carte* Joueur::demandeChercherCarte(std::map<Carte*,int> m, std::string &commande) {
+Carte* Joueur::demandeChercherCarte(std::map<Carte*,int>& m, std::string &commande) {
     Carte* c = nullptr;
     std::cout<<"ECRIRE NOM CARTE\n";
     std::cin>> commande;
@@ -513,7 +513,7 @@ Carte* Joueur::demandeChercherCarte(std::map<Carte*,int> m, std::string &command
     return c;
 }
 
-int Joueur::demandeQuantiteCarte(std::map<Carte*,int> m,Carte* c ,std::string &commande){
+int Joueur::demandeQuantiteCarte(std::map<Carte*,int>& m, Carte* c ,std::string &commande){
     auto it = m.find(c);
     if(it== m.end()){
         std::cout<<"ERREUR CARTE INEXISTANTE\n";
@@ -554,8 +554,8 @@ int Joueur::demandeQuantiteCarte(std::map<Carte*,int> m,Carte* c ,std::string &c
     return 0;
 }
 
-int Joueur::commandeEcarter(Jeu& jeu, int quantite) {
-    int cout = 0;
+std::list<Carte*> Joueur::commandeEcarter(Jeu& jeu, int quantite) {
+    std::list<Carte*> li;
     for(int i = 0; i< quantite; i++) {
         std::cout<<DIM_TEXT<<"Seuls les cartes dans la main sont défaussables\n"<<RESET;
         std::string commande = "";
@@ -566,7 +566,7 @@ int Joueur::commandeEcarter(Jeu& jeu, int quantite) {
             if(c != nullptr){
                 ecarter(jeu,c,1);
                 std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" écarté"<<RESET<<std::endl;
-                cout = c -> getCout();
+                li.push_back(c);
                 break;
             }
             if(commande == "FIN"){
@@ -577,7 +577,7 @@ int Joueur::commandeEcarter(Jeu& jeu, int quantite) {
             break;
         }
     }
-    return cout;
+    return li;
 }
 
 void Joueur::defaussPiocher(){
@@ -601,23 +601,23 @@ void Joueur::defaussPiocher(){
 }
 
 void Joueur::augmenterTresor(Jeu& jeu, int quantite){
+    std::list<Carte*> li = commandeEcarter(jeu, 1);
+    if(li.empty()){
+        return;
+    }
+    int coutMax = li.front() -> getCout() + quantite;
     std::string commande = " ";
-    while(commande != "FIN"){
-        std::cout<<std::endl;
-        std::cout<<DIM_TEXT<<"augmentez une carte Trésor : "<<RESET;
-        Carte* c = demandeChercherCarte(m_main, commande);
-        if(c != nullptr && c -> getTypeCarte() == TypeTresor) {
-            defausserCarte(c);
-            while(commande != "FIN") {
-                std::cout<<std::endl;
-                std::cout<<DIM_TEXT<<"Prenez une carte Trésor de la réserve : "<<RESET;
-                c = demandeChercherCarte(jeu.getCartesPlateau(), commande);
-                if(c != nullptr && c -> getTypeCarte() == TypeTresor && c -> getCout() <= quantite) {
-                    jeu.retirerCarteDisponible(c,1);
-                    break;
-                }
-            }
+    jeu.afficherCartesPlateau();
+    std::cout<<std::endl;
+    std::cout<<DIM_TEXT<<"Prenez une carte Trésor de la réserve : "<<RESET;
+    while(commande != "FIN") {
+        Carte* c = jeu.demandeCartePlateau(*this, commande);
+        if(c != nullptr && c -> getTypeCarte() == TypeTresor && c -> getCout() <= coutMax) {
+            jeu.retirerCarteDisponible(c,1);
+            Carte::ajoutSuppCarte(m_main, c, 1);
             break;
+        } else {
+            std::cout<<DIM_TEXT<<RED<<"carte : "<<commande<<" invalide."<<RESET<<std::endl;
         }
     }
 }
@@ -633,7 +633,7 @@ void Joueur::commandeAchat(Jeu &jeu){
             std::cout<<DIM_TEXT<<RED<<"PAS ASSEZ DE POINT D ACHAT : fin d'achat\n"<<RESET;
             break;
         }
-        c = demandeChercherCarte(jeu.getCartesPlateau(), commande);
+        c = jeu.demandeCartePlateau(*this, commande);
         if(c != nullptr){
             if(acheterCarte(c,jeu)){
                 std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" achetee "<<RESET<<std::endl;
@@ -683,15 +683,15 @@ void Joueur::commandeMettreCarteUtilisation() {
         }
     }
 }
+
 void Joueur::commandeGODMODE(Jeu& jeu){
-    for(std::pair<Carte*, int> p : jeu.getCartesPlateau()){
-        Carte::ajoutSuppCarte(m_main, p.first, 10);
-    }
+    jeu.commandeGODMODE(m_main);
     m_nbAchatPossible = 100;
     m_nbActionPossible = 100;
     m_godMode = true;
     std::cout<<BOLD_ON<<DIM_TEXT<<"=== GOD MODE ===\n"<<RESET;
 }
+
 void Joueur::faireAjustement(Jeu& jeu) {
     std::string commande = " ";
     while(commande != "FIN"){

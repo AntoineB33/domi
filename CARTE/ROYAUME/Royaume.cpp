@@ -40,13 +40,12 @@ void Royaume::ajouterValeurSupp(Joueur &joueur, int nbValeurSupp) {
 //////////////////////////////IHM
 void Royaume::commandeRecevoirCartePlateau(Joueur& joueur, Jeu& jeu, int coutMax) {
 
-    std::cout<<"CARTE SUR LE PLATEAU : \n";
     jeu.afficherCartesPlateau();
     std::cout<<std::endl;
     std::string commande = "";
     Carte* c = nullptr;
     while(commande != "FIN"){
-        c = joueur.demandeChercherCarte(jeu.getCartesPlateau(), commande);
+        c = jeu.demandeCartePlateau(joueur, commande);
         if(c != nullptr){
             if(c -> getCout() <= coutMax){
                 if(joueur.recevoirCartePlateau(jeu,c,coutMax)){

@@ -13,6 +13,7 @@ Renovation::Renovation(std::string nom, int cout,std::string description) : Roya
 
 
 void Renovation::faireAction(Joueur &joueur, Jeu &jeu) {
-    int cout = joueur.commandeEcarter(jeu, 1);
+    std::list<Carte*> li = joueur.commandeEcarter(jeu, 1);
+    int cout = li.front()->getCout();
     commandeRecevoirCartePlateau(joueur, jeu, cout+2);
 }

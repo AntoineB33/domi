@@ -60,8 +60,8 @@ public:
 
 
     ///////////////////////////////////////IHM TERMINAL
-    int commandeEcarter(Jeu& jeu, int quantite);
-    Carte* demandeChercherCarte(std::map<Carte*,int> m, std::string &commande);
+    std::list<Carte*> commandeEcarter(Jeu& jeu, int quantite);
+    Carte* demandeChercherCarte(std::map<Carte*,int>& m, std::string &commande);
     bool commandePiocherCarteDeck(int quantite = 1);
 
 private:
@@ -78,7 +78,7 @@ private:
     int nbPointVictoire();
 
     int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
-    bool peutAcheterCarte(Carte* carte, Jeu jeu);
+    bool peutAcheterCarte(Carte* carte, Jeu& jeu);
     bool prendreArgent(int valeur);
     bool mettreCarteDefausseDansDeck();
 
@@ -89,7 +89,7 @@ private:
     void jouerPhase(Jeu &jeu);
     void commandeHELP();
     void commandeSHOWME();
-    int demandeQuantiteCarte(std::map<Carte*,int> m, Carte* c, std::string &commande);
+    int demandeQuantiteCarte(std::map<Carte*,int>& m, Carte* c, std::string &commande);
 
     void commandeAchat(Jeu &jeu);
     void commandeAction(Jeu &Jeu);

@@ -15,7 +15,6 @@ public:
     int getNbJoueur();
     Joueur* getJoueur(int i) ;
     const std::string* getNomPhaseActu() const;
-    const std::map<Carte*, int> getCartesPlateau() const;
 
     std::list<Carte*> getToutesLesCartes() const;
 
@@ -28,13 +27,17 @@ public:
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
     bool retirerCarteDisponible(Carte* carte, int quantite = 1);
     void mettreDansRebus(Carte *carte);
-    void ajoutCartesDefausses(Carte& carte, int quantite = 1);
+    void ajoutCartesDefausses(Carte* carte, int quantite = 1);
 
     bool estAPhaseAction();
     bool estAPhaseAchat();
 
+    Carte* demandeCartePlateau(Joueur& joueur, std::string& commande);
+
+
 
     void changementDePhase();
+    void commandeGODMODE(std::map<Carte*, int>& m);
     bool estAPhaseAjustement();
     // void initJoueurPhase(Joueur& joueur);
     //futur private

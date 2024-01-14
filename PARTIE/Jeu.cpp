@@ -69,10 +69,6 @@ std::list<Carte*> Jeu::getToutesLesCartes() const {
     return toutesLesCartes;
 }
 
-const std::map<Carte*, int> Jeu::getCartesPlateau() const {
-    return m_cartesPlateau;
-}
-
 bool Jeu::partieEstFinie() {
     auto it = m_cartesPlateau.find(Province::makeProvince());
     if(it == m_cartesPlateau.end() || it -> second == 0){
@@ -122,9 +118,9 @@ bool Jeu::retirerCarteDisponible(Carte *carte, int quantite) {
     return false;
 }
 
-void Jeu::ajoutCartesDefausses(Carte &carte, int quantite) {
+void Jeu::ajoutCartesDefausses(Carte* carte, int quantite) {
     for(Joueur& j : m_joueurs){
-        j.prendreCartePlateau(&carte, *this, quantite, true);
+        j.prendreCartePlateau(carte, *this, quantite, true);
     }
 }
 
@@ -193,6 +189,12 @@ bool Jeu::estAPhaseAjustement(){
     return m_phaseActuelle == PhaseAjustement::getInstancePhaseAjustement();
 }
 
+void Jeu::commandeGODMODE(std::map<Carte*, int>& m) {
+    for(std::pair<Carte*, int> p : m_cartesPlateau){
+        Carte::ajoutSuppCarte(m, p.first, 10);
+    }
+}
+
 // void Jeu::initJoueurPhase(Joueur& joueur) {
 //     m_phaseActuelle -> initJoueur(joueur);
 // }
@@ -251,7 +253,12 @@ bool Jeu::commandePartieEstFinie() {
 }
 
 void Jeu::afficherCartesPlateau() {
+    std::cout<<"CARTE SUR LE PLATEAU : \n";
     for (const auto& entry : m_cartesPlateau) {
         std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
     }
+}
+
+Carte* Jeu::demandeCartePlateau(Joueur& joueur, std::string& commande) {
+    return joueur.demandeChercherCarte(m_cartesPlateau, commande);
 }
