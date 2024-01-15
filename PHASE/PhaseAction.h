@@ -3,6 +3,9 @@
 
 #include "Phase.h"
 
+class Joueur;
+class Jeu;
+
 class PhaseAction : public Phase {
 public:
     static PhaseAction* getInstancePhaseAction();
@@ -13,6 +16,7 @@ public:
 
     virtual Phase* phaseSuivante() override;
     bool estAPhaseAction() override;
+    void jouerPhase(Jeu& jeu, Joueur& joueur) override;
 
 
 private:

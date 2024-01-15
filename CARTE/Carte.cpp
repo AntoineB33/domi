@@ -7,12 +7,19 @@
 #include "Jeu.h"
 #include "Joueur.h"
 
-Carte::Carte(std::string nom, TypeCarte typeCarte,int cout) :m_nom(nom), m_type(typeCarte),m_cout(cout){
+#include "../case_insensitive_compare.h"
 
+Carte::Carte(std::string nom, TypeCarte typeCarte,int cout) :m_nom(nom), m_type(typeCarte),m_cout(cout){
+    description = "(Cout: " + std::to_string(cout) + ")\n";
 }
 
 Carte::~Carte(){
 
+}
+
+///GETTERS
+std::string& Carte::getDesc() {
+    return description;
 }
 
 
@@ -34,7 +41,7 @@ std::ostream& operator<<(std::ostream& os, const Carte& carte) {
 
 
 
-std::string Carte::getNom() {
+std::string Carte::getNom() const{
     return m_nom;
 }
 int Carte::getTypeCarte() const{
@@ -113,7 +120,7 @@ bool Carte::ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite){
 
 Carte* Carte::chercherCarte(std::string mot, std::map<Carte*, int> m){
     for(auto entry : m){
-        if(mot.compare(entry.first->getNom()) == 0){
+        if(caseInsensitiveCompare(mot, entry.first->getNom())){//case insensitive compare
             return entry.first;
         }
     }

@@ -13,6 +13,7 @@ public:
 
     virtual Phase* phaseSuivante() override;
     bool estAPhaseAchat() override;
+    void jouerPhase(Jeu& jeu, Joueur& joueur) override;
 
 private:
     PhaseAchat();

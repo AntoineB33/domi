@@ -9,6 +9,12 @@ Royaume::Royaume(std::string nom, int cout, std::string description)
 
 Royaume::~Royaume() {}
 
+
+std::string& Carte::getDesc() const{
+    std::string description = getNom() + " (Cout: " + std::to_string(getCout()) + ", Desc:" + m_description +")\n";
+    return ;
+}
+
 std::string Royaume::getDescription() const {
     return m_description;
 }

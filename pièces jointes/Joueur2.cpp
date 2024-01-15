@@ -1,6 +1,5 @@
 #include "Joueur.h"
 #include "Jeu.h"
-#include "../case_insensitive_compare.h"
 
 #include <random>
 
@@ -77,27 +76,6 @@ const std::map<Carte*,int>& Joueur::getDeck() const {
 
 const std::list<Carte*>& Joueur::getDefausse() const {
     return m_defausse;
-}
-
-int Joueur::getNbAchat() const {
-    return m_nbAchatPossible;
-}
-
-int Joueur::getNbAction() const {
-    return m_nbActionPossible;
-}
-
-int Joueur::getId() const {
-    return m_numJoueur;
-}
-
-bool Joueur::typeDansMain(TypeCarte type) const {
-    for(std::pair<Carte*, int> carte : m_main){
-        if(carte.first->getTypeCarte() == TypeTresor){
-            return true;
-        }
-    }
-    return false;
 }
 
 //GESTIONS DES CARTES
@@ -441,7 +419,8 @@ void Joueur::tourJoueur(Jeu& jeu){
 void Joueur::jouerPhase(Jeu& jeu){
     std::string commande = " ";
     while((jeu.estAPhaseAction() && m_nbActionPossible>0) || (jeu.estAPhaseAchat() && m_nbAchatPossible>0)){
-        std::cout<<BOLD_ON<<couleurJ<<"\n\n==> ECRIRE COMMANDE\n"<<RESET;
+        std::cout<<std::endl;
+        std::cout<<BOLD_ON<<couleurJ<<"\n==> ECRIRE COMMANDE\n"<<RESET;
         std::cout<<DIM_TEXT<<"possibilité d'écrire la commande : "<<UNDERLINE_ON<<"HELP\n"<<RESET;
         std::cin>>commande;
         if(commande == "HELP"){
@@ -520,20 +499,16 @@ void Joueur::commandeSHOWME(){
     std::cout<<RESET<<std::endl;
 }
 
-Carte* Joueur::demandeChercherCarte(const std::map<Carte*,int>& m, std::string &commande) const {
+Carte* Joueur::demandeChercherCarte(std::map<Carte*,int>& m, std::string &commande) {
     Carte* c = nullptr;
-    std::cout << "ECRIRE NOM CARTE\n";
-    while(1) {
-        std::cin >> commande;
-        if(caseInsensitiveCompare(commande, "FIN")){
-            return c;
-        }
-        c = Carte::chercherCarte(commande, m);
-        if(c == nullptr){
-            std::cout<<DIM_TEXT<<RED<<"carte : "<<commande<<" NON TROUVEE"<<RESET<<std::endl;
-        } else {
-            break;
-        }
+    std::cout<<"ECRIRE NOM CARTE\n";
+    std::cin>> commande;
+    if(commande == "FIN"){
+        return c;
+    }
+    c = Carte::chercherCarte(commande,m);
+    if(c == nullptr){
+        std::cout<<DIM_TEXT<<RED<<"carte : "<<commande<<" NON TROUVEE"<<RESET<<std::endl;
     }
     return c;
 }
@@ -778,12 +753,4 @@ bool Joueur::commandePiocherCarteDeck(int quantite) {
         std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" piochée"<<RESET<<std::endl;
     }
     return true;
-}
-
-void Joueur::afficherMain() {
-    std::cout<<BOLD_ON<<couleurJ<< "Main:\n"<<RESET<<couleurJ;
-    for (const auto& entry : m_main) {
-        std::cout << "   " << *(entry.first) << ": " << entry.second << "\n";
-    }
-    std::cout<<RESET<<std::endl;
 }

@@ -31,7 +31,8 @@ public:
 
     int getTypeCarte() const;
     int getCout() const;
-    std::string getNom();
+    std::string getNom() const;
+    virtual std::string& getDesc();
 
     //fonction pour certain type de carte
     virtual int getPointDeVictoire() const;
@@ -48,7 +49,8 @@ public:
 
 
 private:
-    std::string  m_nom;
+    const std::string  m_nom;
+    std::string  description;
     TypeCarte m_type;
     int m_cout;
 

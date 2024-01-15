@@ -25,6 +25,10 @@ public:
     const std::map<Carte*,int>& getCarteEnCoursDutilisation() const;
     const std::map<Carte*, int>& getDeck() const;
     const std::list<Carte*>& getDefausse() const;
+    int getNbAction() const;
+    int getNbAchat() const;
+    int getId() const;
+    bool typeDansMain(TypeCarte type) const;
     // bool isInGodMode();
 
     //GESTIONS DES CARTES
@@ -61,8 +65,9 @@ public:
 
     ///////////////////////////////////////IHM TERMINAL
     std::list<Carte*> commandeEcarter(Jeu& jeu, int quantite);
-    Carte* demandeChercherCarte(std::map<Carte*,int>& m, std::string &commande);
+    Carte* demandeChercherCarte(const std::map<Carte*,int>& m, std::string &commande) const;
     bool commandePiocherCarteDeck(int quantite = 1);
+    void afficherMain();
 
 private:
     std::map<Carte*,int> m_main;

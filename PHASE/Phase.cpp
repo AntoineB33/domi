@@ -1,6 +1,7 @@
 #include "Phase.h"
 
 #include "Joueur.h"
+#include "Jeu.h"
 #include "PhaseAction.h"
 
 #include <iostream>
@@ -19,6 +20,13 @@ void Phase::setPhaseCourante(Phase* p){
 
 Phase* Phase::getPhaseCourante(){
     return Phase::phaseCourante;
+}
+
+void Phase::jouerPhase(Jeu& jeu, Joueur& joueur){
+    jeu.afficherCartesPlateau();
+    joueur.afficherMain();
+    std::cout << "Phase " << *getNomPhase() << " du joueur " << joueur.getId() << "\n";
+    std::cout << joueur.getNbAction() << " Action | " << joueur.getNbAction() << " Achats\n";
 }
 
 // void Phase::initJoueur(Joueur &j){

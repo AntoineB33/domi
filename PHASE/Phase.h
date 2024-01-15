@@ -4,6 +4,7 @@
 #include <string>
 
 class Joueur;
+class Jeu;
 
 class Phase {
 public:
@@ -18,6 +19,10 @@ public:
     virtual bool estAPhaseAchat();
     virtual bool estAPhaseAction();
     virtual bool estAPhaseAjustement();
+
+    /// IHM
+    void afficherPhase();
+    virtual void jouerPhase(Jeu& jeu, Joueur& joueur);
 
 protected:
     static Phase* phaseCourante;
