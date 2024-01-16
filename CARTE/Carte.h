@@ -47,20 +47,14 @@ public:
     static Carte* chercherCarte(std::string, std::map<Carte*, int> m);
     static void afficher(std::map<Carte*, int> &m);
 
+protected:
+    std::string m_description;
+
 
 private:
     const std::string  m_nom;
-    std::string  description;
     TypeCarte m_type;
     int m_cout;
-
-
-
-
-
-
-
-
 
 };
 

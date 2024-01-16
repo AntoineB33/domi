@@ -14,6 +14,11 @@ Phase::Phase(int nbINITachat, int nbINITaction, std::string  nomPhase): m_nbINIT
 Phase::~Phase() {
 }
 
+Phase* Phase::getFirstPhase(){
+    Phase::phaseCourante = PhaseAction::getInstancePhaseAction();
+    return Phase::phaseCourante;
+}
+
 void Phase::setPhaseCourante(Phase* p){
     phaseCourante = p;
 }

@@ -26,7 +26,6 @@ bool PhaseAchat::estAPhaseAchat() {
 }
 
 void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur){
-    Phase::afficherPhase();
     std::cout << "Vous pouvez acheter des cartes.\n";
     (void)jeu;
     (void)joueur;

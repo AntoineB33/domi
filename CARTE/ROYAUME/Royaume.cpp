@@ -5,14 +5,15 @@
 #include <iostream>
 
 Royaume::Royaume(std::string nom, int cout, std::string description)
-        : Carte(nom,TypeRoyaume,cout), m_description(description) {}
+        : Carte(nom,TypeRoyaume,cout) {
+    m_description = nom + " (Cout: " + std::to_string(cout) + ", Desc:" + description +")\n";
+}
 
 Royaume::~Royaume() {}
 
 
-std::string& Carte::getDesc() const{
-    std::string description = getNom() + " (Cout: " + std::to_string(getCout()) + ", Desc:" + m_description +")\n";
-    return ;
+std::string& Royaume::getDesc() {
+    return m_description;
 }
 
 std::string Royaume::getDescription() const {
@@ -31,12 +32,15 @@ void Royaume::jouerAction(Joueur &joueur, Jeu &jeu) {
     std::cout<<DIM_TEXT<<getDescription()<<"\n"<<RESET;
     faireAction(joueur, jeu);
 }
+
 void Royaume::ajoutAction(Joueur & joueur, int nb){
     joueur.addNbActionPhase(nb);
 }
+
 void Royaume::ajoutAchat(Joueur & joueur, int nb) {
     joueur.addNbAchatPhase(nb);
 }
+
 void Royaume::ajouterValeurSupp(Joueur &joueur, int nbValeurSupp) {
     joueur.ajouterRetirerValeurSupp(nbValeurSupp);
 }

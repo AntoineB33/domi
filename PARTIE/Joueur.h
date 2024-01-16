@@ -74,6 +74,7 @@ private:
     std::map<Carte*,int> m_carteEnCoursDutilisation;
     std::map<Carte*,int> m_deck;
     std::list<Carte*> m_defausse;
+    Phase* m_phaseActuelle;
 
     const int m_numJoueur;
     int m_nbAchatPossible;

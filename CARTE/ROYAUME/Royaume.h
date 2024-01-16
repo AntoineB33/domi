@@ -11,7 +11,9 @@ public:
     Royaume(std::string nom, int cout,std::string description);
     ~Royaume();
 
-    std::string& getDesc() const override;
+    //GETTERS
+    std::string& getDesc() override;
+
     std::string getDescription() const;
 
     friend std::ostream& operator<<(std::ostream& os, const Royaume& royaume);
@@ -32,7 +34,6 @@ protected:
 
 
 private:
-    std::string m_description;
     virtual void faireAction(Joueur& joueur, Jeu& jeu) = 0;
 
 

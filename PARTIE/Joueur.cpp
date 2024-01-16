@@ -1,6 +1,6 @@
 #include "Joueur.h"
 #include "Jeu.h"
-#include "../case_insensitive_compare.h"
+#include "case_insensitive_compare.h"
 
 #include <random>
 
@@ -25,6 +25,7 @@
 
 Joueur::Joueur(const int numJoueur) :m_numJoueur(numJoueur), m_nbAchatPossible(1), m_nbActionPossible(1) , m_valeurSupp(0){
     couleurJ =  "\033["+std::to_string(m_numJoueur+33)+"m";
+    m_phaseActuelle = Phase::getFirstPhase();
 }
 
 Joueur::~Joueur() {
@@ -93,7 +94,7 @@ int Joueur::getId() const {
 
 bool Joueur::typeDansMain(TypeCarte type) const {
     for(std::pair<Carte*, int> carte : m_main){
-        if(carte.first->getTypeCarte() == TypeTresor){
+        if(carte.first->getTypeCarte() == type){
             return true;
         }
     }
@@ -423,6 +424,7 @@ void Joueur::tourJoueur(Jeu& jeu){
         // jeu.initJoueurPhase(*this);
         commandeSHOWME();
         // ACTION DU JOUEUR
+        m_phaseActuelle.jouerPhases(&this);
         jouerPhase(jeu);
         //
         jeu.changementDePhase();

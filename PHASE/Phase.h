@@ -12,6 +12,7 @@ public:
     virtual ~Phase();
     virtual Phase* phaseSuivante() = 0;
 
+    Phase* getFirstPhase();
     static Phase* getPhaseCourante();
     void initJoueur(Joueur &joueur);
     const std::string* getNomPhase() const;
@@ -25,10 +26,10 @@ public:
     virtual void jouerPhase(Jeu& jeu, Joueur& joueur);
 
 protected:
-    static Phase* phaseCourante;
 
 
 private:
+    static Phase* phaseCourante;
     const int m_nbINITachat;
     const int m_nbINITaction;
     const std::string m_nomPhase;

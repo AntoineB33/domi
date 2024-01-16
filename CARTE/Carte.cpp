@@ -6,11 +6,11 @@
 
 #include "Jeu.h"
 #include "Joueur.h"
+#include "case_insensitive_compare.h"
 
-#include "../case_insensitive_compare.h"
-
-Carte::Carte(std::string nom, TypeCarte typeCarte,int cout) :m_nom(nom), m_type(typeCarte),m_cout(cout){
-    description = "(Cout: " + std::to_string(cout) + ")\n";
+Carte::Carte(std::string nom, TypeCarte typeCarte,int cout) :
+    m_description("(Cout: " + std::to_string(cout) + ")\n"), m_nom(nom),
+    m_type(typeCarte), m_cout(cout) {
 }
 
 Carte::~Carte(){
@@ -19,7 +19,7 @@ Carte::~Carte(){
 
 ///GETTERS
 std::string& Carte::getDesc() {
-    return description;
+    return m_description;
 }
 
 
