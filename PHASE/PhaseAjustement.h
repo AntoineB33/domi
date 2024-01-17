@@ -5,18 +5,10 @@
 
 class PhaseAjustement : public Phase {
 public:
-    static PhaseAjustement* getInstancePhaseAjustement();
-    ~PhaseAjustement();
-
-    PhaseAjustement(const PhaseAjustement&) = delete;
-    PhaseAjustement& operator=(const PhaseAjustement&) = delete;
-
-    virtual Phase* phaseSuivante() override;
-    bool estAPhaseAjustement() override;
-
+    virtual Phase* getPhaseSuivante() override;
+    void jouerPhase(Jeu& jeu, Joueur& joueur) override;
 private:
     PhaseAjustement();
-    static PhaseAjustement* instancePhaseAjustement;
 };
 
-#endif // DOMI_PHASEAJUSTEMENT_H
+#endif //DOMI_PHASEAJUSTEMENT_H

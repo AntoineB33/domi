@@ -1,25 +1,45 @@
 #include "PhaseAjustement.h"
-#include "PhaseAction.h"
+#include "PhaseAchat.h"
+#include "Phase.h"
+#include "Joueur.h"
+#include "Jeu.h"
+#include "CouleurTerminal.h"
+#include <iostream>
 
-PhaseAjustement* PhaseAjustement::instancePhaseAjustement = new PhaseAjustement();
-
-PhaseAjustement* PhaseAjustement::getInstancePhaseAjustement() {
-    return instancePhaseAjustement;
+PhaseAjustement::PhaseAjustement() : Phase("PHASE ACHAT") {
 }
 
-PhaseAjustement::~PhaseAjustement() {
-    delete PhaseAjustement::instancePhaseAjustement;
+Phase* PhaseAjustement::getPhaseSuivante() {
+    return nullptr;
 }
 
-PhaseAjustement::PhaseAjustement() : Phase(0, 0, "PHASE AJUSTEMENT") {
 
-}
+/// IHM
 
-Phase* PhaseAjustement::phaseSuivante(){
-    Phase::phaseCourante = PhaseAction::getInstancePhaseAction();
-    return Phase::phaseCourante;
-}
 
-bool PhaseAjustement::estAPhaseAjustement() {
-    return true;
+void PhaseAjustement::jouerPhase(Jeu& jeu, Joueur& joueur) {
+    if(!joueur.typeDansMain(TypeTresor)) {
+        return;
+    }
+    afficherPhase(jeu, joueur);
+    std::cout << "Vous pouvez jouer des cartes.\n";
+    const std::map<Carte*, int>& main = joueur.getMain();
+    for(std::pair<Carte*, int> carte : main){
+        if(carte.first->getTypeCarte() == TypeTresor){
+            std::cout << "-> ";
+        } else {
+            std::cout << "   ";
+        }
+        std::cout << carte.second << " " << carte.first->getNom() << " ";
+        std::cout <<DIM_TEXT<<GRAY<< carte.first->getDesc() << "\n" << RESET;
+    }
+    std::string commande;
+    int nbAction = joueur.getNbAction();
+    for(int i = 0; i<nbAction; i++) {
+        Carte* carte = joueur.demandeChercherCarte(main, commande);
+        if(carte == nullptr){
+            break;
+        }
+        carte->jouerAction(joueur, jeu);
+    }
 }

@@ -6,57 +6,37 @@
 #include "CouleurTerminal.h"
 #include <iostream>
 
-PhaseAction* PhaseAction::instancePhaseAction = new PhaseAction();
-//Phase* Phase::phaseActuelle = PhaseAction::getInstancePhaseAction();
-
-PhaseAction* PhaseAction::getInstancePhaseAction() {
-    return instancePhaseAction;
+PhaseAction::PhaseAction() : Phase("PHASE ACTION") {
 }
 
-PhaseAction::~PhaseAction() {
-    delete PhaseAction::instancePhaseAction;
+Phase* PhaseAction::getPhaseSuivante() {
+    return PhaseAchat::getInstance();
 }
 
-PhaseAction::PhaseAction() : Phase(0, 1, "PHASE ACTION") {
-    Phase::setPhaseCourante(this);
-}
-
-Phase* PhaseAction::phaseSuivante(){
-    Phase::phaseCourante = PhaseAchat::getInstancePhaseAchat();
-    return Phase::phaseCourante;
-}
-
-bool PhaseAction::estAPhaseAction() {
-    return true;
+bool estTypeTresor(Carte* carte) {
+    return carte->getTypeCarte() == TypeTresor;
 }
 
 
 /// IHM
 
 
-void PhaseAction::jouerPhase(Jeu& jeu, Joueur& joueur){
+void PhaseAction::jouerPhase(Jeu& jeu, Joueur& joueur) {
     if(!joueur.typeDansMain(TypeTresor)) {
         return;
     }
-    Phase::jouerPhase(jeu, joueur);
+    afficherPhase(jeu, joueur);
     std::cout << "Vous pouvez jouer des cartes.\n";
-    const std::map<Carte*, int>& main = joueur.getMain();
-    for(std::pair<Carte*, int> carte : main){
-        if(carte.first->getTypeCarte() == TypeTresor){
-            std::cout << "-> ";
-        } else {
-            std::cout << "   ";
-        }
-        std::cout << carte.second << " " << carte.first->getNom() << " ";
-        std::cout <<DIM_TEXT<<GRAY<< carte.first->getDesc() << "\n" << RESET;
-    }
-    std::string commande;
+    const std::vector<std::pair<Carte*, int>>& main = joueur.getMain();
     int nbAction = joueur.getNbAction();
+    std::string commande;
     for(int i = 0; i<nbAction; i++) {
+        Carte::afficher(main, estTypeTresor);
         Carte* carte = joueur.demandeChercherCarte(main, commande);
         if(carte == nullptr){
             break;
         }
         carte->jouerAction(joueur, jeu);
+        joueur.mainVersUtilise(carte);
     }
 }

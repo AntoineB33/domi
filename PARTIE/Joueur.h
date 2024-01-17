@@ -9,6 +9,7 @@
 #include "Carte.h"
 
 class Jeu;
+class Phase;
 
 class Joueur {
 public:
@@ -21,10 +22,10 @@ public:
 
 
     //GETTERS
-    const std::map<Carte*,int>& getMain() const;
-    const std::map<Carte*,int>& getCarteEnCoursDutilisation() const;
-    const std::map<Carte*, int>& getDeck() const;
-    const std::list<Carte*>& getDefausse() const;
+    const std::vector<std::pair<Carte*, int>>& getMain() const;
+    const std::vector<std::pair<Carte*, int>>& getCarteEnCoursDutilisation() const;
+    const std::vector<std::pair<Carte*, int>>& getDeck() const;
+    const std::vector<std::pair<Carte*, int>>& getDefausse() const;
     int getNbAction() const;
     int getNbAchat() const;
     int getId() const;
@@ -32,8 +33,10 @@ public:
     // bool isInGodMode();
 
     //GESTIONS DES CARTES
+    void mainVersUtilise(Carte* c);
+    void reserveVersMain(Jeu& jeu, Carte* carte, int quantite);
 
-    bool prendreCartePlateau(Carte* carte, Jeu& jeu, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
+    bool prendreCartePlateau(Jeu& jeu, Carte* carte, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
     int getVictoireDansDeck();
 
 
@@ -41,12 +44,12 @@ public:
     void tourJoueur(Jeu &jeu);
 
     ///////////////////////////////////////ACTION DU JOUEUR (durant une phase ou via une carte)
-    bool acheterCarte(Carte* c, Jeu& jeu);
-    bool jouerCarteAction(Carte* c, Jeu& jeu);
+    bool acheterCarte(Jeu& jeu, Carte* c);
+    bool jouerCarteAction(Jeu& jeu, Carte* c);
     bool ajuster();
     ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
     bool recevoirCartePlateau(Jeu& jeu, Carte* carte,int coutMax);
-    bool ecarter(Jeu& jeu, Carte*, int quantite);
+    void ecarter(Jeu& jeu, Carte*, int quantite);
     void defaussPiocher();
     void addNbAchatPhase(int);
     void addNbActionPhase(int);
@@ -65,15 +68,16 @@ public:
 
     ///////////////////////////////////////IHM TERMINAL
     std::list<Carte*> commandeEcarter(Jeu& jeu, int quantite);
-    Carte* demandeChercherCarte(const std::map<Carte*,int>& m, std::string &commande) const;
+    Carte* demandeChercherCarte(const std::vector<std::pair<Carte*, int>>& li, std::string &commande) const;
     bool commandePiocherCarteDeck(int quantite = 1);
     void afficherMain();
+    void afficherUtilise();
 
 private:
-    std::map<Carte*,int> m_main;
-    std::map<Carte*,int> m_carteEnCoursDutilisation;
-    std::map<Carte*,int> m_deck;
-    std::list<Carte*> m_defausse;
+    std::vector<std::pair<Carte*, int>> m_main;
+    std::vector<std::pair<Carte*, int>> m_carteEnCoursDutilisation;
+    std::vector<std::pair<Carte*, int>> m_deck;
+    std::vector<std::pair<Carte*, int>> m_defausse;
     Phase* m_phaseActuelle;
 
     const int m_numJoueur;
@@ -92,7 +96,7 @@ private:
     ///////////////////////////////////////IHM TERMINAL
     std::string couleurJ;
 
-    void jouerPhase(Jeu &jeu);
+
     void commandeHELP();
     void commandeSHOWME();
     int demandeQuantiteCarte(std::map<Carte*,int>& m, Carte* c, std::string &commande);

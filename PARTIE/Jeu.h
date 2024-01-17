@@ -19,7 +19,7 @@ public:
     std::list<Carte*> getToutesLesCartes() const;
 
     bool commandePartieEstFinie();
-    bool getFini() const;
+    bool estFini() const;
     void setFini(bool);
 
     void afficherCartesPlateau();
@@ -37,7 +37,7 @@ public:
 
 
     void changementDePhase();
-    void commandeGODMODE(std::map<Carte*, int>& m);
+    void commandeGODMODE(std::vector<std::pair<Carte*, int>>& m);
     bool estAPhaseAjustement();
     // void initJoueurPhase(Joueur& joueur);
     //futur private
@@ -51,10 +51,9 @@ private:
     int m_nbJoueur;
     std::vector<Joueur> m_joueurs;
     bool m_fini; //bool pour savoir si la partie est fini, permet d'eviter de dupliquer les calculs
-    Phase* m_phaseActuelle;
-    std::map<Carte*, int> m_cartesPlateau;//cartes pas encore achetée
+    std::vector<std::pair<Carte*, int>> reserve;
     std::list<Carte*> rebus;
-    std::list<Carte*> toutesLesCartes;
+    std::list<Carte*> allInstancesCards;
 
     void tour(int numJoueur = 0);//int numJoueur permet de reprendre la partie depuis l'enregistrement
 

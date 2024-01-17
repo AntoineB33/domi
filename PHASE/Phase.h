@@ -8,31 +8,23 @@ class Jeu;
 
 class Phase {
 public:
-    Phase(int nbINITachat, int nbINITaction, std::string nomPhase);
     virtual ~Phase();
-    virtual Phase* phaseSuivante() = 0;
-
-    Phase* getFirstPhase();
-    static Phase* getPhaseCourante();
-    void initJoueur(Joueur &joueur);
+    static Phase* getInstance();
+    virtual Phase* getPhaseSuivante() = 0;
     const std::string* getNomPhase() const;
-    static void setPhaseCourante(Phase* phaseCourante);
-    virtual bool estAPhaseAchat();
-    virtual bool estAPhaseAction();
-    virtual bool estAPhaseAjustement();
+
 
     /// IHM
-    void afficherPhase();
-    virtual void jouerPhase(Jeu& jeu, Joueur& joueur);
+    virtual void jouerPhase(Jeu& jeu, Joueur& joueur) = 0;
 
 protected:
+    Phase(std::string nomPhase);
+    void afficherPhase(Jeu& jeu, Joueur& joueur);
 
 
 private:
-    static Phase* phaseCourante;
-    const int m_nbINITachat;
-    const int m_nbINITaction;
     const std::string m_nomPhase;
+    static Phase* instance;
 };
 
 

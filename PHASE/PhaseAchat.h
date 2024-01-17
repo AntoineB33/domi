@@ -5,19 +5,10 @@
 
 class PhaseAchat : public Phase {
 public:
-    static PhaseAchat* getInstancePhaseAchat();
-    ~PhaseAchat();
-
-    PhaseAchat(const PhaseAchat&) = delete;
-    PhaseAchat& operator=(const PhaseAchat&) = delete;
-
-    virtual Phase* phaseSuivante() override;
-    bool estAPhaseAchat() override;
+    virtual Phase* getPhaseSuivante() override;
     void jouerPhase(Jeu& jeu, Joueur& joueur) override;
-
 private:
     PhaseAchat();
-    static PhaseAchat* instancePhaseAchat;
 };
 
-#endif // DOMI_PHASEACHAT_H
+#endif //DOMI_PHASEACHAT_H

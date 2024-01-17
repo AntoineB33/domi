@@ -7,6 +7,7 @@
 #include "Jeu.h"
 #include "Joueur.h"
 #include "case_insensitive_compare.h"
+#include "CouleurTerminal.h"
 
 Carte::Carte(std::string nom, TypeCarte typeCarte,int cout) :
     m_description("(Cout: " + std::to_string(cout) + ")\n"), m_nom(nom),
@@ -77,7 +78,7 @@ void Carte::jouerAction(Joueur &joueur, Jeu &jeu) {
 
 
 
-bool Carte::ajoutSuppCarte(std::list<Carte*>& l, Carte* c, int quantite) {
+void Carte::ajoutSuppCarte(std::list<Carte*>& l, Carte* c, int quantite) {
     if(quantite > 0){
         for(int i = 0; i < quantite; i++){
             l.push_back(c);
@@ -89,46 +90,61 @@ bool Carte::ajoutSuppCarte(std::list<Carte*>& l, Carte* c, int quantite) {
             l.pop_back();
         }
     }
-    return true;
+    return;
 }
 
-bool Carte::ajoutSuppCarte(std::map<Carte*, int>& m, Carte* c, int quantite){
-    auto it = m.find(c);
-    if( quantite > 0){
-        if (it != m.end()) {
-            it->second += quantite;
-            return true;
+void Carte::ajoutSuppCarte(std::vector<std::pair<Carte*, int>>& li, Carte* c, int quantite, bool canErase){
+    for(long unsigned int i = 0; i<li.size(); i++){
+        if(li[i].first == c){
+            if(quantite > 0){
+                li[i].second += quantite;
+            }
+            else{
+                int q = quantite + li[i].second;
+                if(q > 0 || (q==0 && !canErase)) {
+                    li[i].second = q;
+                }
+                else if (q == 0) {
+                    li.erase(li.begin() + i);
+                }
+            }
+            return;
         }
-        m.insert(std::pair<Carte*, int>(c, quantite));
-        return true;
     }
-    if(it == m.end()){
-        return false;
+    if(quantite > 0){
+        li.push_back(std::make_pair(c, quantite));
     }
-    int q = quantite + (it -> second);
-    if(q > 0) {
-        it->second = q;
-    }
-    else if (q == 0) {
-        m.erase(it);
-    }
-    else{
-        return false;//trop de carte à supprimer
-    }
-    return true;
 }
 
-Carte* Carte::chercherCarte(std::string mot, std::map<Carte*, int> m){
-    for(auto entry : m){
-        if(caseInsensitiveCompare(mot, entry.first->getNom())){//case insensitive compare
-            return entry.first;
+Carte* Carte::chercherCarte(std::string mot, std::vector<std::pair<Carte*, int>> li){
+    try {
+        long unsigned int place = std::stoi(mot);
+        if(place >= li.size()){
+            return nullptr;
+        }
+    } catch (std::exception& e) {
+        for(auto entry : li){
+            if(caseInsensitiveCompare(mot, entry.first->getNom())) {
+                return entry.first;
+            }
         }
     }
     return nullptr;
 }
 
-void Carte::afficher(std::map<Carte *, int> &m) {
-    for (const auto& entry : m) {
-        std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
+void Carte::afficher(const std::vector<std::pair<Carte *, int>> &li, bool (*condition)(Carte *)) {
+    for(long unsigned int i = 0; i<li.size(); i++){
+        if(condition(li[i].first)){
+            std::cout << "-> ";
+        } else {
+            std::cout << "   ";
+        }
+        std::cout << li[i].second << " ";
+        afficherCarteEtDesc(li[i].first);
     }
+}
+
+void Carte::afficherCarteEtDesc(Carte* c) {
+    std::cout << c->getNom() << " ";
+    std::cout <<DIM_TEXT<<GRAY<< c->getDesc() << "\n" << RESET;
 }

@@ -6,30 +6,34 @@
 
 #include <iostream>
 
-Phase* Phase::phaseCourante = nullptr;
+Phase* Phase::instance = nullptr;
 
-Phase::Phase(int nbINITachat, int nbINITaction, std::string  nomPhase): m_nbINITachat(nbINITachat), m_nbINITaction(nbINITaction), m_nomPhase(nomPhase){
+Phase::Phase(std::string  nomPhase): m_nomPhase(nomPhase){
+    instance = this;
 }
 
 Phase::~Phase() {
+    delete instance;
 }
 
-Phase* Phase::getFirstPhase(){
-    Phase::phaseCourante = PhaseAction::getInstancePhaseAction();
-    return Phase::phaseCourante;
+const std::string* Phase::getNomPhase() const {
+    return &m_nomPhase;
 }
 
-void Phase::setPhaseCourante(Phase* p){
-    phaseCourante = p;
+Phase* Phase::getInstance() {
+    return instance;
 }
 
-Phase* Phase::getPhaseCourante(){
-    return Phase::phaseCourante;
+Phase* Phase::getPhaseSuivante() {
+    return instance;
 }
 
-void Phase::jouerPhase(Jeu& jeu, Joueur& joueur){
+
+
+void Phase::afficherPhase(Jeu& jeu, Joueur& joueur){
     jeu.afficherCartesPlateau();
     joueur.afficherMain();
+    joueur.afficherUtilise();
     std::cout << "Phase " << *getNomPhase() << " du joueur " << joueur.getId() << "\n";
     std::cout << joueur.getNbAction() << " Action | " << joueur.getNbAction() << " Achats\n";
 }
@@ -42,18 +46,4 @@ void Phase::jouerPhase(Jeu& jeu, Joueur& joueur){
 //     }
 // };
 
-const std::string* Phase::getNomPhase() const {
-    return &m_nomPhase;
-}
 
-bool Phase::estAPhaseAchat() {
-    return false;
-}
-
-bool Phase::estAPhaseAction() {
-    return false;
-}
-
-bool Phase::estAPhaseAjustement() {
-    return false;
-}
