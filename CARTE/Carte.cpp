@@ -79,20 +79,20 @@ void Carte::jouerAction(Joueur &joueur, Jeu &jeu) {
 
 
 
-void Carte::ajoutSuppCarte(std::list<Carte*>& l, Carte* c, int quantite) {
-    if(quantite > 0){
-        for(int i = 0; i < quantite; i++){
-            l.push_back(c);
-        }
-    }
-    else{
-        int i = 0;
-        while( i < quantite &&  !l.empty()){
-            l.pop_back();
-        }
-    }
-    return;
-}
+// void Carte::ajoutSuppCarte(std::list<Carte*>& l, Carte* c, int quantite) {
+//     if(quantite > 0){
+//         for(int i = 0; i < quantite; i++){
+//             l.push_back(c);
+//         }
+//     }
+//     else{
+//         int i = 0;
+//         while( i < quantite &&  !l.empty()){
+//             l.pop_back();
+//         }
+//     }
+//     return;
+// }
 
 void Carte::ajoutSuppCarte(std::vector<std::pair<Carte*, int>>& li, Carte* c, int quantite, bool canErase){
     for(long unsigned int i = 0; i<li.size(); i++){

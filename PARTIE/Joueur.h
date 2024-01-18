@@ -3,10 +3,10 @@
 
 
 // #include <map>
-#include <list>
-#include <string>
-#include <functional>
-#include <algorithm>
+// #include <list>
+// #include <string>
+// #include <functional>
+// #include <algorithm>
 
 #include "Carte.h"
 
@@ -26,13 +26,13 @@ public:
     //GETTERS
     const std::vector<std::pair<Carte*, int>>& getMain() const;
     const std::vector<std::pair<Carte*, int>>& getCarteEnCoursDutilisation() const;
-    std::list<Carte*>& getDeck() const;
+    // const std::list<Carte*>& getDeck() const;
     const std::vector<std::pair<Carte*, int>>& getDefausse() const;
     int getNbAction() const;
     int getNbAchat() const;
     int getId() const;
     bool typeDansMain(TypeCarte type) const;
-    int nbPointVictoire() const;
+    // int nbPointVictoire() const;
     int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
     // bool isInGodMode();
 

@@ -75,9 +75,9 @@ const std::vector<std::pair<Carte*, int>>& Joueur::getCarteEnCoursDutilisation()
     return m_carteEnCoursDutilisation;
 }
 
-std::list<Carte*>& Joueur::getDeck() const {
-    return m_deck;
-}
+// const std::list<Carte*>& Joueur::getDeck() const {
+//     return m_deck;
+// }
 
 const std::vector<std::pair<Carte*, int>> & Joueur::getDefausse() const {
     return m_defausse;

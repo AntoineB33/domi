@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -Werror 
+CXXFLAGS=-Wall -Wextra -Werror -std=c++11
 
 REP_CARTE=./CARTE
 REP_TRESOR=$(REP_CARTE)/TRESOR
