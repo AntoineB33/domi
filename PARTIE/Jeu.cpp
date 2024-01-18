@@ -1,5 +1,6 @@
 #include "Jeu.h"
 #include <iostream>
+#include <functional>
 
 #include "Cuivre.h"
 #include "Argent.h"
@@ -48,9 +49,9 @@ Joueur* Jeu::getJoueur(int i) {
     return &m_joueurs.at(i);
 }
 
-std::list<Carte*> Jeu::getToutesLesCartes() const {
-    return allInstancesCards;
-}
+// std::list<Carte*> Jeu::getToutesLesCartes() const {
+//     return allInstancesCards;
+// }
 
 bool Jeu::partieEstFinie() {
     int nbPilesVides = 0;
@@ -70,14 +71,23 @@ bool Jeu::partieEstFinie() {
 int Jeu::getGagnant() {
     int pointMax = 0;
     int gagnant = 0;
-    for(int joueurNum = 0; joueurNum < m_nbJoueur; joueurNum++){
-        int point = m_joueurs.at(joueurNum).getVictoireDansDeck();
+    for(Joueur& j : m_joueurs){
+        int point = j.getVictoireDansDeck();
         if(point > pointMax){
-            gagnant = joueurNum;
+            gagnant = j.getId();
             pointMax = point;
         }
     }
     return gagnant;
+}
+
+bool Jeu::hasCarteAchetable(int disponible) {
+    for(long unsigned int i = 0; i<reserve.size(); i++){
+        if(reserve.at(i).first->getCout() <= disponible && reserve.at(i).second > 0){
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Jeu::estFini() const {return m_fini;}
@@ -89,23 +99,20 @@ void Jeu::setFini(bool fini){
 // bool Jeu::carteDisponible(Carte *carte) {
 //     return m_cartesPlateau.find(carte) -> second > 0;
 // }
-// bool Jeu::retirerCarteDisponible(Carte *carte, int quantite) {
-//     if(carteDisponible(carte)){
-//         Carte::ajoutSuppCarte(m_cartesPlateau, carte,-quantite);
-//         return true;
-//     }
-
-//     return false;
-// }
+void Jeu::retirerDeReserve(Carte *carte) {
+    Carte::ajoutSuppCarte(reserve, carte, -1);
+}
 
 void Jeu::ajoutCartesDefausses(Carte* carte, int quantite) {
     for(Joueur& j : m_joueurs){
-        j.prendreCartePlateau(*this, carte, quantite, true);
+        j.reserveVersDeck(*this, carte, quantite, true);
     }
 }
 
-void Jeu::mettreDansRebus(Carte *carte) {
-    rebus.push_back(carte);
+void Jeu::ecarter(Carte *carte, int quantite) {
+    for(int i = 0; i < quantite; i++) {
+        rebus.push_back(carte);
+    }
 }
 
 
@@ -117,39 +124,62 @@ void Jeu::initCartesPlateau() {
     if(m_nbJoueur != 2){
         quantite = 12;
     }
+    reserve = {
+            {Domaine::makeDomaine(), quantite},
+            {Duche::makeDuche(), quantite},
+            {Province::makeProvince(), quantite},
+            {Malediction::makeMalediction(), 30},
+            {Cuivre::makeCuivre(), 60},
+            {Argent::makeArgent(), 40},
+            {Or::makeOr(), 30},
+            {Atelier::makeAtelier(), 10},
+            {Bucheron::makeBucheron(), 10},
+            {Cave::makeCave(), 10},
+            {Chapelle::makeChapelle(), 10},
+            {Forgeron::makeForgeron(), 10},
+            {Marche::makeMarche(), 10},
+            {Mine::makeMine(), 10},
+            {Renovation::makeRenovation(), 10},
+            {Sorciere::makeSorciere(), 10},
+            {Village::makeVillage(), 10}
 
-    Carte::ajoutSuppCarte(reserve, Domaine::makeDomaine(),quantite);
-    Carte::ajoutSuppCarte(reserve, Duche::makeDuche(),quantite);
-    Carte::ajoutSuppCarte(reserve, Province::makeProvince(),quantite);
+    };
 
-    /////////////// CARTE TRESOR
-    Carte::ajoutSuppCarte(reserve, Malediction::makeMalediction(),30);
-    Carte::ajoutSuppCarte(reserve, Cuivre::makeCuivre(),60);
-    Carte::ajoutSuppCarte(reserve, Argent::makeArgent(),40);
-    Carte::ajoutSuppCarte(reserve, Or::makeOr(),30);
+    // Carte::ajoutSuppCarte(reserve, Domaine::makeDomaine(),quantite);
+    // Carte::ajoutSuppCarte(reserve, Duche::makeDuche(),quantite);
+    // Carte::ajoutSuppCarte(reserve, Province::makeProvince(),quantite);
 
-    /////////////// CARTE ROYAUME
-    Carte::ajoutSuppCarte(reserve, Atelier::makeAtelier(),10);
-    Carte::ajoutSuppCarte(reserve, Bucheron::makeBucheron(),10);
-    Carte::ajoutSuppCarte(reserve, Cave::makeCave(),10);
-    Carte::ajoutSuppCarte(reserve, Chapelle::makeChapelle(),10);
-    Carte::ajoutSuppCarte(reserve, Forgeron::makeForgeron(),10);
-    Carte::ajoutSuppCarte(reserve, Marche::makeMarche(),10);
-    Carte::ajoutSuppCarte(reserve, Mine::makeMine(),10);
-    Carte::ajoutSuppCarte(reserve, Renovation::makeRenovation(),10);
-    Carte::ajoutSuppCarte(reserve, Sorciere::makeSorciere(),10);
-    Carte::ajoutSuppCarte(reserve, Village::makeVillage(),10);
+    // /////////////// CARTE TRESOR
+    // Carte::ajoutSuppCarte(reserve, Malediction::makeMalediction(),30);
+    // Carte::ajoutSuppCarte(reserve, Cuivre::makeCuivre(),60);
+    // Carte::ajoutSuppCarte(reserve, Argent::makeArgent(),40);
+    // Carte::ajoutSuppCarte(reserve, Or::makeOr(),30);
+
+    // /////////////// CARTE ROYAUME
+    // Carte::ajoutSuppCarte(reserve, Atelier::makeAtelier(),10);
+    // Carte::ajoutSuppCarte(reserve, Bucheron::makeBucheron(),10);
+    // Carte::ajoutSuppCarte(reserve, Cave::makeCave(),10);
+    // Carte::ajoutSuppCarte(reserve, Chapelle::makeChapelle(),10);
+    // Carte::ajoutSuppCarte(reserve, Forgeron::makeForgeron(),10);
+    // Carte::ajoutSuppCarte(reserve, Marche::makeMarche(),10);
+    // Carte::ajoutSuppCarte(reserve, Mine::makeMine(),10);
+    // Carte::ajoutSuppCarte(reserve, Renovation::makeRenovation(),10);
+    // Carte::ajoutSuppCarte(reserve, Sorciere::makeSorciere(),10);
+    // Carte::ajoutSuppCarte(reserve, Village::makeVillage(),10);
 
     //Pour avoir une liste constante de pointeurs pour toutes les cartes
-    for(std::pair<Carte*, int> p : reserve){
-        allInstancesCards.push_back(p.first);
-    }
+    // for(std::pair<Carte*, int> p : reserve){
+    //     allInstancesCards.push_back(p.first);
+    // }
 
 }
 void Jeu::initJoueur(Joueur& joueur){
-    joueur.prendreCartePlateau(*this, Cuivre::makeCuivre(), 7, true);
-    joueur.prendreCartePlateau(*this, Domaine::makeDomaine(), 3, true);
-
+    for(int i = 0; i<7; i++){
+        joueur.reserveVersDeck(*this, Cuivre::makeCuivre(), true);
+    }
+    for(int i = 0; i<3; i++){
+        joueur.reserveVersDeck(*this, Domaine::makeDomaine(), true);
+    }
     joueur.piocherCarteDeck(5);
 }
 
@@ -190,7 +220,7 @@ void Jeu::lancementJeu() {
 
 
     // TODO : faire l'enregistrement la si on a le temp
-    afficherCartesPlateau();
+    afficherReserve();
     //si nouvelle partie, on remet s'assure d etre dans la bonne phase
 
     tour(0);//pour l'instant pas d'enregistrement donc le jeu commence au joueur 0
@@ -213,13 +243,11 @@ bool Jeu::commandePartieEstFinie() {
     return false;
 }
 
-void Jeu::afficherCartesPlateau() {
+int Jeu::afficherReserve(bool pourPrendre, std::function<bool(Carte*)> condition) {
     std::cout<<"CARTE SUR LE PLATEAU : \n";
-    for (const auto& entry : reserve) {
-        std::cout<< "   " << *(entry.first) << ": " << entry.second << "\n";
-    }
+    return Carte::afficher(reserve, pourPrendre, condition);
 }
 
-Carte* Jeu::demandeCartePlateau(Joueur& joueur, std::string& commande) {
-    return joueur.demandeChercherCarte(reserve, commande);
-}
+// Carte* Jeu::demandeCartePlateau(Joueur& joueur, std::string& commande) {
+//     return joueur.demandeChercherCarte(reserve, commande);
+// }

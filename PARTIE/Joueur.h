@@ -2,9 +2,11 @@
 #define DOMI_JOUEUR_H
 
 
-#include <map>
+// #include <map>
 #include <list>
 #include <string>
+#include <functional>
+#include <algorithm>
 
 #include "Carte.h"
 
@@ -24,19 +26,22 @@ public:
     //GETTERS
     const std::vector<std::pair<Carte*, int>>& getMain() const;
     const std::vector<std::pair<Carte*, int>>& getCarteEnCoursDutilisation() const;
-    const std::vector<std::pair<Carte*, int>>& getDeck() const;
+    std::list<Carte*>& getDeck() const;
     const std::vector<std::pair<Carte*, int>>& getDefausse() const;
     int getNbAction() const;
     int getNbAchat() const;
     int getId() const;
     bool typeDansMain(TypeCarte type) const;
+    int nbPointVictoire() const;
+    int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
     // bool isInGodMode();
 
     //GESTIONS DES CARTES
     void mainVersUtilise(Carte* c);
-    void reserveVersMain(Jeu& jeu, Carte* carte, int quantite);
+    void reserveVersMain(Jeu& jeu, Carte* carte);
+    void mettreMainDansDefausse();
 
-    bool prendreCartePlateau(Jeu& jeu, Carte* carte, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
+    bool reserveVersDeck(Jeu& jeu, Carte* carte, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
     int getVictoireDansDeck();
 
 
@@ -49,7 +54,7 @@ public:
     bool ajuster();
     ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
     bool recevoirCartePlateau(Jeu& jeu, Carte* carte,int coutMax);
-    void ecarter(Jeu& jeu, Carte*, int quantite);
+    void ecarter(Jeu& jeu, Carte* carte, int quantite = 1);
     void defaussPiocher();
     void addNbAchatPhase(int);
     void addNbActionPhase(int);
@@ -59,24 +64,25 @@ public:
 
     //futures metohdes private , pour l'instant en public pour les tests
     std::list<Carte*> piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
-    bool defausserCarte(Carte*carte);
-    bool defausserCarte();
+    void defausserCarte(Carte*carte);
+    void defausserCarte();
     bool mettreDansRebus(Jeu& jeu, Carte *carte);
-    bool mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
+    void mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
 
 
 
     ///////////////////////////////////////IHM TERMINAL
     std::list<Carte*> commandeEcarter(Jeu& jeu, int quantite);
-    Carte* demandeChercherCarte(const std::vector<std::pair<Carte*, int>>& li, std::string &commande) const;
+    Carte* demandeChercherCarte(const std::vector<std::pair<Carte*, int>>& li, std::string &commande, int& idCarte) const;
     bool commandePiocherCarteDeck(int quantite = 1);
-    void afficherMain();
+    void afficherMain(std::function<bool(Carte*)> condition = [](Carte*) { return false; }, int start = 0);
     void afficherUtilise();
+    void piocher(int quantite = 1);
 
 private:
     std::vector<std::pair<Carte*, int>> m_main;
     std::vector<std::pair<Carte*, int>> m_carteEnCoursDutilisation;
-    std::vector<std::pair<Carte*, int>> m_deck;
+    std::list<Carte*> m_deck;
     std::vector<std::pair<Carte*, int>> m_defausse;
     Phase* m_phaseActuelle;
 
@@ -85,12 +91,8 @@ private:
     int m_nbActionPossible;
     int m_valeurSupp; //donner par les cartes comme : marché
 
-    int nbPointVictoire();
-
-    int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
     bool peutAcheterCarte(Carte* carte, Jeu& jeu);
-    bool prendreArgent(int valeur);
-    bool mettreCarteDefausseDansDeck();
+    void prendreArgent(int valeur);
 
 
     ///////////////////////////////////////IHM TERMINAL
@@ -99,7 +101,7 @@ private:
 
     void commandeHELP();
     void commandeSHOWME();
-    int demandeQuantiteCarte(std::map<Carte*,int>& m, Carte* c, std::string &commande);
+    // int demandeQuantiteCarte(std::map<Carte*,int>& m, Carte* c, std::string &commande);
 
     void commandeAchat(Jeu &jeu);
     void commandeAction(Jeu &Jeu);
@@ -107,6 +109,10 @@ private:
     void commandeGODMODE(Jeu& jeu);
     void faireAjustement(Jeu& jeu);
     void commandeDefausserCartes();
+
+    
+    void mettreDefausseDansDeck();
+    void melangerDeck();
 
 
 

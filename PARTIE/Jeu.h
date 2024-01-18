@@ -2,6 +2,7 @@
 #define DOMI_JEU_H
 
 #include <vector>
+#include <functional>
 #include "Joueur.h"
 
 #include "Phase.h"
@@ -21,12 +22,13 @@ public:
     bool commandePartieEstFinie();
     bool estFini() const;
     void setFini(bool);
+    bool hasCarteAchetable(int disponible);
 
-    void afficherCartesPlateau();
+    int afficherReserve(bool pourPrendre = false, std::function<bool(Carte*)> condition = [](Carte*) { return false; });
 
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
-    bool retirerCarteDisponible(Carte* carte, int quantite = 1);
-    void mettreDansRebus(Carte *carte);
+    void retirerDeReserve(Carte* carte);
+    void ecarter(Carte *carte, int quantite = 1);
     void ajoutCartesDefausses(Carte* carte, int quantite = 1);
 
     bool estAPhaseAction();
@@ -53,7 +55,7 @@ private:
     bool m_fini; //bool pour savoir si la partie est fini, permet d'eviter de dupliquer les calculs
     std::vector<std::pair<Carte*, int>> reserve;
     std::list<Carte*> rebus;
-    std::list<Carte*> allInstancesCards;
+    // std::list<Carte*> allInstancesCards;
 
     void tour(int numJoueur = 0);//int numJoueur permet de reprendre la partie depuis l'enregistrement
 

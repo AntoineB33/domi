@@ -13,33 +13,42 @@ Phase* PhaseAchat::getPhaseSuivante() {
     return PhaseAjustement::getInstance();
 }
 
+bool estTypeTresor(Carte* carte) {
+    return carte->getTypeCarte() == TypeTresor;
+}
+
 
 /// IHM
 
 
 void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
-    if(!joueur.typeDansMain(TypeTresor)) {
-        return;
-    }
-    afficherPhase(jeu, joueur);
-    std::cout << "Vous pouvez jouer des cartes.\n";
     const std::vector<std::pair<Carte*, int>>& main = joueur.getMain();
-    for(std::pair<Carte*, int> carte : main){
-        if(carte.first->getTypeCarte() == TypeTresor){
-            std::cout << "-> ";
-        } else {
-            std::cout << "   ";
-        }
-        std::cout << carte.second << " " << carte.first->getNom() << " ";
-        std::cout <<DIM_TEXT<<GRAY<< carte.first->getDesc() << "\n" << RESET;
-    }
-    std::string commande;
     int nbAction = joueur.getNbAction();
+    std::string commande;
     for(int i = 0; i<nbAction; i++) {
-        Carte* carte = joueur.demandeChercherCarte(main, commande);
+        int disponible = joueur.nbValeurDisponible();
+        if(!jeu.hasCarteAchetable(disponible)) {
+            std::cout << "Il n'y a plus de carte achetable.\n";
+            return;
+        }
+        int lastId = jeu.afficherReserve(true, [disponible](Carte* carte) -> bool {
+            return carte->getCout() <= disponible;
+        });
+        joueur.afficherUtilise();
+        afficherPhase(joueur);
+        joueur.afficherMain([](Carte* carte) -> bool {
+            return carte->getTypeCarte() == TypeTresor;
+        }, lastId);
+        int idCarte = 0;
+        Carte* carte = joueur.demandeChercherCarte(main, commande, idCarte);
         if(carte == nullptr){
             break;
         }
-        carte->jouerAction(joueur, jeu);
+        if(idCarte<lastId) {
+            joueur.mainVersUtilise(carte);
+        } else {
+            joueur.acheterCarte(jeu, carte);
+        }
+        joueur.addNbAchatPhase(-1);
     }
 }

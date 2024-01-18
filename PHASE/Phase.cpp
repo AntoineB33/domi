@@ -30,10 +30,7 @@ Phase* Phase::getPhaseSuivante() {
 
 
 
-void Phase::afficherPhase(Jeu& jeu, Joueur& joueur){
-    jeu.afficherCartesPlateau();
-    joueur.afficherMain();
-    joueur.afficherUtilise();
+void Phase::afficherPhase(Joueur& joueur){
     std::cout << "Phase " << *getNomPhase() << " du joueur " << joueur.getId() << "\n";
     std::cout << joueur.getNbAction() << " Action | " << joueur.getNbAction() << " Achats\n";
 }

@@ -1,6 +1,7 @@
 #include "Carte.h"
 
 #include <iostream>
+#include <functional>
 
 #include <string>
 
@@ -116,12 +117,13 @@ void Carte::ajoutSuppCarte(std::vector<std::pair<Carte*, int>>& li, Carte* c, in
     }
 }
 
-Carte* Carte::chercherCarte(std::string mot, std::vector<std::pair<Carte*, int>> li){
+Carte* Carte::chercherCarte(std::string mot, std::vector<std::pair<Carte*, int>> li, int& idCarte){
     try {
         long unsigned int place = std::stoi(mot);
         if(place >= li.size()){
             return nullptr;
         }
+        idCarte = place;
     } catch (std::exception& e) {
         for(auto entry : li){
             if(caseInsensitiveCompare(mot, entry.first->getNom())) {
@@ -132,16 +134,20 @@ Carte* Carte::chercherCarte(std::string mot, std::vector<std::pair<Carte*, int>>
     return nullptr;
 }
 
-void Carte::afficher(const std::vector<std::pair<Carte *, int>> &li, bool (*condition)(Carte *)) {
+int Carte::afficher(const std::vector<std::pair<Carte *, int>> &li, bool pourPrendre, std::function<bool(Carte*)> condition, int start) {
     for(long unsigned int i = 0; i<li.size(); i++){
         if(condition(li[i].first)){
             std::cout << "-> ";
         } else {
             std::cout << "   ";
         }
-        std::cout << li[i].second << " ";
+        if(pourPrendre) {
+            std::cout << start << ": " << li[i].second << " ";
+        }
+        start++;
         afficherCarteEtDesc(li[i].first);
     }
+    return start;
 }
 
 void Carte::afficherCarteEtDesc(Carte* c) {

@@ -19,7 +19,7 @@ public:
 
 protected:
     Phase(std::string nomPhase);
-    void afficherPhase(Jeu& jeu, Joueur& joueur);
+    void afficherPhase(Joueur& joueur);
 
 
 private:

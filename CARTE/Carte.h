@@ -5,6 +5,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <functional>
 
 
 
@@ -45,8 +46,8 @@ public:
     //methode utile pour d'autre classe
     static void ajoutSuppCarte(std::list<Carte*>& l, Carte* c, int  quantite = 1);//ne supprime qque les derniere carte
     static void ajoutSuppCarte(std::vector<std::pair<Carte*, int>>& m, Carte* c, int quantite = 1, bool canErase = true);
-    static Carte* chercherCarte(std::string, std::vector<std::pair<Carte*, int>> m);
-    static void afficher(const std::vector<std::pair<Carte *, int>> &li, bool (*condition)(Carte *) = [](Carte *) { return true; });
+    static Carte* chercherCarte(std::string, std::vector<std::pair<Carte*, int>> m, int& idCarte);
+    static int afficher(const std::vector<std::pair<Carte *, int>> &li, bool pourPrendre = false, std::function<bool(Carte*)> condition = [](Carte*) { return false; }, int start = 0);
     static void afficherCarteEtDesc(Carte* c);
 
 protected:

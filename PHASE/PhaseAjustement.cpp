@@ -18,28 +18,7 @@ Phase* PhaseAjustement::getPhaseSuivante() {
 
 
 void PhaseAjustement::jouerPhase(Jeu& jeu, Joueur& joueur) {
-    if(!joueur.typeDansMain(TypeTresor)) {
-        return;
-    }
-    afficherPhase(jeu, joueur);
-    std::cout << "Vous pouvez jouer des cartes.\n";
-    const std::map<Carte*, int>& main = joueur.getMain();
-    for(std::pair<Carte*, int> carte : main){
-        if(carte.first->getTypeCarte() == TypeTresor){
-            std::cout << "-> ";
-        } else {
-            std::cout << "   ";
-        }
-        std::cout << carte.second << " " << carte.first->getNom() << " ";
-        std::cout <<DIM_TEXT<<GRAY<< carte.first->getDesc() << "\n" << RESET;
-    }
-    std::string commande;
-    int nbAction = joueur.getNbAction();
-    for(int i = 0; i<nbAction; i++) {
-        Carte* carte = joueur.demandeChercherCarte(main, commande);
-        if(carte == nullptr){
-            break;
-        }
-        carte->jouerAction(joueur, jeu);
-    }
+    joueur.mettreMainDansDefausse();
+    joueur.piocher(5);
+    (void)jeu;
 }

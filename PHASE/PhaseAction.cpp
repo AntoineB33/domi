@@ -13,8 +13,8 @@ Phase* PhaseAction::getPhaseSuivante() {
     return PhaseAchat::getInstance();
 }
 
-bool estTypeTresor(Carte* carte) {
-    return carte->getTypeCarte() == TypeTresor;
+bool estTypeAction(Carte* carte) {
+    return carte->getTypeCarte() == TypeRoyaume;
 }
 
 
@@ -22,21 +22,24 @@ bool estTypeTresor(Carte* carte) {
 
 
 void PhaseAction::jouerPhase(Jeu& jeu, Joueur& joueur) {
-    if(!joueur.typeDansMain(TypeTresor)) {
+    if(!joueur.typeDansMain(TypeRoyaume)) {
         return;
     }
-    afficherPhase(jeu, joueur);
-    std::cout << "Vous pouvez jouer des cartes.\n";
-    const std::vector<std::pair<Carte*, int>>& main = joueur.getMain();
-    int nbAction = joueur.getNbAction();
-    std::string commande;
-    for(int i = 0; i<nbAction; i++) {
-        Carte::afficher(main, estTypeTresor);
-        Carte* carte = joueur.demandeChercherCarte(main, commande);
-        if(carte == nullptr){
-            break;
-        }
-        carte->jouerAction(joueur, jeu);
-        joueur.mainVersUtilise(carte);
-    }
+    jeu.afficherReserve();
+    // joueur.afficherMain();
+    // joueur.afficherUtilise();
+    // afficherPhase(joueur);
+    // std::cout << "Vous pouvez jouer des cartes.\n";
+    // const std::vector<std::pair<Carte*, int>>& main = joueur.getMain();
+    // int nbAction = joueur.getNbAction();
+    // std::string commande;
+    // for(int i = 0; i<nbAction; i++) {
+    //     Carte::afficher(main, estTypeAction);
+    //     Carte* carte = joueur.demandeChercherCarte(main, commande);
+    //     if(carte == nullptr){
+    //         break;
+    //     }
+    //     carte->jouerAction(joueur, jeu);
+    //     joueur.mainVersUtilise(carte);
+    // }
 }

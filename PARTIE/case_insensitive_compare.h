@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 
-inline bool caseInsensitiveCompare(const std::string& str1, const std::string& str2) {
+bool caseInsensitiveCompare(const std::string& str1, const std::string& str2) {
     // Transform both strings to lowercase before comparison
     std::string str1Lower = str1;
     std::string str2Lower = str2;
