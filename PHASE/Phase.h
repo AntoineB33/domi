@@ -8,23 +8,24 @@ class Jeu;
 
 class Phase {
 public:
-    virtual ~Phase();
-    static Phase* getInstance();
-    virtual Phase* getPhaseSuivante() = 0;
-    const std::string* getNomPhase() const;
+
+    virtual ~Phase() = default;
+    virtual Phase& getPhaseSuivante() = 0;
 
 
     /// IHM
     virtual void jouerPhase(Jeu& jeu, Joueur& joueur) = 0;
+    virtual const std::string& getNomPhase() const;
+    virtual bool dernierePhase() const;
 
 protected:
-    Phase(std::string nomPhase);
+    // Phase(std::string nomPhase);
     void afficherPhase(Joueur& joueur);
+    // static Phase* instance;
 
 
 private:
-    const std::string m_nomPhase;
-    static Phase* instance;
+    std::string m_nomPhase;
 };
 
 

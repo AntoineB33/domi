@@ -6,32 +6,28 @@
 
 #include <iostream>
 
-Phase* Phase::instance = nullptr;
 
-Phase::Phase(std::string  nomPhase): m_nomPhase(nomPhase){
-    instance = this;
+// Phase::Phase(std::string  nomPhase): m_nomPhase(nomPhase){}
+
+
+const std::string& Phase::getNomPhase() const {
+    return m_nomPhase;
 }
 
-Phase::~Phase() {
-    delete instance;
+// Phase* Phase::getInstance() {
+//     return instance;
+// }
+
+// Phase* Phase::getPhaseSuivante() {
+//     return instance;
+// }
+
+bool Phase::dernierePhase() const {
+    return false;
 }
-
-const std::string* Phase::getNomPhase() const {
-    return &m_nomPhase;
-}
-
-Phase* Phase::getInstance() {
-    return instance;
-}
-
-Phase* Phase::getPhaseSuivante() {
-    return instance;
-}
-
-
 
 void Phase::afficherPhase(Joueur& joueur){
-    std::cout << "Phase " << *getNomPhase() << " du joueur " << joueur.getId() << "\n";
+    std::cout << getNomPhase() << " du joueur " << joueur.getId() << "\n";
     std::cout << joueur.getNbAction() << " Action | " << joueur.getNbAction() << " Achats\n";
 }
 

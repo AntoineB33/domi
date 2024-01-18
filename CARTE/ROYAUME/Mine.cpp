@@ -1,7 +1,7 @@
 #include "Mine.h"
 #include "Jeu.h"
 
-Mine* Mine::instanceMine = new Mine("Mine",3,"Ecartez une carte Trésor de votre main.\nGagnez une carte Trésor coûtant jusqu'à 3 Pièces de plus ; ajoutez cette carte à votre main.");
+Mine* Mine::instanceMine = new Mine("Mine",3,"Ecartez une carte Trésor de votre main. Gagnez une carte Trésor coûtant jusqu'à 3 Pièces de plus ; ajoutez cette carte à votre main.");
 
 Mine* Mine::makeMine(){
     return Mine::instanceMine;

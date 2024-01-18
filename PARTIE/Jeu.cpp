@@ -32,13 +32,17 @@
 
 Jeu::Jeu(int nbJoueur) : m_nbJoueur(nbJoueur), m_fini(false){
     for(int i = 0; i < nbJoueur; i++){
-        m_joueurs.push_back(Joueur(i));
+        m_joueurs.push_back(Joueur(*this, i));
         initJoueur(m_joueurs.at(i));
     }
     initCartesPlateau();
 }
 
 Jeu::~Jeu() {
+}
+
+std::vector<std::pair<Carte*, int>>& Jeu::getReserve() {
+    return reserve;
 }
 
 int Jeu::getNbJoueur(){
@@ -110,9 +114,7 @@ void Jeu::ajoutCartesDefausses(Carte* carte, int quantite) {
 }
 
 void Jeu::ecarter(Carte *carte, int quantite) {
-    for(int i = 0; i < quantite; i++) {
-        rebus.push_back(carte);
-    }
+    Carte::ajoutSuppCarte(rebus, carte, quantite);
 }
 
 
@@ -174,13 +176,9 @@ void Jeu::initCartesPlateau() {
 
 }
 void Jeu::initJoueur(Joueur& joueur){
-    for(int i = 0; i<7; i++){
-        joueur.reserveVersDeck(*this, Cuivre::makeCuivre(), true);
-    }
-    for(int i = 0; i<3; i++){
-        joueur.reserveVersDeck(*this, Domaine::makeDomaine(), true);
-    }
-    joueur.piocherCarteDeck(5);
+    joueur.reserveVersDeck(*this, Cuivre::makeCuivre(), 7, true);
+    joueur.reserveVersDeck(*this, Domaine::makeDomaine(), 3, true);
+    joueur.piocher(5);
 }
 
 void Jeu::commandeGODMODE(std::vector<std::pair<Carte*, int>>& m) {
@@ -220,7 +218,7 @@ void Jeu::lancementJeu() {
 
 
     // TODO : faire l'enregistrement la si on a le temp
-    afficherReserve();
+    // afficherReserve();
     //si nouvelle partie, on remet s'assure d etre dans la bonne phase
 
     tour(0);//pour l'instant pas d'enregistrement donc le jeu commence au joueur 0
@@ -244,7 +242,7 @@ bool Jeu::commandePartieEstFinie() {
 }
 
 int Jeu::afficherReserve(bool pourPrendre, std::function<bool(Carte*)> condition) {
-    std::cout<<"CARTE SUR LE PLATEAU : \n";
+    std::cout<<"Réserve :\n";
     return Carte::afficher(reserve, pourPrendre, condition);
 }
 

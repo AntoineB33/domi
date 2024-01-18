@@ -1,20 +1,37 @@
-#include "PhaseAction.h"
+#include "PhaseAjustement.h"
 #include "PhaseAchat.h"
+#include "PhaseAction.h"
 #include "Phase.h"
 #include "Joueur.h"
 #include "Jeu.h"
 #include "CouleurTerminal.h"
 #include <iostream>
 
-PhaseAction::PhaseAction() : Phase("PHASE ACTION") {
-}
+// PhaseAction PhaseAction::instance;
 
-Phase* PhaseAction::getPhaseSuivante() {
+// PhaseAction::PhaseAction() : Phase("PHASE ACTION") {}
+
+PhaseAction::PhaseAction(const std::string& name) : m_nomPhase(name) {}
+PhaseAction PhaseAction::instance("PHASE ACTION");
+
+Phase& PhaseAction::getPhaseSuivante() {
     return PhaseAchat::getInstance();
 }
 
+const std::string& PhaseAction::getNomPhase() const {
+    return m_nomPhase;
+}
+
+// Phase* PhaseAction::getPhaseSuivante() {
+//     return PhaseAchat::getInstance();
+// }
+
 bool estTypeAction(Carte* carte) {
     return carte->getTypeCarte() == TypeRoyaume;
+}
+
+PhaseAction& PhaseAction::getInstance() {
+    return instance;
 }
 
 

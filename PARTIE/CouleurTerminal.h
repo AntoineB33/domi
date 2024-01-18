@@ -1,7 +1,3 @@
-//
-// Created by moi on 11/01/24.
-//
-
 #ifndef DOMI_COULEURTERMINAL_H
 #define DOMI_COULEURTERMINAL_H
 

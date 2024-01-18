@@ -1,7 +1,7 @@
 #include "Sorciere.h"
 #include "Jeu.h"
 
-Sorciere* Sorciere::instanceSorciere = new Sorciere("Sorciere",5,"+2 Cartes\nTous vos adversaires reçoivent une carte Malédiction.");
+Sorciere* Sorciere::instanceSorciere = new Sorciere("Sorciere",5,"+2 Cartes. Tous vos adversaires reçoivent une carte Malédiction.");
 
 Sorciere* Sorciere::makeSorciere(){
     return Sorciere::instanceSorciere;

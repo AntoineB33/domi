@@ -7,11 +7,10 @@
 
 #include "Jeu.h"
 #include "Joueur.h"
-#include "case_insensitive_compare.h"
 #include "CouleurTerminal.h"
 
 Carte::Carte(std::string nom, TypeCarte typeCarte,int cout) :
-    m_description("(Cout: " + std::to_string(cout) + ")\n"), m_nom(nom),
+    m_description("(Cout: " + std::to_string(cout) + ")"), m_nom(nom),
     m_type(typeCarte), m_cout(cout) {
 }
 
@@ -117,13 +116,14 @@ void Carte::ajoutSuppCarte(std::vector<std::pair<Carte*, int>>& li, Carte* c, in
     }
 }
 
-Carte* Carte::chercherCarte(std::string mot, std::vector<std::pair<Carte*, int>> li, int& idCarte){
+Carte* Carte::chercherCarte(std::vector<std::pair<Carte*, int>> li, std::string mot, int& idCarte){
     try {
         long unsigned int place = std::stoi(mot);
         if(place >= li.size()){
             return nullptr;
         }
         idCarte = place;
+        return li[place].first;
     } catch (std::exception& e) {
         for(auto entry : li){
             if(caseInsensitiveCompare(mot, entry.first->getNom())) {
@@ -143,8 +143,8 @@ int Carte::afficher(const std::vector<std::pair<Carte *, int>> &li, bool pourPre
         }
         if(pourPrendre) {
             std::cout << start << ": " << li[i].second << " ";
+            start++;
         }
-        start++;
         afficherCarteEtDesc(li[i].first);
     }
     return start;

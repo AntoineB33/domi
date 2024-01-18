@@ -17,7 +17,9 @@ public:
     Joueur* getJoueur(int i) ;
     const std::string* getNomPhaseActu() const;
 
-    std::list<Carte*> getToutesLesCartes() const;
+    std::vector<std::pair<Carte*, int>>& getReserve();
+
+    // std::list<Carte*> getToutesLesCartes() const;
 
     bool commandePartieEstFinie();
     bool estFini() const;
@@ -54,7 +56,7 @@ private:
     std::vector<Joueur> m_joueurs;
     bool m_fini; //bool pour savoir si la partie est fini, permet d'eviter de dupliquer les calculs
     std::vector<std::pair<Carte*, int>> reserve;
-    std::list<Carte*> rebus;
+    std::vector<std::pair<Carte*, int>> rebus;
     // std::list<Carte*> allInstancesCards;
 
     void tour(int numJoueur = 0);//int numJoueur permet de reprendre la partie depuis l'enregistrement

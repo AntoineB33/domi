@@ -1,12 +1,12 @@
 #include "Royaume.h"
 
 #include "CouleurTerminal.h"
-
+#include <functional>
 #include <iostream>
 
 Royaume::Royaume(std::string nom, int cout, std::string description)
         : Carte(nom,TypeRoyaume,cout) {
-    m_description = nom + " (Cout: " + std::to_string(cout) + ", Desc:" + description +")\n";
+    m_description = " (Cout: " + std::to_string(cout) + ", Desc: " + description +")";
 }
 
 Royaume::~Royaume() {}
@@ -49,27 +49,23 @@ void Royaume::ajouterValeurSupp(Joueur &joueur, int nbValeurSupp) {
 
 //////////////////////////////IHM
 void Royaume::commandeRecevoirCartePlateau(Joueur& joueur, Jeu& jeu, int coutMax) {
-
-    jeu.afficherReserve();
-    std::cout<<std::endl;
-    std::string commande = "";
-    Carte* c = nullptr;
-    while(commande != "FIN"){
-        // c = jeu.demandeCartePlateau(joueur, commande);
-        int idCarte = 0;
-        c = joueur.demandeChercherCarte(joueur.getMain(), commande, idCarte);
-        if(c != nullptr){
-            if(c -> getCout() <= coutMax){
-                if(joueur.recevoirCartePlateau(jeu,c,coutMax)){
-                    std::cout<<DIM_TEXT<<GREEN<<"carte : "<<c -> getNom()<<" recue dans la défausse"<<RESET<<std::endl;
-                }
-                break;
-            }
-            else{
-                std::cout<<DIM_TEXT<<RED<<"carte : "<<c -> getNom()<<" trop chere"<<RESET<<std::endl;
-            }
-        }
+    std::string commande;
+    
+    jeu.afficherReserve(true, [coutMax](Carte* carte) -> bool {
+        return carte->getCout() <= coutMax;
+    });
+    joueur.afficherUtilise();
+    std::cout << "Choisissez une carte coutant jusqu'à " << coutMax << "\n";
+    joueur.afficherMain();
+    int idCarte = 0;
+    Carte* carte = joueur.demandeChercherCarte(jeu.getReserve(), commande, idCarte);
+    if(carte == nullptr){
+        return;
     }
+    if(carte->getCout() > coutMax) {
+        std::cout << "Vous n'avez pas assez de valeur pour acheter cette carte.\n";
+    }
+    joueur.mainVersUtilise(carte);
 }
 
 

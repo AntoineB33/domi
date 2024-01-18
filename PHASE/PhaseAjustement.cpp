@@ -6,16 +6,35 @@
 #include "CouleurTerminal.h"
 #include <iostream>
 
-PhaseAjustement::PhaseAjustement() : Phase("PHASE ACHAT") {
+// PhaseAction PhaseAction::instance;
+
+// PhaseAction::PhaseAction() : Phase("PHASE ACTION") {}
+
+PhaseAjustement::PhaseAjustement(const std::string& name) : m_nomPhase(name) {}
+PhaseAjustement PhaseAjustement::instance("PHASE ACTION");
+
+Phase& PhaseAjustement::getPhaseSuivante() {
+    return PhaseAchat::getInstance();
 }
 
-Phase* PhaseAjustement::getPhaseSuivante() {
-    return nullptr;
+// Phase* PhaseAction::getPhaseSuivante() {
+//     return PhaseAchat::getInstance();
+// }
+
+
+PhaseAjustement& PhaseAjustement::getInstance() {
+    return instance;
+}
+bool PhaseAjustement::dernierePhase() const {
+    return true;
+}
+
+const std::string& PhaseAjustement::getNomPhase() const {
+    return m_nomPhase;
 }
 
 
 /// IHM
-
 
 void PhaseAjustement::jouerPhase(Jeu& jeu, Joueur& joueur) {
     joueur.mettreMainDansDefausse();

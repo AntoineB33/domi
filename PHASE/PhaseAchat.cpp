@@ -1,31 +1,52 @@
 #include "PhaseAjustement.h"
 #include "PhaseAchat.h"
+#include "PhaseAction.h"
 #include "Phase.h"
 #include "Joueur.h"
 #include "Jeu.h"
 #include "CouleurTerminal.h"
 #include <iostream>
 
-PhaseAchat::PhaseAchat() : Phase("PHASE ACHAT") {
+// PhaseAchat PhaseAchat::instance;
+
+// PhaseAchat::PhaseAchat() : Phase("PHASE ACHAT") {
+// }
+PhaseAchat::PhaseAchat(const std::string& name) : m_nomPhase(name) {
 }
 
-Phase* PhaseAchat::getPhaseSuivante() {
+PhaseAchat PhaseAchat::instance("PHASE ACHAT");
+
+Phase& PhaseAchat::getPhaseSuivante() {
     return PhaseAjustement::getInstance();
 }
+
+const std::string& PhaseAchat::getNomPhase() const {
+    return m_nomPhase;
+}
+
+// Phase* PhaseAchat::getPhaseSuivante() {
+//     return PhaseAjustement::getInstance();
+// }
 
 bool estTypeTresor(Carte* carte) {
     return carte->getTypeCarte() == TypeTresor;
 }
+
+// static PhaseAchat& getInstance() {
+//     return instance;
+// }
+PhaseAchat& PhaseAchat::getInstance() {
+    return instance;
+}
+
 
 
 /// IHM
 
 
 void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
-    const std::vector<std::pair<Carte*, int>>& main = joueur.getMain();
-    int nbAction = joueur.getNbAction();
     std::string commande;
-    for(int i = 0; i<nbAction; i++) {
+    while(joueur.getNbAchat()>0) {
         int disponible = joueur.nbValeurDisponible();
         if(!jeu.hasCarteAchetable(disponible)) {
             std::cout << "Il n'y a plus de carte achetable.\n";
@@ -36,19 +57,32 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
         });
         joueur.afficherUtilise();
         afficherPhase(joueur);
-        joueur.afficherMain([](Carte* carte) -> bool {
+        joueur.afficherMain(true, [](Carte* carte) -> bool {
             return carte->getTypeCarte() == TypeTresor;
         }, lastId);
         int idCarte = 0;
-        Carte* carte = joueur.demandeChercherCarte(main, commande, idCarte);
+        std::vector<std::pair<Carte *, int>>& reserve = jeu.getReserve();
+        const std::vector<std::pair<Carte *, int>>& m_main = joueur.getMain();
+        std::vector<std::pair<Carte *, int>> concatenatedVector;
+        concatenatedVector.insert(concatenatedVector.end(), reserve.begin(), reserve.end());
+        concatenatedVector.insert(concatenatedVector.end(), m_main.begin(), m_main.end());
+        Carte* carte = joueur.demandeChercherCarte(concatenatedVector, commande, idCarte);
         if(carte == nullptr){
             break;
         }
         if(idCarte<lastId) {
-            joueur.mainVersUtilise(carte);
+            if(carte->getCout() > disponible) {
+                std::cout << "Vous n'avez pas assez de valeur pour acheter cette carte.\n";
+                continue;
+            }
+            joueur.reserveVersDeck(jeu, carte);
+            joueur.addNbAchatPhase(-1);
         } else {
-            joueur.acheterCarte(jeu, carte);
+            if(carte->getTypeCarte() != TypeTresor) {
+                std::cout << "Ce n'est pas une carte trésor.\n";
+                continue;
+            }
+            joueur.mainVersUtilise(carte);
         }
-        joueur.addNbAchatPhase(-1);
     }
 }

@@ -15,7 +15,7 @@ class Phase;
 
 class Joueur {
 public:
-    Joueur (int numJouer);
+    Joueur (Jeu& jeu, int numJouer);
     ~Joueur();
 
     bool m_godMode = false;
@@ -49,7 +49,7 @@ public:
     void tourJoueur(Jeu &jeu);
 
     ///////////////////////////////////////ACTION DU JOUEUR (durant une phase ou via une carte)
-    bool acheterCarte(Jeu& jeu, Carte* c);
+    // bool acheterCarte(Jeu& jeu, Carte* c);
     bool jouerCarteAction(Jeu& jeu, Carte* c);
     bool ajuster();
     ///////////////////////////////////////ACTION    void ajouterRetirerValeurSupp(int nbValeurSup);
@@ -63,7 +63,7 @@ public:
 
 
     //futures metohdes private , pour l'instant en public pour les tests
-    std::list<Carte*> piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
+    // std::list<Carte*> piocherCarteDeck(int quantite = 1); // quantite : nombre de carte a piocher
     void defausserCarte(Carte*carte);
     void defausserCarte();
     bool mettreDansRebus(Jeu& jeu, Carte *carte);
@@ -72,19 +72,20 @@ public:
 
 
     ///////////////////////////////////////IHM TERMINAL
-    std::list<Carte*> commandeEcarter(Jeu& jeu, int quantite);
-    Carte* demandeChercherCarte(const std::vector<std::pair<Carte*, int>>& li, std::string &commande, int& idCarte) const;
+    // std::list<Carte*> commandeEcarter(Jeu& jeu, int quantite);
+    Carte* demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte) const;
     bool commandePiocherCarteDeck(int quantite = 1);
-    void afficherMain(std::function<bool(Carte*)> condition = [](Carte*) { return false; }, int start = 0);
+    void afficherMain(bool pourPrendre = false, std::function<bool(Carte*)> condition = [](Carte*) { return false; }, int start = 0);
     void afficherUtilise();
     void piocher(int quantite = 1);
 
 private:
     std::vector<std::pair<Carte*, int>> m_main;
     std::vector<std::pair<Carte*, int>> m_carteEnCoursDutilisation;
-    std::list<Carte*> m_deck;
+    std::vector<std::pair<Carte*, int>> m_deck;
     std::vector<std::pair<Carte*, int>> m_defausse;
     Phase* m_phaseActuelle;
+    Jeu& jeu;
 
     const int m_numJoueur;
     int m_nbAchatPossible;
@@ -112,7 +113,6 @@ private:
 
     
     void mettreDefausseDansDeck();
-    void melangerDeck();
 
 
 
