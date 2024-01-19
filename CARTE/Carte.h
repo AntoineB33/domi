@@ -30,7 +30,7 @@ public:
 
     bool operator<(const Carte& autre) const;//utiliser pour le hachage dans map
 
-    friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
+    // friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
 
     int getTypeCarte() const;
     int getCout() const;

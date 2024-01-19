@@ -34,10 +34,10 @@ bool Carte::operator<(const Carte& autre) const {//pour map
     return m_cout < autre.m_cout;
 }
 
-std::ostream& operator<<(std::ostream& os, const Carte& carte) {
-    os << "Nom: " << carte.m_nom << ", Cout: " << carte.m_cout;
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const Carte& carte) {
+//     os << "Nom: " << carte.m_nom << ", Cout: " << carte.m_cout;
+//     return os;
+// }
 
 
 

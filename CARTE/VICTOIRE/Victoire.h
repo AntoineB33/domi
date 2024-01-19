@@ -15,7 +15,7 @@ public:
     ~Victoire();
     int getPointDeVictoire() const override ;
 
-    friend std::ostream& operator<<(std::ostream& os, const Victoire& Victoire);
+    // friend std::ostream& operator<<(std::ostream& os, const Victoire& Victoire);
 
 
 private:

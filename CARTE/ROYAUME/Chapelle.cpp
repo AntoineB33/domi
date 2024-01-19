@@ -13,7 +13,6 @@ Chapelle::Chapelle(std::string nom, int cout,std::string description) : Royaume(
 
 
 void Chapelle::faireAction(Joueur &joueur, Jeu &jeu) {
-    (void)joueur;
+    joueur.demandeEcarter(4);
     (void)jeu;
-    // joueur.ecarter(jeu, 4);
 }

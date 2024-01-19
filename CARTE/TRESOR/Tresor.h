@@ -12,7 +12,7 @@ public:
 
     int getValeur() const override;
 
-    friend std::ostream& operator<<(std::ostream& os, const Tresor& tresor);
+    // friend std::ostream& operator<<(std::ostream& os, const Tresor& tresor);
 
 private:
     int m_valeur;

@@ -15,7 +15,7 @@ Cuivre::~Cuivre() {
 
 Cuivre::Cuivre(std::string nom, int cout, int val) : Tresor(nom, cout, val) {}
 
-std::ostream& operator<<(std::ostream& os, const Cuivre& cuivre) {
-    os << reinterpret_cast<const Tresor&>(cuivre);
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const Cuivre& cuivre) {
+//     os << reinterpret_cast<const Tresor&>(cuivre);
+//     return os;
+// }

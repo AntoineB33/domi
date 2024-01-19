@@ -22,10 +22,6 @@ const std::string& PhaseAction::getNomPhase() const {
     return m_nomPhase;
 }
 
-// Phase* PhaseAction::getPhaseSuivante() {
-//     return PhaseAchat::getInstance();
-// }
-
 bool estTypeAction(Carte* carte) {
     return carte->getTypeCarte() == TypeRoyaume;
 }
@@ -42,23 +38,6 @@ void PhaseAction::jouerPhase(Jeu& jeu, Joueur& joueur) {
     if(!joueur.typeDansMain(TypeRoyaume)) {
         return;
     }
-    // joueur.afficherMain();
-    // joueur.afficherUtilise();
-    // afficherPhase(joueur);
-    // std::cout << "Vous pouvez jouer des cartes.\n";
-    // const std::vector<std::pair<Carte*, int>>& main = joueur.getMain();
-    // int nbAction = joueur.getNbAction();
-    // std::string commande;
-    // for(int i = 0; i<nbAction; i++) {
-    //     Carte::afficher(main, estTypeAction);
-    //     Carte* carte = joueur.demandeChercherCarte(main, commande);
-    //     if(carte == nullptr){
-    //         break;
-    //     }
-    //     carte->jouerAction(joueur, jeu);
-    //     joueur.mainVersUtilise(carte);
-    // }
-    
     std::string commande;
     while(joueur.getNbAction()>0) {
         jeu.afficherReserve();

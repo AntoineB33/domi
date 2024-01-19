@@ -12,7 +12,7 @@ Province::~Province() {
 
 Province::Province(std::string nom, int cout, int point) : Victoire(nom, cout, point) {}
 
-std::ostream& operator<<(std::ostream& os, const Province& province) {
-    os << reinterpret_cast<const Victoire&>(province);
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const Province& province) {
+//     os << reinterpret_cast<const Victoire&>(province);
+//     return os;
+// }

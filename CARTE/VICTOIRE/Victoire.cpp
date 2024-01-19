@@ -14,7 +14,7 @@ std::ostream& operator<<(std::ostream& os, const Victoire& victoire){
 }
 */
 
-std::ostream& operator<<(std::ostream& os, const Victoire& victoire) {
-    os << reinterpret_cast<const Carte&>(victoire) << ", point de victoire: " << victoire.m_pointDeVictoire;
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const Victoire& victoire) {
+//     os << reinterpret_cast<const Carte&>(victoire) << ", point de victoire: " << victoire.m_pointDeVictoire;
+//     return os;
+// }

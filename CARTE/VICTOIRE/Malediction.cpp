@@ -12,7 +12,7 @@ Malediction::~Malediction() {
 
 Malediction::Malediction(std::string nom, int cout, int point) : Victoire(nom, cout, point) {}
 
-std::ostream& operator<<(std::ostream& os, const Malediction& malediction) {
-    os << reinterpret_cast<const Victoire&>(malediction);
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const Malediction& malediction) {
+//     os << reinterpret_cast<const Victoire&>(malediction);
+//     return os;
+// }

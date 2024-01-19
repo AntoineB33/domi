@@ -11,7 +11,7 @@ Argent::~Argent() {
 Argent::Argent(std::string nom, int cout, int val) : Tresor(nom, cout, val){}
 
 
-std::ostream& operator<<(std::ostream& os, const Argent& argent) {
-    os << reinterpret_cast<const Tresor&>(argent);
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const Argent& argent) {
+//     os << reinterpret_cast<const Tresor&>(argent);
+//     return os;
+// }

@@ -12,7 +12,7 @@ class Duche : public Victoire {
 public :
     static Duche* makeDuche();
     virtual ~Duche();
-    friend std::ostream& operator<<(std::ostream& os, const Duche& duche);
+    // friend std::ostream& operator<<(std::ostream& os, const Duche& duche);
 
     Duche(Duche &duche) = delete;
     void operator=(const Duche&) = delete;

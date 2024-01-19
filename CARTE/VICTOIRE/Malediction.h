@@ -11,7 +11,7 @@ class Malediction : public Victoire {
 public:
     static Malediction* makeMalediction();
     virtual ~Malediction();
-    friend std::ostream& operator<<(std::ostream& os, const Malediction& malediction);
+    // friend std::ostream& operator<<(std::ostream& os, const Malediction& malediction);
 
     Malediction(Malediction &malediction) = delete;
     void operator=(const Malediction&) = delete;

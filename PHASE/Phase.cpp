@@ -28,7 +28,7 @@ bool Phase::dernierePhase() const {
 }
 
 void Phase::afficherPhase(Joueur& joueur){
-    std::cout << BOLD_ON << MAGENTA << getNomPhase() << " du joueur " << joueur.getId() << "\n";
+    std::cout << BOLD_ON << GREEN << getNomPhase() << " du joueur " << joueur.getId() << "\n";
     std::cout << joueur.getNbAction() << " Action | " << joueur.getNbAction() << " Achats\n" << RESET;
 }
 

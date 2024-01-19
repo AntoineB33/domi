@@ -183,6 +183,22 @@ void Joueur::ecarter(Jeu& jeu, Carte* carte, int quantite){
     jeu.ecarter(carte, quantite);
 }
 
+void Joueur::demandeEcarter(int quantite){
+    std::string commande;
+    for(int i = 0; i<quantite; i++) {
+        jeu.afficherReserve();
+        afficherUtilise();
+        std::cout << "Choisissez une carte à écarter.\n";
+        afficherMain(true, [](Carte*) { return true; });
+        int idCarte = 0;
+        Carte* carte = demandeChercherCarte(m_main, commande, idCarte);
+        if(carte == nullptr){
+            return;
+        }
+        ecarter(jeu, carte);
+    }
+}
+
 void Joueur::addNbAchatPhase(int nbAchatPossible) {
     m_nbAchatPossible += nbAchatPossible;
 }
@@ -353,6 +369,10 @@ void Joueur::mettreDefausseDansDeck() {
     m_defausse.clear();
 }
 
+bool Joueur::isInGodMode() {
+    return m_godMode;
+}
+
 void Joueur::mettreUtiliseDansDefausse() {
     for(auto entry : m_carteEnCoursDutilisation){
         Carte::ajoutSuppCarte(m_defausse, entry.first, entry.second);
@@ -460,20 +480,20 @@ void Joueur::commandeHELP(){
     std::cout<<RESET<<std::endl;
 }
 
-void Joueur::commandeSHOWME(){
-    std::cout<<BOLD_ON<<couleurJ<<"NB ACHAT POSSIBLE : "<<m_nbAchatPossible;
-    std::cout<<"\tNB ACTION POSSIBLE : "<<m_nbActionPossible<<"\n"<<RESET;
+// void Joueur::commandeSHOWME(){
+//     std::cout<<BOLD_ON<<couleurJ<<"NB ACHAT POSSIBLE : "<<m_nbAchatPossible;
+//     std::cout<<"\tNB ACTION POSSIBLE : "<<m_nbActionPossible<<"\n"<<RESET;
 
-    std::cout<<BOLD_ON<<couleurJ<< "Main:\n"<<RESET<<couleurJ;
-    for (const auto& entry : m_main) {
-        std::cout << "   " << *(entry.first) << ": " << entry.second << "\n";
-    }
-    std::cout <<BOLD_ON<<couleurJ<< "Cartes en cours d'utilisation:\n"<<RESET<<couleurJ;
-    for (const auto& entry : m_carteEnCoursDutilisation) {
-        std::cout << "   " << *(entry.first) << ": " << entry.second << "\n";
-    }
-    std::cout<<RESET<<std::endl;
-}
+//     std::cout<<BOLD_ON<<couleurJ<< "Main:\n"<<RESET<<couleurJ;
+//     for (const auto& entry : m_main) {
+//         std::cout << "   " << *(entry.first) << ": " << entry.second << "\n";
+//     }
+//     std::cout <<BOLD_ON<<couleurJ<< "Cartes en cours d'utilisation:\n"<<RESET<<couleurJ;
+//     for (const auto& entry : m_carteEnCoursDutilisation) {
+//         std::cout << "   " << *(entry.first) << ": " << entry.second << "\n";
+//     }
+//     std::cout<<RESET<<std::endl;
+// }
 
 Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte) {
     Carte* c = nullptr;
@@ -484,6 +504,8 @@ Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std
             return c;
         } else if(caseInsensitiveCompare(commande, "GODMODE")){
             jeu.commandeGODMODE(m_main);
+            m_godMode = true;
+            std::cout<<DIM_TEXT<<GREEN<<"Mode débogage activé."<<RESET<<std::endl;
             return c;
         }
         c = Carte::chercherCarte(li, commande, idCarte);
@@ -565,23 +587,38 @@ Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std
 // }
 
 void Joueur::defaussPiocher(){
-    std::string commande = " ";
-    while(1){
-        std::cout<<std::endl;
-        commandeSHOWME();
-        std::cout<<DIM_TEXT<<"possibilité de défausser : "<<RESET;
-        Carte* c = nullptr;
-        while(c == nullptr) {
-            int idCarte = -1;
-            c = demandeChercherCarte(m_main, commande, idCarte);
+    // std::string commande = " ";
+    // while(1){
+    //     std::cout<<std::endl;
+    //     commandeSHOWME();
+    //     std::cout<<DIM_TEXT<<"possibilité de défausser : "<<RESET;
+    //     Carte* c = nullptr;
+    //     while(c == nullptr) {
+    //         int idCarte = -1;
+    //         c = demandeChercherCarte(m_main, commande, idCarte);
+    //     }
+    //     if(commande == "FIN"){
+    //         break;
+    //     }
+    //     defausserCarte(c);
+    //     if(!commandePiocherCarteDeck(1)) {
+    //         break; // si le deck est vide
+    //     }
+    // }
+    
+    std::string commande;
+    while(m_deck.size()) {
+        jeu.afficherReserve();
+        afficherUtilise();
+        std::cout << "Choisissez une carte à défausser.\n";
+        afficherMain(true, [](Carte*) { return true; });
+        int idCarte = 0;
+        Carte* carte = demandeChercherCarte(jeu.getReserve(), commande, idCarte);
+        if(carte == nullptr){
+            return;
         }
-        if(commande == "FIN"){
-            break;
-        }
-        defausserCarte(c);
-        if(!commandePiocherCarteDeck(1)) {
-            break; // si le deck est vide
-        }
+        defausserCarte(carte);
+        piocher(1);
     }
 }
 
@@ -672,13 +709,13 @@ void Joueur::augmenterTresor(Jeu& jeu, int quantite){
 //     }
 // }
 
-void Joueur::commandeGODMODE(Jeu& jeu){
-    jeu.commandeGODMODE(m_main);
-    m_nbAchatPossible = 100;
-    m_nbActionPossible = 100;
-    m_godMode = true;
-    std::cout<<BOLD_ON<<DIM_TEXT<<"=== GOD MODE ===\n"<<RESET;
-}
+// void Joueur::commandeGODMODE(std::vector<std::pair<Carte*, int>>& m_main){
+//     jeu.commandeGODMODE(m_main);
+//     m_nbAchatPossible = 100;
+//     m_nbActionPossible = 100;
+//     m_godMode = true;
+//     std::cout<<BOLD_ON<<DIM_TEXT<<"=== GOD MODE ===\n"<<RESET;
+// }
 
 // void Joueur::faireAjustement(Jeu& jeu) {
 //     std::string commande = " ";
@@ -754,7 +791,8 @@ void Joueur::afficherMain(bool pourPrendre, std::function<bool(Carte*)> conditio
 void Joueur::afficherUtilise() {
     std::cout<<BOLD_ON<<couleurJ<< "Cartes en cours d'utilisation:\n"<<RESET;
     for (const auto& entry : m_carteEnCoursDutilisation) {
-        std::cout << "   " << *(entry.first) << ": " << entry.second << "\n";
+        std::cout<<entry.second << " ";
+        Carte::afficherCarteEtDesc(entry.first);
     }
 }
 
@@ -768,7 +806,10 @@ void Joueur::piocher(int quantite) {
             mettreDefausseDansDeck();
         }
         if(m_deck.empty()){
-            std::cout<<DIM_TEXT<<RED<<"DECK VIDE"<<RESET<<std::endl;
+            if(!m_godMode) {
+                std::cout<<DIM_TEXT<<RED<<"DECK VIDE"<<RESET<<std::endl;
+            }
+            break;
         }
         //aleatoire
         std::random_device rd;

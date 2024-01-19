@@ -68,6 +68,9 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
         concatenatedVector.insert(concatenatedVector.end(), m_main.begin(), m_main.end());
         Carte* carte = joueur.demandeChercherCarte(concatenatedVector, commande, idCarte);
         if(carte == nullptr){
+            if(caseInsensitiveCompare(commande, "GODMODE")) {
+                continue;
+            }
             break;
         }
         if(idCarte<lastId) {

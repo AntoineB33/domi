@@ -11,7 +11,7 @@ class Province : public Victoire {
 public:
     static Province* makeProvince();
     virtual ~Province();
-    friend std::ostream& operator<<(std::ostream& os, const Province& province);
+    // friend std::ostream& operator<<(std::ostream& os, const Province& province);
 
     Province(Province &province) = delete;
     void operator=(const Province&) = delete;

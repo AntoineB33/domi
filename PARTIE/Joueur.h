@@ -20,7 +20,7 @@ public:
 
     bool m_godMode = false;
 
-    friend std::ostream& operator<<(std::ostream& os, const Joueur& joueur);
+    // friend std::ostream& operator<<(std::ostream& os, const Joueur& joueur);
 
 
     //GETTERS
@@ -34,7 +34,7 @@ public:
     bool typeDansMain(TypeCarte type) const;
     // int nbPointVictoire() const;
     int nbValeurDisponible() const;//calcul "l'argent" qui peut etre depensé
-    // bool isInGodMode();
+    bool isInGodMode();
 
     //GESTIONS DES CARTES
     void mainVersUtilise(Carte* c);
@@ -71,6 +71,8 @@ public:
     bool mettreDansRebus(Jeu& jeu, Carte *carte);
     void mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);
 
+    void demandeEcarter(int quantite = 1);
+
 
 
     ///////////////////////////////////////IHM TERMINAL
@@ -103,7 +105,7 @@ private:
 
 
     void commandeHELP();
-    void commandeSHOWME();
+    // void commandeSHOWME();
     // int demandeQuantiteCarte(std::map<Carte*,int>& m, Carte* c, std::string &commande);
 
     void commandeAchat(Jeu &jeu);

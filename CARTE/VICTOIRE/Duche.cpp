@@ -12,7 +12,7 @@ Duche::~Duche() {
 
 Duche::Duche(std::string nom, int cout, int point) : Victoire(nom, cout, point) {}
 
-std::ostream& operator<<(std::ostream& os, const Duche& duche) {
-    os << reinterpret_cast<const Victoire&>(duche);
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const Duche& duche) {
+//     os << reinterpret_cast<const Victoire&>(duche);
+//     return os;
+// }

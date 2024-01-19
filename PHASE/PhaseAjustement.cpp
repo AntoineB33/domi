@@ -13,13 +13,10 @@
 PhaseAjustement::PhaseAjustement(const std::string& name) : m_nomPhase(name) {}
 PhaseAjustement PhaseAjustement::instance("PHASE ACTION");
 
+
 Phase& PhaseAjustement::getPhaseSuivante() {
     return PhaseAchat::getInstance();
 }
-
-// Phase* PhaseAction::getPhaseSuivante() {
-//     return PhaseAchat::getInstance();
-// }
 
 
 PhaseAjustement& PhaseAjustement::getInstance() {
@@ -38,6 +35,11 @@ const std::string& PhaseAjustement::getNomPhase() const {
 
 void PhaseAjustement::jouerPhase(Jeu& jeu, Joueur& joueur) {
     joueur.mettreMainDansDefausse();
-    joueur.piocher(5);
+    std::cout << "Vous avez  valeur disponible.\n";
+    if(joueur.isInGodMode()) {
+        joueur.piocher(1000);
+    } else {
+        joueur.piocher(5);
+    }
     (void)jeu;
 }

@@ -11,7 +11,7 @@ class Domaine : public Victoire {
 public :
     static Domaine* makeDomaine();
     virtual ~Domaine();
-    friend std::ostream& operator<<(std::ostream& os, const Domaine& domaine);
+    // friend std::ostream& operator<<(std::ostream& os, const Domaine& domaine);
 
     Domaine(Domaine &domaine) = delete;
     void operator=(const Domaine&) = delete;
