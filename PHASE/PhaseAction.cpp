@@ -42,7 +42,6 @@ void PhaseAction::jouerPhase(Jeu& jeu, Joueur& joueur) {
     if(!joueur.typeDansMain(TypeRoyaume)) {
         return;
     }
-    jeu.afficherReserve();
     // joueur.afficherMain();
     // joueur.afficherUtilise();
     // afficherPhase(joueur);
@@ -59,4 +58,26 @@ void PhaseAction::jouerPhase(Jeu& jeu, Joueur& joueur) {
     //     carte->jouerAction(joueur, jeu);
     //     joueur.mainVersUtilise(carte);
     // }
+    
+    std::string commande;
+    while(joueur.getNbAction()>0) {
+        jeu.afficherReserve();
+        joueur.afficherUtilise();
+        afficherPhase(joueur);
+        joueur.afficherMain(true, [](Carte* carte) -> bool {
+            return carte->getTypeCarte() == TypeRoyaume;
+        });
+        int idCarte = 0;
+        Carte* carte = joueur.demandeChercherCarte(joueur.getMain(), commande, idCarte);
+        if(carte == nullptr){
+            break;
+        }
+        if(carte->getTypeCarte() != TypeRoyaume) {
+            std::cout << DIM_TEXT << RED << "Ce n'est pas une carte Royaume.\n" << RESET;
+            continue;
+        }
+        carte->jouerAction(joueur, jeu);
+        joueur.mainVersDeck(carte);
+        joueur.addNbActionPhase(-1);
+    }
 }

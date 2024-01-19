@@ -43,6 +43,8 @@ public:
 
     bool reserveVersDeck(Jeu& jeu, Carte* carte, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
     int getVictoireDansDeck();
+    void mettreUtiliseDansDefausse();
+    void mainVersDeck(Carte* carte, int quantite = 1);
 
 
     ///////////////////////////////////////TOUR D UN JOUEUR
@@ -73,7 +75,7 @@ public:
 
     ///////////////////////////////////////IHM TERMINAL
     // std::list<Carte*> commandeEcarter(Jeu& jeu, int quantite);
-    Carte* demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte) const;
+    Carte* demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte);
     bool commandePiocherCarteDeck(int quantite = 1);
     void afficherMain(bool pourPrendre = false, std::function<bool(Carte*)> condition = [](Carte*) { return false; }, int start = 0);
     void afficherUtilise();

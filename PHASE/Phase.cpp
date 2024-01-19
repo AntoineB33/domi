@@ -3,6 +3,7 @@
 #include "Joueur.h"
 #include "Jeu.h"
 #include "PhaseAction.h"
+#include "CouleurTerminal.h"
 
 #include <iostream>
 
@@ -27,8 +28,8 @@ bool Phase::dernierePhase() const {
 }
 
 void Phase::afficherPhase(Joueur& joueur){
-    std::cout << getNomPhase() << " du joueur " << joueur.getId() << "\n";
-    std::cout << joueur.getNbAction() << " Action | " << joueur.getNbAction() << " Achats\n";
+    std::cout << BOLD_ON << MAGENTA << getNomPhase() << " du joueur " << joueur.getId() << "\n";
+    std::cout << joueur.getNbAction() << " Action | " << joueur.getNbAction() << " Achats\n" << RESET;
 }
 
 // void Phase::initJoueur(Joueur &j){

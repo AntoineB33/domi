@@ -72,17 +72,18 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
         }
         if(idCarte<lastId) {
             if(carte->getCout() > disponible) {
-                std::cout << "Vous n'avez pas assez de valeur pour acheter cette carte.\n";
+                std::cout << DIM_TEXT << RED << "Vous n'avez pas assez de valeur pour acheter cette carte.\n" << RESET;
                 continue;
             }
             joueur.reserveVersDeck(jeu, carte);
             joueur.addNbAchatPhase(-1);
         } else {
             if(carte->getTypeCarte() != TypeTresor) {
-                std::cout << "Ce n'est pas une carte trésor.\n";
+                std::cout << DIM_TEXT << RED << "Ce n'est pas une carte trésor.\n" << RESET;
                 continue;
             }
             joueur.mainVersUtilise(carte);
         }
     }
+    joueur.mettreUtiliseDansDefausse();
 }

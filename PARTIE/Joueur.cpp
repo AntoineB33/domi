@@ -353,6 +353,18 @@ void Joueur::mettreDefausseDansDeck() {
     m_defausse.clear();
 }
 
+void Joueur::mettreUtiliseDansDefausse() {
+    for(auto entry : m_carteEnCoursDutilisation){
+        Carte::ajoutSuppCarte(m_defausse, entry.first, entry.second);
+    }
+    m_carteEnCoursDutilisation.clear();
+}
+
+void Joueur::mainVersDeck(Carte* carte, int quantite){
+    Carte::ajoutSuppCarte(m_deck, carte, quantite);
+    Carte::ajoutSuppCarte(m_main, carte, -quantite);
+}
+
 
 
 
@@ -463,12 +475,15 @@ void Joueur::commandeSHOWME(){
     std::cout<<RESET<<std::endl;
 }
 
-Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte) const {
+Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte) {
     Carte* c = nullptr;
     std::cout << "ECRIRE NOM CARTE OU ID\n";
     while(1) {
         std::cin >> commande;
         if(caseInsensitiveCompare(commande, "FIN")){
+            return c;
+        } else if(caseInsensitiveCompare(commande, "GODMODE")){
+            jeu.commandeGODMODE(m_main);
             return c;
         }
         c = Carte::chercherCarte(li, commande, idCarte);

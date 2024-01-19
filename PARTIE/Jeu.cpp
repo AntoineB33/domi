@@ -32,7 +32,7 @@
 
 Jeu::Jeu(int nbJoueur) : m_nbJoueur(nbJoueur), m_fini(false){
     for(int i = 0; i < nbJoueur; i++){
-        m_joueurs.push_back(Joueur(*this, i));
+        m_joueurs.push_back(Joueur(*this, i+1));
         initJoueur(m_joueurs.at(i));
     }
     initCartesPlateau();
