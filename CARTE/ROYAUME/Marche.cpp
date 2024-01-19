@@ -11,14 +11,8 @@ Marche::~Marche(){
 }
 Marche::Marche(std::string nom, int cout,std::string description) : Royaume(nom,cout,description){}
 
-
-
-
-
-
-
 void Marche::faireAction(Joueur &joueur, Jeu &jeu) {
-    joueur.commandePiocherCarteDeck();
+    joueur.piocher();
     ajoutAchat(joueur, 1);
     ajoutAction(joueur, 1);
     ajouterValeurSupp(joueur, 1);

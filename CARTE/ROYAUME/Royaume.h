@@ -16,7 +16,6 @@ public:
 
     std::string getDescription() const;
 
-    // friend std::ostream& operator<<(std::ostream& os, const Royaume& royaume);
     void jouerAction(Joueur& joueur, Jeu& jeu) override;
 
 

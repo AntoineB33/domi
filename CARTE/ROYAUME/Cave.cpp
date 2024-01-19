@@ -1,7 +1,7 @@
 #include "Cave.h"
 #include "Jeu.h"
 
-Cave* Cave::instanceCave = new Cave("Cave",3,"+1 Achat. Défaussez autant de cartes que vous voulez. +1 Carte par carte défaussée.");
+Cave* Cave::instanceCave = new Cave("Cave", 2, "+1 Achat. Défaussez autant de cartes que vous voulez. +1 Carte par carte défaussée.");
 
 Cave* Cave::makeCave(){
     return Cave::instanceCave;

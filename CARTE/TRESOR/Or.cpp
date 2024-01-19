@@ -14,8 +14,3 @@ Or::~Or() {
 }
 
 Or::Or(std::string nom, int cout, int val) : Tresor(nom, cout, val){}
-
-// std::ostream& operator<<(std::ostream& os, const Or& gold){
-//     os<< reinterpret_cast<const Tresor&>(gold);
-//     return os;
-// }

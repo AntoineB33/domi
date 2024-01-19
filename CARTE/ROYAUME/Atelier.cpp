@@ -2,7 +2,7 @@
 #include "Jeu.h"
 #include "Joueur.h"
 
-Atelier* Atelier::instanceAtelier = new Atelier("Atelier",3,"Recevez une carte coutant jusqu'à 4 de coût");
+Atelier* Atelier::instanceAtelier = new Atelier("Atelier",3,"Recevez une carte coutant jusqu'à 4");
 
 Atelier* Atelier::makeAtelier(){
     return Atelier::instanceAtelier;

@@ -9,7 +9,6 @@ public:
     static Cuivre* makeCuivre();
     static Carte* getCarte();
     virtual ~Cuivre();
-    // friend std::ostream& operator<<(std::ostream& os, const Cuivre& cuivre);
 
     Cuivre(Cuivre &argent) = delete;
     void operator=(const Cuivre&) = delete;

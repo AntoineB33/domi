@@ -20,16 +20,8 @@ std::string Royaume::getDescription() const {
     return m_description;
 }
 
-// std::ostream& operator<<(std::ostream& os, const Royaume& royaume){
-//     os<< reinterpret_cast<const Carte&>(royaume);
-//     os<< "\tDESCRIPTION : "<<royaume.getDescription();
-//     return os;
-// }
-
 
 void Royaume::jouerAction(Joueur &joueur, Jeu &jeu) {
-    // std::cout<<DIM_TEXT<<BOLD_ON"DESCRIPTION : "<<RESET;
-    // std::cout<<DIM_TEXT<<getDescription()<<"\n"<<RESET;
     faireAction(joueur, jeu);
 }
 

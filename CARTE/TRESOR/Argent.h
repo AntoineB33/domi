@@ -8,7 +8,6 @@ class Argent : public Tresor
 public :
     static Argent* makeArgent();
     virtual ~Argent();
-    // friend std::ostream& operator<<(std::ostream& os, const Argent& argent);
 
     Argent(Argent &argent) = delete;
     void operator=(const Argent&) = delete;

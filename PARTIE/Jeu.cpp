@@ -53,10 +53,6 @@ Joueur* Jeu::getJoueur(int i) {
     return &m_joueurs.at(i);
 }
 
-// std::list<Carte*> Jeu::getToutesLesCartes() const {
-//     return allInstancesCards;
-// }
-
 bool Jeu::partieEstFinie() {
     int nbPilesVides = 0;
     for(long unsigned int i = 0; i<reserve.size(); i++){
@@ -100,9 +96,6 @@ void Jeu::setFini(bool fini){
     m_fini = fini;
 }
 
-// bool Jeu::carteDisponible(Carte *carte) {
-//     return m_cartesPlateau.find(carte) -> second > 0;
-// }
 void Jeu::retirerDeReserve(Carte *carte, int quantite) {
     Carte::ajoutSuppCarte(reserve, carte, -quantite, false);
 }
@@ -146,34 +139,6 @@ void Jeu::initCartesPlateau() {
             {Village::makeVillage(), 10}
 
     };
-
-    // Carte::ajoutSuppCarte(reserve, Domaine::makeDomaine(),quantite);
-    // Carte::ajoutSuppCarte(reserve, Duche::makeDuche(),quantite);
-    // Carte::ajoutSuppCarte(reserve, Province::makeProvince(),quantite);
-
-    // /////////////// CARTE TRESOR
-    // Carte::ajoutSuppCarte(reserve, Malediction::makeMalediction(),30);
-    // Carte::ajoutSuppCarte(reserve, Cuivre::makeCuivre(),60);
-    // Carte::ajoutSuppCarte(reserve, Argent::makeArgent(),40);
-    // Carte::ajoutSuppCarte(reserve, Or::makeOr(),30);
-
-    // /////////////// CARTE ROYAUME
-    // Carte::ajoutSuppCarte(reserve, Atelier::makeAtelier(),10);
-    // Carte::ajoutSuppCarte(reserve, Bucheron::makeBucheron(),10);
-    // Carte::ajoutSuppCarte(reserve, Cave::makeCave(),10);
-    // Carte::ajoutSuppCarte(reserve, Chapelle::makeChapelle(),10);
-    // Carte::ajoutSuppCarte(reserve, Forgeron::makeForgeron(),10);
-    // Carte::ajoutSuppCarte(reserve, Marche::makeMarche(),10);
-    // Carte::ajoutSuppCarte(reserve, Mine::makeMine(),10);
-    // Carte::ajoutSuppCarte(reserve, Renovation::makeRenovation(),10);
-    // Carte::ajoutSuppCarte(reserve, Sorciere::makeSorciere(),10);
-    // Carte::ajoutSuppCarte(reserve, Village::makeVillage(),10);
-
-    //Pour avoir une liste constante de pointeurs pour toutes les cartes
-    // for(std::pair<Carte*, int> p : reserve){
-    //     allInstancesCards.push_back(p.first);
-    // }
-
 }
 void Jeu::initJoueur(Joueur& joueur){
     joueur.reserveVersDeck(*this, Cuivre::makeCuivre(), 7, true);
@@ -186,10 +151,6 @@ void Jeu::commandeGODMODE(std::vector<std::pair<Carte*, int>>& m) {
         Carte::ajoutSuppCarte(m, p.first, 10);
     }
 }
-
-// void Jeu::initJoueurPhase(Joueur& joueur) {
-//     m_phaseActuelle -> initJoueur(joueur);
-// }
 
 /////////////////////////////////////// TOUR + IHM
 void Jeu::tour(int numJoueur){
@@ -242,10 +203,8 @@ bool Jeu::commandePartieEstFinie() {
 }
 
 int Jeu::afficherReserve(bool pourPrendre, std::function<bool(Carte*)> condition) {
-    std::cout<<"Réserve :\n";
-    return Carte::afficher(reserve, pourPrendre, condition);
+    std::cout<<"--------------------------- Réserve ----------------------------\n";
+    int lastId = Carte::afficher(reserve, pourPrendre, condition);
+    std::cout<<"----------------------------------------------------------------\n";
+    return lastId;
 }
-
-// Carte* Jeu::demandeCartePlateau(Joueur& joueur, std::string& commande) {
-//     return joueur.demandeChercherCarte(reserve, commande);
-// }

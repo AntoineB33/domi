@@ -6,9 +6,6 @@
 #include "CouleurTerminal.h"
 #include <iostream>
 
-// PhaseAction PhaseAction::instance;
-
-// PhaseAction::PhaseAction() : Phase("PHASE ACTION") {}
 
 PhaseAjustement::PhaseAjustement(const std::string& name) : m_nomPhase(name) {}
 PhaseAjustement PhaseAjustement::instance("PHASE AJUSTEMENT");

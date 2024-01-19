@@ -1,7 +1,3 @@
-//
-// Created by moi on 22/12/23.
-//
-
 #include "Domaine.h"
 
 
@@ -15,10 +11,5 @@ Domaine::~Domaine() {
 }
 
 Domaine::Domaine(std::string nom, int cout, int point): Victoire(nom,cout,point){}
-
-// std::ostream& operator<<(std::ostream& os, const Domaine& domaine) {
-//     os << reinterpret_cast<const Victoire&>(domaine);
-//     return os;
-// }
 
 

@@ -33,9 +33,6 @@ public:
     void ecarter(Carte *carte, int quantite = 1);
     void ajoutCartesDefausses(Carte* carte, int quantite = 1);
 
-    bool estAPhaseAction();
-    bool estAPhaseAchat();
-
     Carte* demandeCartePlateau(Joueur& joueur, std::string& commande);
 
 

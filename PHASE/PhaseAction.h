@@ -6,9 +6,7 @@
 class PhaseAction : public Phase {
 public:
     PhaseAction(const std::string& name);
-    // virtual Phase* getPhaseSuivante() override;
     void jouerPhase(Jeu& jeu, Joueur& joueur) override;
-    // static PhaseAction instance;
 
     
     Phase& getPhaseSuivante() override;
@@ -18,7 +16,6 @@ public:
 private:
     const std::string m_nomPhase;
     static PhaseAction instance;
-    // PhaseAction();
 };
 
 #endif //DOMI_PHASEACTION_H

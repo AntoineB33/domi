@@ -35,10 +35,10 @@ bool demandeSiNouvellePartie(){
         std::cout<<"VOULEZ VOUS LANCER UNE PARTIE ? \n";
         std::cout<<DIM_TEXT<<ITALIC_ON<<"(repondre O pour OUI, N pour NON)\n"<<RESET;
         std::cin>> commande;
-        if(commande == "OUI" || commande == "O"){
+        if(caseInsensitiveCompare(commande, "OUI") || caseInsensitiveCompare(commande, "O")){
             return true;
         }
-        else if(commande == "NON" || commande == "N"){
+        else if(caseInsensitiveCompare(commande, "NON") || caseInsensitiveCompare(commande, "N")){
             return false;
         }
         else{
@@ -50,7 +50,6 @@ bool demandeSiNouvellePartie(){
 
 int main() {
     int nbJoueur;
-    //bool nouvellePartie = true;
     do{
         nbJoueur = demandeNBJoueur();
         Jeu j = Jeu(nbJoueur);

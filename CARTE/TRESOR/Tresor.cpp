@@ -11,9 +11,3 @@ Tresor::~Tresor() {
 }
 
 int Tresor::getValeur() const {return m_valeur;}
-
-
-// std::ostream& operator<<(std::ostream& os, const Tresor& tresor){
-//         os<< reinterpret_cast<const Carte&>(tresor)<<", valeur: "<<tresor.m_valeur;
-//         return os;
-// }

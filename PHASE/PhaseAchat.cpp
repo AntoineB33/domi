@@ -7,10 +7,6 @@
 #include "CouleurTerminal.h"
 #include <iostream>
 
-// PhaseAchat PhaseAchat::instance;
-
-// PhaseAchat::PhaseAchat() : Phase("PHASE ACHAT") {
-// }
 PhaseAchat::PhaseAchat(const std::string& name) : m_nomPhase(name) {
 }
 
@@ -24,17 +20,11 @@ const std::string& PhaseAchat::getNomPhase() const {
     return m_nomPhase;
 }
 
-// Phase* PhaseAchat::getPhaseSuivante() {
-//     return PhaseAjustement::getInstance();
-// }
 
 bool estTypeTresor(Carte* carte) {
     return carte->getTypeCarte() == TypeTresor;
 }
 
-// static PhaseAchat& getInstance() {
-//     return instance;
-// }
 PhaseAchat& PhaseAchat::getInstance() {
     return instance;
 }
@@ -70,7 +60,6 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
             break;
         }
         if(idCarte<lastId) {
-            std::cout << DIM_TEXT << RED << "Ce n'est pas une carte de la réserve.\n" << RESET;
             if(carte->getCout() > disponible) {
                 std::cout << DIM_TEXT << RED << "Vous n'avez pas assez de valeur pour acheter cette carte.\n" << RESET;
                 continue;
@@ -84,7 +73,6 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
             }
             joueur.mainVersUtilise(carte);
         }
-        std::cout << DIM_TEXT << GREEN << "Vous avez acheté " << joueur.getNbAchat() << ".\n" << RESET;
     }
     joueur.mettreUtiliseDansDefausse();
 }
