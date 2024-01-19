@@ -48,10 +48,6 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
     std::string commande;
     while(joueur.getNbAchat()>0) {
         int disponible = joueur.nbValeurDisponible();
-        if(!jeu.hasCarteAchetable(disponible)) {
-            std::cout << "Il n'y a plus de carte achetable.\n";
-            return;
-        }
         int lastId = jeu.afficherReserve(true, [disponible](Carte* carte) -> bool {
             return carte->getCout() <= disponible;
         });
@@ -74,6 +70,7 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
             break;
         }
         if(idCarte<lastId) {
+            std::cout << DIM_TEXT << RED << "Ce n'est pas une carte de la réserve.\n" << RESET;
             if(carte->getCout() > disponible) {
                 std::cout << DIM_TEXT << RED << "Vous n'avez pas assez de valeur pour acheter cette carte.\n" << RESET;
                 continue;
@@ -87,6 +84,7 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
             }
             joueur.mainVersUtilise(carte);
         }
+        std::cout << DIM_TEXT << GREEN << "Vous avez acheté " << joueur.getNbAchat() << ".\n" << RESET;
     }
     joueur.mettreUtiliseDansDefausse();
 }

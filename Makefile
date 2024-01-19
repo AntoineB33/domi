@@ -1,5 +1,9 @@
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++11
+# CXXFLAGS=-Wall -Wextra -Werror -std=c++11 -fsanitize=address -g
+
+# Add the AddressSanitizer runtime library flag
+LDFLAGS=-lasan
 
 REP_CARTE=./CARTE
 REP_TRESOR=$(REP_CARTE)/TRESOR
@@ -21,6 +25,7 @@ OBJECTS=$(SOURCES:.cpp=.o)
 
 lancement: $(OBJECTS) lancement.o
 	$(CXX) $^ -o $@
+# $(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
 .PHONY: run clean
 

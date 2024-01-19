@@ -103,8 +103,8 @@ void Jeu::setFini(bool fini){
 // bool Jeu::carteDisponible(Carte *carte) {
 //     return m_cartesPlateau.find(carte) -> second > 0;
 // }
-void Jeu::retirerDeReserve(Carte *carte) {
-    Carte::ajoutSuppCarte(reserve, carte, -1);
+void Jeu::retirerDeReserve(Carte *carte, int quantite) {
+    Carte::ajoutSuppCarte(reserve, carte, -quantite, false);
 }
 
 void Jeu::ajoutCartesDefausses(Carte* carte, int quantite) {

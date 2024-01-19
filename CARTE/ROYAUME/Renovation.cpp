@@ -13,9 +13,9 @@ Renovation::Renovation(std::string nom, int cout,std::string description) : Roya
 
 
 void Renovation::faireAction(Joueur &joueur, Jeu &jeu) {
+    joueur.jouerRenovation(2);
     // std::list<Carte*> li = joueur.commandeEcarter(jeu, 1);
     // int cout = li.front()->getCout();
     // commandeRecevoirCartePlateau(joueur, jeu, cout+2);
-    (void)joueur;
     (void)jeu;
 }

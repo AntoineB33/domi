@@ -11,7 +11,7 @@
 // PhaseAction::PhaseAction() : Phase("PHASE ACTION") {}
 
 PhaseAjustement::PhaseAjustement(const std::string& name) : m_nomPhase(name) {}
-PhaseAjustement PhaseAjustement::instance("PHASE ACTION");
+PhaseAjustement PhaseAjustement::instance("PHASE AJUSTEMENT");
 
 
 Phase& PhaseAjustement::getPhaseSuivante() {
@@ -34,8 +34,8 @@ const std::string& PhaseAjustement::getNomPhase() const {
 /// IHM
 
 void PhaseAjustement::jouerPhase(Jeu& jeu, Joueur& joueur) {
+    afficherPhase(joueur);
     joueur.mettreMainDansDefausse();
-    std::cout << "Vous avez  valeur disponible.\n";
     if(joueur.isInGodMode()) {
         joueur.piocher(1000);
     } else {

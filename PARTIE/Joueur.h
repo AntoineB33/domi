@@ -38,7 +38,7 @@ public:
 
     //GESTIONS DES CARTES
     void mainVersUtilise(Carte* c);
-    void reserveVersMain(Jeu& jeu, Carte* carte);
+    void reserveVersMain(Carte* carte, int quantite = 1);
     void mettreMainDansDefausse();
 
     bool reserveVersDeck(Jeu& jeu, Carte* carte, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
@@ -62,6 +62,8 @@ public:
     void addNbActionPhase(int);
     void ajouterRetirerValeurSupp(int);
     void augmenterTresor(Jeu&, int);
+    void commandeRecevoirCartePlateau(int coutMax, bool versDefausse = true);
+    void reserveVersDefausse(Carte* carte, int quantite = 1);
 
 
     //futures metohdes private , pour l'instant en public pour les tests
@@ -82,6 +84,7 @@ public:
     void afficherMain(bool pourPrendre = false, std::function<bool(Carte*)> condition = [](Carte*) { return false; }, int start = 0);
     void afficherUtilise();
     void piocher(int quantite = 1);
+    void jouerRenovation(int quantite = 1);
 
 private:
     std::vector<std::pair<Carte*, int>> m_main;

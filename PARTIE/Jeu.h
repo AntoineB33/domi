@@ -29,7 +29,7 @@ public:
     int afficherReserve(bool pourPrendre = false, std::function<bool(Carte*)> condition = [](Carte*) { return false; });
 
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
-    void retirerDeReserve(Carte* carte);
+    void retirerDeReserve(Carte* carte, int quantite = 1);
     void ecarter(Carte *carte, int quantite = 1);
     void ajoutCartesDefausses(Carte* carte, int quantite = 1);
 

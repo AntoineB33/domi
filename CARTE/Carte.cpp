@@ -119,7 +119,7 @@ void Carte::ajoutSuppCarte(std::vector<std::pair<Carte*, int>>& li, Carte* c, in
 Carte* Carte::chercherCarte(std::vector<std::pair<Carte*, int>> li, std::string mot, int& idCarte){
     try {
         long unsigned int place = std::stoi(mot);
-        if(place >= li.size()){
+        if(place >= li.size() || li[place].second == 0){
             return nullptr;
         }
         idCarte = place;
@@ -136,15 +136,16 @@ Carte* Carte::chercherCarte(std::vector<std::pair<Carte*, int>> li, std::string 
 
 int Carte::afficher(const std::vector<std::pair<Carte *, int>> &li, bool pourPrendre, std::function<bool(Carte*)> condition, int start) {
     for(long unsigned int i = 0; i<li.size(); i++){
-        if(condition(li[i].first)){
+        if(condition(li[i].first) && li[i].second > 0){
             std::cout << "-> ";
         } else {
             std::cout << "   ";
         }
         if(pourPrendre) {
-            std::cout << start << ": " << li[i].second << " ";
+            std::cout << start << ": ";
             start++;
         }
+        std::cout << li[i].second << " ";
         afficherCarteEtDesc(li[i].first);
     }
     return start;

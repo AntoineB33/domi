@@ -47,9 +47,15 @@ void PhaseAction::jouerPhase(Jeu& jeu, Joueur& joueur) {
             return carte->getTypeCarte() == TypeRoyaume;
         });
         int idCarte = 0;
-        Carte* carte = joueur.demandeChercherCarte(joueur.getMain(), commande, idCarte);
-        if(carte == nullptr){
-            break;
+        Carte* carte = nullptr;
+        while(carte == nullptr) {
+            carte = joueur.demandeChercherCarte(joueur.getMain(), commande, idCarte);
+            if(carte == nullptr){
+                if(caseInsensitiveCompare(commande, "GODMODE")) {
+                    continue;
+                }
+                return;
+            }
         }
         if(carte->getTypeCarte() != TypeRoyaume) {
             std::cout << DIM_TEXT << RED << "Ce n'est pas une carte Royaume.\n" << RESET;

@@ -4,6 +4,9 @@
 #include "Phase.h"
 #include "PhaseAction.h"
 
+#include <cstdlib>
+#include <ctime>
+
 #include <random>
 
 #include <iostream>
@@ -173,9 +176,9 @@ int Joueur::getVictoireDansDeck(){
 }
 
 ///////////////////////////////////////ACTION DU JOUEUR VIA UNE CARTE ACTION
-void Joueur::reserveVersMain(Jeu& jeu, Carte* carte) {
-    jeu.retirerDeReserve(carte);
-    Carte::ajoutSuppCarte(m_main ,carte , -1);
+void Joueur::reserveVersMain(Carte* carte, int quantite) {
+    jeu.retirerDeReserve(carte, quantite);
+    Carte::ajoutSuppCarte(m_main, carte, -quantite);
 }
 
 void Joueur::ecarter(Jeu& jeu, Carte* carte, int quantite){
@@ -191,9 +194,15 @@ void Joueur::demandeEcarter(int quantite){
         std::cout << "Choisissez une carte à écarter.\n";
         afficherMain(true, [](Carte*) { return true; });
         int idCarte = 0;
-        Carte* carte = demandeChercherCarte(m_main, commande, idCarte);
-        if(carte == nullptr){
-            return;
+        Carte* carte = nullptr;
+        while(carte == nullptr) {
+            carte = demandeChercherCarte(m_main, commande, idCarte);
+            if(carte == nullptr){
+                if(caseInsensitiveCompare(commande, "GODMODE")) {
+                    continue;
+                }
+                return;
+            }
         }
         ecarter(jeu, carte);
     }
@@ -201,6 +210,7 @@ void Joueur::demandeEcarter(int quantite){
 
 void Joueur::addNbAchatPhase(int nbAchatPossible) {
     m_nbAchatPossible += nbAchatPossible;
+    std::cout<<DIM_TEXT<<GREEN<<"Vous avez "<<m_nbAchatPossible<<" achat(s) possible(s)."<<RESET<<std::endl;
 }
 
 void Joueur::addNbActionPhase(int nbActionPossible) {
@@ -405,10 +415,26 @@ void Joueur::tourJoueur(Jeu& jeu){
         m_nbActionPossible = 1;
     }
     m_valeurSupp = 0;
-    while(!m_phaseActuelle->dernierePhase() && !jeu.commandePartieEstFinie()){
+    while(1){
         m_phaseActuelle->jouerPhase(jeu, *this);
+        if(m_phaseActuelle->dernierePhase()) {
+            jeu.commandePartieEstFinie();
+            break;
+        }
         m_phaseActuelle = &m_phaseActuelle->getPhaseSuivante();
     }
+    
+    // m_valeurSupp = 0;
+    // while(!m_phaseActuelle->dernierePhase() && !jeu.commandePartieEstFinie()){
+    //     m_phaseActuelle->jouerPhase(jeu, *this);
+    //     m_phaseActuelle = &m_phaseActuelle->getPhaseSuivante();
+    // }
+    // mettreMainDansDefausse();
+    // if(m_godMode) {
+    //     piocher(1000);
+    // } else {
+    //     piocher(5);
+    // }
     m_phaseActuelle = &PhaseAction::getInstance();
 }
 
@@ -495,6 +521,31 @@ void Joueur::commandeHELP(){
 //     std::cout<<RESET<<std::endl;
 // }
 
+void Joueur::jouerRenovation(int quantite) {
+    std::string commande;
+    while(quantite > 0) {
+        jeu.afficherReserve();
+        afficherUtilise();
+        std::cout << "Choisissez une carte à écarter.\n";
+        afficherMain(true, [](Carte* carte) { return carte->getTypeCarte() == TypeRoyaume; });
+        int idCarte = 0;
+        Carte* carte = nullptr;
+        while(carte == nullptr) {
+            carte = demandeChercherCarte(m_main, commande, idCarte);
+            if(carte == nullptr){
+                if(caseInsensitiveCompare(commande, "GODMODE")) {
+                    continue;
+                }
+                return;
+            }
+        }
+        ecarter(jeu, carte);
+        commandeRecevoirCartePlateau(carte->getCout() + 2);
+        quantite--;
+    }
+
+}
+
 Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte) {
     Carte* c = nullptr;
     std::cout << "ECRIRE NOM CARTE OU ID\n";
@@ -504,6 +555,8 @@ Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std
             return c;
         } else if(caseInsensitiveCompare(commande, "GODMODE")){
             jeu.commandeGODMODE(m_main);
+            m_nbAchatPossible = 100;
+            m_nbActionPossible = 100;
             m_godMode = true;
             std::cout<<DIM_TEXT<<GREEN<<"Mode débogage activé."<<RESET<<std::endl;
             return c;
@@ -613,18 +666,75 @@ void Joueur::defaussPiocher(){
         std::cout << "Choisissez une carte à défausser.\n";
         afficherMain(true, [](Carte*) { return true; });
         int idCarte = 0;
-        Carte* carte = demandeChercherCarte(jeu.getReserve(), commande, idCarte);
-        if(carte == nullptr){
-            return;
+        Carte* carte = nullptr;
+        while(carte == nullptr) {
+            carte = demandeChercherCarte(jeu.getReserve(), commande, idCarte);
+            if(carte == nullptr){
+                if(caseInsensitiveCompare(commande, "GODMODE")) {
+                    continue;
+                }
+                return;
+            }
         }
         defausserCarte(carte);
         piocher(1);
     }
 }
 
-void Joueur::augmenterTresor(Jeu& jeu, int quantite){
-    (void)jeu;
-    (void)quantite;
+void Joueur::reserveVersDefausse(Carte* carte, int quantite) {
+    Carte::ajoutSuppCarte(m_defausse, carte, quantite);
+    jeu.retirerDeReserve(carte, quantite);
+}
+
+void Joueur::commandeRecevoirCartePlateau(int coutMax, bool versDefausse) {
+    std::string commande;
+    
+    jeu.afficherReserve(true, [coutMax](Carte* carte) -> bool {
+        return carte->getCout() <= coutMax;
+    });
+    afficherUtilise();
+    std::cout << "Choisissez une carte coutant jusqu'à " << coutMax << "\n";
+    afficherMain();
+    int idCarte = 0;
+    Carte* carte = nullptr;
+    while(carte == nullptr) {
+        carte = demandeChercherCarte(jeu.getReserve(), commande, idCarte);
+        if(carte == nullptr){
+            if(caseInsensitiveCompare(commande, "GODMODE")) {
+                continue;
+            }
+            return;
+        }
+    }
+    if(carte->getCout() > coutMax) {
+        std::cout << "Vous n'avez pas assez de valeur pour acheter cette carte.\n";
+    }
+    if(versDefausse) {
+        reserveVersDefausse(carte);
+    } else {
+        reserveVersMain(carte);
+    }
+}
+
+void Joueur::augmenterTresor(Jeu& jeu, int coutSup){
+    std::string commande;
+    jeu.afficherReserve();
+    afficherUtilise();
+    std::cout << "Choisissez une carte à écarter.\n";
+    afficherMain(true, [](Carte* carte) { return carte->getTypeCarte() == TypeTresor; });
+    int idCarte = 0;
+    Carte* carte = nullptr;
+    while(carte == nullptr) {
+        carte = demandeChercherCarte(m_main, commande, idCarte);
+        if(carte == nullptr){
+            if(caseInsensitiveCompare(commande, "GODMODE")) {
+                continue;
+            }
+            return;
+        }
+    }
+    ecarter(jeu, carte);
+    commandeRecevoirCartePlateau(carte->getValeur() + coutSup, false);
     // std::list<Carte*> li = commandeEcarter(jeu, 1);
     // if(li.empty()){
     //     return;
@@ -802,20 +912,28 @@ void Joueur::piocher(int quantite) {
         nbCartes += paire.second;
     }
     for(int i = 0; i<quantite; i++){
-        if(m_deck.empty()){
+        if(nbCartes == 0){
             mettreDefausseDansDeck();
+            for (const auto& paire : m_deck) {
+                nbCartes += paire.second;
+            }
         }
-        if(m_deck.empty()){
+        if(nbCartes == 0){
             if(!m_godMode) {
                 std::cout<<DIM_TEXT<<RED<<"DECK VIDE"<<RESET<<std::endl;
             }
             break;
         }
         //aleatoire
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(1, nbCartes);
-        int choixAleatoire = distrib(gen) ;
+        // std::random_device rd;
+        // std::mt19937 gen(rd());
+        // std::uniform_int_distribution<> distrib(1, nbCartes);
+        // int choixAleatoire = distrib(gen) ;
+        std::srand(std::time(0));
+
+        // Generate a random number between 1 and nbCartes
+        int choixAleatoire = std::rand() % nbCartes;
+        // int choixAleatoire = 0;
 
         //recherche de la carte
         for (auto& entry : m_deck) {

@@ -1,5 +1,6 @@
 #include "Atelier.h"
 #include "Jeu.h"
+#include "Joueur.h"
 
 Atelier* Atelier::instanceAtelier = new Atelier("Atelier",3,"Recevez une carte coutant jusqu'à 4 de coût");
 
@@ -13,5 +14,6 @@ Atelier::Atelier(std::string nom, int cout,std::string description) : Royaume(no
 
 
 void Atelier::faireAction(Joueur &joueur, Jeu &jeu) {
-    commandeRecevoirCartePlateau(joueur, jeu, 4);
+    joueur.commandeRecevoirCartePlateau(4);
+    (void)jeu;
 }
