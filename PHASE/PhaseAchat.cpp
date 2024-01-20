@@ -64,7 +64,7 @@ void PhaseAchat::jouerPhase(Jeu& jeu, Joueur& joueur) {
                 std::cout << DIM_TEXT << RED << "Vous n'avez pas assez de valeur pour acheter cette carte.\n" << RESET;
                 continue;
             }
-            joueur.reserveVersDeck(jeu, carte);
+            joueur.reserveVersDefausse(carte, 1);
             joueur.addNbAchatPhase(-1);
         } else {
             if(carte->getTypeCarte() != TypeTresor) {

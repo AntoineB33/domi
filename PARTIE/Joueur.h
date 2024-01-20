@@ -31,7 +31,7 @@ public:
     void reserveVersMain(Carte* carte, int quantite = 1);
     void mettreMainDansDefausse();
 
-    bool reserveVersDeck(Jeu& jeu, Carte* carte, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
+    // bool reserveVersDeck(Jeu& jeu, Carte* carte, int quantite = 1, bool gratuit = false); // le booleen permet la destribution en debut de parti
     int getVictoireDansDeck();
     void mettreUtiliseDansDefausse();
     void mainVersDeck(Carte* carte, int quantite = 1);
@@ -45,7 +45,7 @@ public:
     void addNbActionPhase(int);
     void ajouterRetirerValeurSupp(int);
     void commandeRecevoirCartePlateau(int coutMax, bool versDefausse = true);
-    void reserveVersDefausse(Carte* carte, int quantite = 1);
+    void reserveVersDefausse(Carte* carte, int quantite = 1, bool gratuit = false);
 
     void defausserCarte(Carte*carte);
     void mettreEncoursDutilisationCartes(Carte* carte, int quantite = 1);

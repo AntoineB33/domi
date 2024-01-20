@@ -100,9 +100,11 @@ void Jeu::retirerDeReserve(Carte *carte, int quantite) {
     Carte::ajoutSuppCarte(reserve, carte, -quantite, false);
 }
 
-void Jeu::ajoutCartesDefausses(Carte* carte, int quantite) {
+void Jeu::ajoutCartesDefausses(Carte* carte, int idJoueur, int quantite) {
     for(Joueur& j : m_joueurs){
-        j.reserveVersDeck(*this, carte, quantite, true);
+        if(j.getId() != idJoueur) {
+            j.reserveVersDefausse(carte, quantite, true);
+        }
     }
 }
 
@@ -141,8 +143,8 @@ void Jeu::initCartesPlateau() {
     };
 }
 void Jeu::initJoueur(Joueur& joueur){
-    joueur.reserveVersDeck(*this, Cuivre::makeCuivre(), 7, true);
-    joueur.reserveVersDeck(*this, Domaine::makeDomaine(), 3, true);
+    joueur.reserveVersDefausse(Cuivre::makeCuivre(), 7, true);
+    joueur.reserveVersDefausse(Domaine::makeDomaine(), 3, true);
     joueur.piocher(5);
 }
 

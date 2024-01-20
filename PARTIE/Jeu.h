@@ -31,7 +31,7 @@ public:
     bool carteDisponible(Carte* carte);//si elle peut etre encore achetée
     void retirerDeReserve(Carte* carte, int quantite = 1);
     void ecarter(Carte *carte, int quantite = 1);
-    void ajoutCartesDefausses(Carte* carte, int quantite = 1);
+    void ajoutCartesDefausses(Carte* carte, int idJoueur, int quantite = 1);
 
     Carte* demandeCartePlateau(Joueur& joueur, std::string& commande);
 

@@ -77,13 +77,12 @@ bool Joueur::typeDansMain(TypeCarte type) const {
 }
 
 //GESTIONS DES CARTES
-bool Joueur::reserveVersDeck(Jeu& jeu, Carte* carte, int quantite, bool gratuit) {
+void Joueur::reserveVersDefausse(Carte* carte, int quantite, bool gratuit) {
     if(!gratuit){
         prendreArgent(quantite * (carte -> getCout()));
     }
-    Carte::ajoutSuppCarte(m_deck, carte, quantite);
+    Carte::ajoutSuppCarte(m_defausse, carte, quantite);
     jeu.retirerDeReserve(carte);
-    return true;
 }
 
 int Joueur::getVictoireDansDeck(){
@@ -109,7 +108,6 @@ void Joueur::ecarter(Jeu& jeu, Carte* carte, int quantite){
 
 void Joueur::addNbAchatPhase(int nbAchatPossible) {
     m_nbAchatPossible += nbAchatPossible;
-    std::cout<<DIM_TEXT<<GREEN<<"Vous avez "<<m_nbAchatPossible<<" achat(s) possible(s)."<<RESET<<std::endl;
 }
 
 void Joueur::addNbActionPhase(int nbActionPossible) {
@@ -259,29 +257,25 @@ void Joueur::commandeHELP(){
     std::cout<<RESET<<std::endl;
 }
 
-void Joueur::jouerRenovation(int quantite) {
+void Joueur::jouerRenovation(int coutSup) {
     std::string commande;
-    while(quantite > 0) {
-        jeu.afficherReserve();
-        afficherUtilise();
-        std::cout << "Choisissez une carte à écarter.\n";
-        afficherMain(true);
-        int idCarte = 0;
-        Carte* carte = nullptr;
-        while(carte == nullptr) {
-            carte = demandeChercherCarte(m_main, commande, idCarte);
-            if(carte == nullptr){
-                if(caseInsensitiveCompare(commande, "GODMODE")) {
-                    continue;
-                }
-                return;
+    jeu.afficherReserve();
+    afficherUtilise();
+    std::cout << "Choisissez une carte à écarter.\n";
+    afficherMain(true, [](Carte*) { return true; });
+    int idCarte = 0;
+    Carte* carte = nullptr;
+    while(carte == nullptr) {
+        carte = demandeChercherCarte(m_main, commande, idCarte);
+        if(carte == nullptr){
+            if(caseInsensitiveCompare(commande, "GODMODE")) {
+                continue;
             }
+            return;
         }
-        ecarter(jeu, carte);
-        commandeRecevoirCartePlateau(carte->getCout() + 2);
-        quantite--;
     }
-
+    ecarter(jeu, carte);
+    commandeRecevoirCartePlateau(carte->getCout() + coutSup);
 }
 
 Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std::string &commande, int& idCarte) {
@@ -313,7 +307,7 @@ Carte* Joueur::demandeChercherCarte(std::vector<std::pair<Carte *, int>> li, std
 void Joueur::defaussPiocher(){
     
     std::string commande;
-    while(m_deck.size()) {
+    while(m_main.size()) {
         jeu.afficherReserve();
         afficherUtilise();
         std::cout << "Choisissez une carte à défausser.\n";
@@ -334,10 +328,10 @@ void Joueur::defaussPiocher(){
     }
 }
 
-void Joueur::reserveVersDefausse(Carte* carte, int quantite) {
-    Carte::ajoutSuppCarte(m_defausse, carte, quantite);
-    jeu.retirerDeReserve(carte, quantite);
-}
+// void Joueur::reserveVersDefausse(Carte* carte, int quantite) {
+//     Carte::ajoutSuppCarte(m_defausse, carte, quantite);
+//     jeu.retirerDeReserve(carte, quantite);
+// }
 
 void Joueur::commandeRecevoirCartePlateau(int coutMax, bool versDefausse) {
     std::string commande;
@@ -363,7 +357,7 @@ void Joueur::commandeRecevoirCartePlateau(int coutMax, bool versDefausse) {
         std::cout << "Vous n'avez pas assez de valeur pour acheter cette carte.\n";
     }
     if(versDefausse) {
-        reserveVersDefausse(carte);
+        reserveVersDefausse(carte, 1, true);
     } else {
         reserveVersMain(carte);
     }
@@ -408,7 +402,7 @@ void Joueur::augmenterTresor(Jeu& jeu, int coutSup){
     if(carte->getCout() > coutMax) {
         std::cout << "Vous n'avez pas assez de valeur pour acheter cette carte.\n";
     }
-    reserveVersDefausse(carte);
+    reserveVersDefausse(carte, 1, true);
 }
 
 void Joueur::afficherMain(bool pourPrendre, std::function<bool(Carte*)> condition, int start) {
@@ -474,8 +468,8 @@ void Joueur::piocher(int quantite) {
         for (auto& entry : m_deck) {
             choixAleatoire -= entry.second;
             if (choixAleatoire <= 0) { // carte trouvee donc on rajoute à la main
-                Carte::ajoutSuppCarte(m_deck,entry.first, -1);
                 Carte::ajoutSuppCarte(m_main,entry.first, 1);
+                Carte::ajoutSuppCarte(m_deck,entry.first, -1);
                 std::cout<<DIM_TEXT<<GREEN<<"carte : "<< entry.first -> getNom()<<" pioché"<<RESET<<std::endl;
                 nbCartes -= 1;
                 break;
